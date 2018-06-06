@@ -7,8 +7,8 @@
 <body>
 	<?php echo $header; ?>
 	<?php echo $menuheader; ?>
-	<!-- <?php echo $sidebar; ?> -->
-	<!-- /.navbar-static-side -->
+	<?php echo $sidebar; ?>
+	<!-- ini </nav> nya jangan dihapus yaa -->
   </nav>
 </body>
 </html>

@@ -1,4 +1,4 @@
-INSERT INTO `buku` (`id_buku`, `nama_buku`, `id_penerbit`, `penulis`,'isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok') VALUES 
+INSERT INTO `buku` (`id_buku`, `nama_buku`, `id_penerbit`, `penulis`,`isbn`,`tahun_terbit`,`banyak_halaman`,`modal`,`keterangan`,`stok`) VALUES 
 (1,'Buku Besar 1', 1,'Budianto',109291,2100,100,55000,'Bacaan jaman now',100),
 (2,'Buku Besar 2', 1,'Andre Lim',109292,2100,243,70000,'Bacaan jaman now',150),
 (3,'Buku Besar 3', 1,'Setia Kawan',109293,2100,109,65000,'Bacaan jaman now',139),
@@ -10,11 +10,11 @@ INSERT INTO `buku` (`id_buku`, `nama_buku`, `id_penerbit`, `penulis`,'isbn','tah
 (9,'Buku Besar 9', 1,'Halley',109299,2100,200,70000,'Bacaan jaman now',284),
 (10,'Buku Besar 10',1,'John',109300,2100,212,64000,'Bacaan jaman now',114);
 
-INSERT INTO `penerbit` (`id_penerbit`, `nama_penerbit`, `alamat`, `kota`,'no_telp','email') VALUES 
+INSERT INTO `penerbit` (`id_penerbit`, `nama_penerbit`, `alamat`, `kota`,`no_telp`,`email`) VALUES 
 (1, 'Erlangga', 'Jl. Boulevard 10', 'Tangerang Selatan', 085693029387, 'erlangga@gmail.com');
 
 
-INSERT INTO `toko` (`id_toko`, `nama_toko`, `alamat`, `no_telp`, 'email') VALUES 
+INSERT INTO `toko` (`id_toko`, `nama_toko`, `alamat`, `no_telp`, `email`) VALUES 
 (1, 'Toko 2 saudara', 'Jl. BSD', 085693029387, 'toko2saudara@gmail.com');
 
 
