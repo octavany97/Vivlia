@@ -32,18 +32,29 @@ class VivliaController extends CI_Controller {
 		$data['menuheader'] = $this->load->view('include/notlogin', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 
-		$this->load->view('page/home', $data);
-		// $data = [];
-
-		// $this->load->view('page/login', $data);
+		$this->load->view('page/login', $data);
 	}
 	public function home(){
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['konten'] = $this->load->view('page/dashboard', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 
 		$this->load->view('page/home', $data);
 	}
+	public function dashboard(){
+		$data = [];
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['konten'] = $this->load->view('page/dashboard', NULL, TRUE);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+
+		$this->load->view('page/home', $data);
+	}
+
 }
