@@ -56,5 +56,18 @@ class VivliaController extends CI_Controller {
 
 		$this->load->view('page/home', $data);
 	}
+	public function products(){
+		$data = [];
+		$datakonten = [];
+		//ini ntar coba ditambahin ya dra
+		//$datakonten['res'] = $this->AdminModel->getAllProducts();
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['konten'] = $this->load->view('page/products', $datakonten);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 
+		$this->load->view('page/home', $data);
+	}
 }

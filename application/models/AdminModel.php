@@ -2,24 +2,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AdminModel extends CI_Model {
-
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
-	public function index()
+	public function salesPerRegion($id_toko)
 	{
-		$this->load->view('welcome_message');
+		$data = $this->db->query("SELECT dt.id_transaksi, dt.id_buku, dt.quantity, t.id_toko FROM detail_transaksi dt, transaksi t WHERE dt.id_transaksi = t.id_transaksi AND t.id_toko = '$id_toko'");
+		return $data->result_array();
+		
 	}
 }
+
