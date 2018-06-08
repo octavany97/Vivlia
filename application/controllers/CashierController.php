@@ -6,9 +6,9 @@ class VivliaController extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('LoginModel');
-		/*$this->load->model('AdminModel');
+		$this->load->model('AdminModel');
 		$this->load->model('ManagerModel');
-		$this->load->model('KasirModel');*/
+		$this->load->model('KasirModel');
 		$this->load->library('session');
 	}
 	/**
@@ -36,7 +36,7 @@ class VivliaController extends CI_Controller {
 
 		$this->load->view('page/login', $data);
 	}
-	/*public function home(){
+	public function home(){
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
@@ -57,7 +57,7 @@ class VivliaController extends CI_Controller {
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 
 		$this->load->view('page/home', $data);
-	}*/
+	}
 
 	public function authentication(){
 		$username = $this->input->post('username');
@@ -77,7 +77,7 @@ class VivliaController extends CI_Controller {
 			$this->session->set_userdata($userdata);
 
 			if($user['peran']== 1){
-				redirect(base_url()."index.php/AdminController/home");
+				redirect(base_url()."index.php/VivliaController/home");
 			}
 			else if($user['peran'] == 2){
 
