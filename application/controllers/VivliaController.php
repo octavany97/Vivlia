@@ -11,21 +11,7 @@ class VivliaController extends CI_Controller {
 		$this->load->model('KasirModel');*/
 		$this->load->library('session');
 	}
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+	
 	public function index()
 	{
 		$data = [];
@@ -36,29 +22,39 @@ class VivliaController extends CI_Controller {
 
 		$this->load->view('page/login', $data);
 	}
-	/*public function home(){
+	public function home(){
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
-		$data['konten'] = $this->load->view('page/dashboard', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 
 		$this->load->view('page/home', $data);
 	}
 	public function dashboard(){
+		//$data buat kirim ke home.php
 		$data = [];
+		//untuk dapatin id_buku
+		/*$buku = $this->input->post('buku');
+		$idbk = $this->AdminModel->getBookId($buku);
+		$id_buku = $idbk['id_buku'];*/
+		//untuk dapatin id_toko
+		/*$toko = $this->input->post('toko');
+		$idtk = $this->AdminModel->getStoreId($toko);
+		$id_toko = $idtk['id_toko'];*/
+		//masukkin isi ke $data
+		$data['piechart'] = $this->AdminModel->salesPerStore(1);
+		$data['barchart'] = $this->AdminModel->salesPerBook(1);
+		//masukkin isi ke $data
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
-		$data['konten'] = $this->load->view('page/dashboard', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 
 		$this->load->view('page/home', $data);
-<<<<<<< HEAD
-	}*/
+	}
 
 	public function authentication(){
 		$username = $this->input->post('username');
@@ -94,6 +90,17 @@ class VivliaController extends CI_Controller {
 
 
 
+	}
+	public function charts(){
+		$data = [];
+		$data['barchart'] = $this->AdminModel->salesPerBook(1);
+		$data['piechart'] = $this->AdminModel->salesPerStore(1);
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		$this->load->view('page/dashboard', $data);
 	}
 	public function products(){
 		$data = [];
