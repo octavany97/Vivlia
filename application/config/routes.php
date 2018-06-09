@@ -52,7 +52,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'VivliaController';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-
-$route['dashboard'] = 'AdminController/dashboard';
-
+//route admin
+$route['adm/home'] = 'AdminController/home';
+$route['adm/dashboard'] = 'AdminController/dashboard';
+$route['adm/products'] = 'AdminController/products';
+//route cashier
+$route['csh/home'] = 'CashierController/home';
+$route['csh/dashboard'] = 'CashierController/dashboard';
+$route['csh/products'] = 'AdminController/products';
+//route manager
+$route['mgr/home'] = 'ManagerController/home';
+$route['mgr/dashboard'] = 'ManagerController/dashboard';
+$route['mgr/products'] = 'ManagerController/products';
+$route['mg/request_products'] = 'ManagerController/request';
 

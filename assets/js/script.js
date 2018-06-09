@@ -1,3 +1,4 @@
+//sidebar script
 $(function() {
     $('#side-menu').metisMenu();
 });

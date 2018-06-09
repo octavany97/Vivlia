@@ -22,21 +22,19 @@
             <li class="divider"></li>
             <li>
                 <a href="<?php if($this->session->userdata('peran') == 1){
-                            echo base_url().'index.php/dashboard';
+                            echo base_url().'adm/dashboard';
                         } else if($this->session->userdata('peran') == 2){
-                            echo base_url().'index.php/ManagerController/dashboard';
+                            echo base_url().'mgr/dashboard';
                         } else if ($this->session->userdata('peran') == 3) {
-                            echo base_url().'index.php/CashierController/dashboard';
+                            echo base_url().'csh/dashboard';
                         }?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
             <!-- <li>
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts</span></a>
             </li> -->
             <li>
-                <a href="<?php echo base_url(); ?>index.php/VivliaController/products"><i class="fa fa-table fa-fw"></i> Product List</a>
-            </li>
-            
+                <a href="<?php echo base_url(); ?>VivliaController/products"><i class="fa fa-table fa-fw"></i> Product List</a>
+            </li>  
         </ul>
     </div>
-    <!-- /.sidebar-collapse -->
 </div>

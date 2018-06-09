@@ -8,7 +8,7 @@ class VivliaController extends CI_Controller {
 		$this->load->model('LoginModel');
 		$this->load->model('AdminModel');
 		$this->load->model('ManagerModel');
-		$this->load->model('KasirModel');
+		$this->load->model('CashierModel');
 		$this->load->library('session');
 	}
 	/**
@@ -42,7 +42,6 @@ class VivliaController extends CI_Controller {
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
-		$data['konten'] = $this->load->view('page/dashboard', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 
 		$this->load->view('page/home', $data);

@@ -8,7 +8,7 @@ class VivliaController extends CI_Controller {
 		$this->load->model('LoginModel');
 		/*$this->load->model('AdminModel');
 		$this->load->model('ManagerModel');
-		$this->load->model('KasirModel');*/
+		$this->load->model('CashierModel');*/
 		$this->load->library('session');
 	}
 	
@@ -21,39 +21,6 @@ class VivliaController extends CI_Controller {
 		$data['js'] = $this->load->view('include/jsLogin', NULL, TRUE);
 
 		$this->load->view('page/login', $data);
-	}
-	public function home(){
-		$data = [];
-		$data['css'] = $this->load->view('include/style', NULL, TRUE);
-		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
-		$data['js'] = $this->load->view('include/js', NULL, TRUE);
-
-		$this->load->view('page/home', $data);
-	}
-	public function dashboard(){
-		//$data buat kirim ke home.php
-		$data = [];
-		//untuk dapatin id_buku
-		/*$buku = $this->input->post('buku');
-		$idbk = $this->AdminModel->getBookId($buku);
-		$id_buku = $idbk['id_buku'];*/
-		//untuk dapatin id_toko
-		/*$toko = $this->input->post('toko');
-		$idtk = $this->AdminModel->getStoreId($toko);
-		$id_toko = $idtk['id_toko'];*/
-		//masukkin isi ke $data
-		$data['piechart'] = $this->AdminModel->salesPerStore(1);
-		$data['barchart'] = $this->AdminModel->salesPerBook(1);
-		//masukkin isi ke $data
-		$data['css'] = $this->load->view('include/style', NULL, TRUE);
-		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
-		$data['js'] = $this->load->view('include/js', NULL, TRUE);
-
-		$this->load->view('page/home', $data);
 	}
 
 	public function authentication(){
@@ -74,13 +41,13 @@ class VivliaController extends CI_Controller {
 			$this->session->set_userdata($userdata);
 
 			if($user['peran']== 1){
-				redirect(base_url()."index.php/AdminController/home");
+				redirect(base_url()."adm/dashboard");
 			}
 			else if($user['peran'] == 2){
-
+				redirect(base_url()."mgr/dashboard");
 			}
 			else if($user['peran'] == 3){
-
+				redirect(base_url()."csh/dashboard");
 			}
 		}
 		else{

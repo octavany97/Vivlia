@@ -508,3 +508,8 @@ nav.blue-theme{
   border: 1px solid #c6dcff;
   background-color: #d8e7ff;
 }
+#logo{
+  width: 5%;
+  min-width: 50px;
+  height: auto;
+}

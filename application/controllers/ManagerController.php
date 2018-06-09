@@ -8,7 +8,7 @@ class VivliaController extends CI_Controller {
 		$this->load->model('LoginModel');
 		$this->load->model('AdminModel');
 		$this->load->model('ManagerModel');
-		$this->load->model('KasirModel');
+		$this->load->model('CashierModel');
 		$this->load->library('session');
 	}
 	/**
