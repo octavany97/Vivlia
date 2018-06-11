@@ -56,6 +56,8 @@ $route['translate_uri_dashes'] = FALSE;
 $route['adm/home'] = 'AdminController/home';
 $route['adm/dashboard'] = 'AdminController/dashboard';
 $route['adm/products'] = 'AdminController/products';
+$route['adm/changeBookChart'] = 'AdminController/changeBookChart';
+$route['adm/tes'] = 'AdminController/tes';
 //route cashier
 $route['csh/home'] = 'CashierController/home';
 $route['csh/dashboard'] = 'CashierController/dashboard';

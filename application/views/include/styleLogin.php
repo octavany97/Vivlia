@@ -6,11 +6,7 @@
 
 <title>Vivlia</title>
 
-<!-- Login CSS -->
-<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/login.css">
-<link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendor/font-awesome/css/font-awesome.css">
 <link href="<?php echo base_url(); ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
 <!-- Custom CSS -->
 <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet">
 

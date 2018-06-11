@@ -51,6 +51,9 @@ class AdminController extends CI_Controller {
 		//masukkin isi ke $data
 		$data['piechart'] = $this->AdminModel->salesPerStore(1);
 		$data['barchart'] = $this->AdminModel->salesPerBook(1);
+		$data['books'] = $this->AdminModel->getBooks();
+		$data['stores'] = $this->AdminModel->getStores();
+		//$data['bookchart'] = $this->changeBookChart();
 		//masukkin isi ke $data
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
@@ -74,5 +77,53 @@ class AdminController extends CI_Controller {
 
 		$this->load->view('page/home', $data);
 	}
-
+	public function changeBookChart(){
+		$data = [];
+		
+		if(isset($_POST['idbuku'])){
+			$bookid = $_POST['idbuku'];
+		}
+		else $bookid = 1;
+		
+		$data['piechart'] = json_encode($this->AdminModel->salesPerStore($bookid));
+		echo $data['piechart'];
+		$data['bookid'] = $bookid;
+		$data['books'] = $this->AdminModel->getBooks();
+		$data['piechart'] = $this->AdminModel->salesPerStore($bookid);
+		$this->load->view('page/test', $data, TRUE);		
+	}
+	public function test($bookid){
+		$dt['bookid'] = $bookid;
+		$dt['books'] = $this->AdminModel->getBooks();
+		$dt['piechart'] = $this->AdminModel->salesPerStore($bookid);
+		
+		$data['bookchart'] = $this->load->view('page/test', $dt, TRUE);
+	}
+	public function tes()
+	{
+		//$data buat kirim ke home.php
+		$data = [];
+		if(isset($_POST['idbuku'])){
+			$bookid = $_POST['idbuku'];
+		}
+		else $bookid = 1;
+		
+		$dt['bookid'] = $bookid;
+		$bn = $this->AdminModel->getBookName($bookid);
+		$dt['bookname'] = $bn[0]['nama_buku'];
+		$dt['books'] = $this->AdminModel->getBooks();
+		$dt['piechart'] = $this->AdminModel->salesPerStore($bookid);
+		//masukkin isi ke $data
+		$data['bookid'] = $bookid;
+		$data['barchart'] = $this->AdminModel->salesPerBook(1);
+		$data['stores'] = $this->AdminModel->getStores();
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		$data['bookchart'] = $this->load->view('page/test',$dt, TRUE);
+		
+		$this->load->view('page/tes', $data);		
+	}
 }
