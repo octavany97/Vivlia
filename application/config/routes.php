@@ -64,5 +64,5 @@ $route['csh/products'] = 'AdminController/products';
 $route['mgr/home'] = 'ManagerController/home';
 $route['mgr/dashboard'] = 'ManagerController/dashboard';
 $route['mgr/products'] = 'ManagerController/products';
-$route['mg/request_products'] = 'ManagerController/request';
+$route['mgr/request_products'] = 'ManagerController/request';
 

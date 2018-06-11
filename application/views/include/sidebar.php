@@ -35,6 +35,15 @@
             <li>
                 <a href="<?php echo base_url(); ?>VivliaController/products"><i class="fa fa-table fa-fw"></i> Product List</a>
             </li>  
+            <?php
+                if($this->session->userdata('peran') == 2){
+            ?>
+            <li>
+                <a href="<?php echo base_url().'mgr/request_products'; ?>"><i class="fa fa-table fa-fw"></i> Request Product</a>
+            </li>
+            <?php 
+                }
+            ?>
         </ul>
     </div>
 </div>

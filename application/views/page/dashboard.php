@@ -7,7 +7,7 @@
 <body>
 	<?php echo $header; ?>
 	<?php echo $menuheader; ?>
-	<?php//echo $sidebar; ?>
+	<?php //echo $sidebar; ?>
 	</nav>
 	<?php 
 	foreach ($barchart as $value) {
