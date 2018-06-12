@@ -19,3 +19,6 @@
 
 <!-- Slider CSS -->
 <link href="<?php echo base_url(); ?>assets/css/full-slider.css" rel="stylesheet">
+
+<!-- Highcharts CSS -->
+<link href="<?php echo base_url(); ?>assets/vendor/highchartsjs/css/highcharts.css" rel="stylesheet">

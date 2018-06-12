@@ -22,4 +22,19 @@ class ManagerModel extends CI_Model {
 	{
 		$this->load->view('welcome_message');
 	}
+	public function saveNotif($msg, $time, $date, $idsender, $idreveiver){
+
+	}
+	public function saveNotif($data){
+		/*
+		$data = array('notif_msg' => '$msg',
+					'notif_time' => '$time',
+					'notif_date' => '$date',
+					'id_sender' => '$idsender',
+					'id_receiver' => '$idreceiver',
+					'flag' => 'false'
+		);
+		*/
+		$this->db->insert('notif', $data);
+	}
 }

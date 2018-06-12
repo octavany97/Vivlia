@@ -60,4 +60,8 @@ class ManagerController extends CI_Controller {
 
 		$this->load->view('page/formRequestProduct', $data);
 	}
+
+	public function notif(){
+		
+	}
 }

@@ -513,3 +513,13 @@ nav.blue-theme{
   min-width: 50px;
   height: auto;
 }
+/*highcharts pichart style*/
+.highcharts-pie-series .highcharts-point {
+  stroke: #EDE;
+  stroke-width: 2px;
+}
+.highcharts-pie-series .highcharts-data-label-connector {
+  stroke: silver;
+  stroke-dasharray: 2, 2;
+  stroke-width: 2px;
+}
