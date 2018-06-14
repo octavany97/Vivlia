@@ -14,6 +14,7 @@
 <script src="<?php echo base_url(); ?>assets/vendor/highchartsjs/js/highcharts.js"></script>
 <script src="<?php echo base_url(); ?>assets/vendor/highchartsjs/js/exporting.js"></script>
 <script src="<?php echo base_url(); ?>assets/vendor/highchartsjs/js/modules/data.js"></script>
+<script src="<?php echo base_url(); ?>assets/vendor/highchartsjs/js/modules/export-data.js"></script>
 <script src="<?php echo base_url(); ?>assets/vendor/highchartsjs/js/modules/drilldown.js"></script>
 <!-- Morris Charts JavaScript -->
 <!-- <script src="<?php echo base_url(); ?>assets/vendor/raphael/raphael.min.js"></script> -->

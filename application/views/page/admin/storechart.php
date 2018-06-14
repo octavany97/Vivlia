@@ -1,4 +1,4 @@
-				<div id="chart2" class="panel panel-default">
+				<div id="chart3" class="panel panel-default">
 					<div class="panel-heading" style="height: 50px;">
 						<span style="margin-top: 15px;" ><i class="fa fa-bar-chart-o fa-fw"></i> Sales per Store Item | <?php echo $storename; ?></span>
 						<div class="pull-right">
@@ -41,7 +41,7 @@ $(document).ready(function() {
 			url: "<?php echo base_url() ?>adm/changeStoreChart/",
 			data: 'idtoko='+idtoko,
 			success: function(classes){
-				$('#chart2').empty().html(classes)				
+				$('#chart3').empty().html(classes)				
 			},
 			error: function(xhr, status){
 				alert("Oops there is an error!")
@@ -101,80 +101,113 @@ $(function(){
 	        type: 'column'
 	    },
 	    title: {
-	        text: 'Book Sales in ' + '"<?php echo $storename;?>"'
+	        text: 'Book Delivered in ' + '"<?php echo $storename;?>"'
 	    },
 	    subtitle: {
 	        text: 'in Month'
 	    },
 	    xAxis: {
-	        type: 'category'
+	        categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Banana']
 	    },
 	    yAxis: {
+	    	min: 0,
 	        title: {
-	            text: 'Total books sold'
+	            text: 'Total books delivered'
+	        },
+	        stackLabels:{
+	        	enabled:true,
+	        	style: {
+	        		color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+	        	}
 	        }
-
 	    },
 	    legend: {
-	        enabled: false
+	        align: 'right',
+	        x: -30,
+	        verticalAlign: 'top',
+	        y: 40,
+	        floating: true,
+	        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+	        borderColor: '#CCC',
+	        borderWidth: 1,
+	        shadow: false
 	    },
 	    plotOptions: {
-	        series: {
-	            borderWidth: 0,
-	            dataLabels: {
-	                enabled: true,
-	                format: '{point.y:.1f}%'
-	            }
-	        }
+	    	column: {
+	    		stacking: 'normal',
+	    		dataLabels: {
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+	    		}
+	    	}
 	    },
 
 	    tooltip: {
-	        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-	        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+	        headerFormat: '<b>{point.x}</b><br/>',
+        	pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
 	    },
 
 	    "series": [
-	        {
-	            "name": "Browsers",
-	            "colorByPoint": true,
-	            "data": [
-	                {
-	                    "name": "Chrome",
-	                    "y": 62.74,
-	                    "drilldown": "Chrome"
-	                },
-	                {
-	                    "name": "Firefox",
-	                    "y": 10.57,
-	                    "drilldown": "Firefox"
-	                },
-	                {
-	                    "name": "Internet Explorer",
-	                    "y": 7.23,
-	                    "drilldown": "Internet Explorer"
-	                },
-	                {
-	                    "name": "Safari",
-	                    "y": 5.58,
-	                    "drilldown": "Safari"
-	                },
-	                {
-	                    "name": "Edge",
-	                    "y": 4.02,
-	                    "drilldown": "Edge"
-	                },
-	                {
-	                    "name": "Opera",
-	                    "y": 1.92,
-	                    "drilldown": "Opera"
-	                },
-	                {
-	                    "name": "Other",
-	                    "y": 7.62,
-	                    "drilldown": null
-	                }
-	            ]
-	        }
+		        {
+			        name: 'Dua Saudara',
+			        data: [5, 3, 4, 7, 2],
+			        drilldown: 'Browsers'
+			    }, {
+			        name: 'Tiga Saudara',
+			        data: [2, 2, 3, 2, 1],
+			        drilldown: 'Firefox'
+			    }
+	        //{
+
+	      //       "name": "Browsers",
+	      //       "colorByPoint": true,
+	      //       "data": [
+	      //       {
+			    //     "name": "Dua Saudara",
+			    //     "data": [5, 3, 4, 7, 2],
+			    //     "drilldown":"Dua Saudara"
+			    // }, {
+			    //     "name": "Tiga Saudara",
+			    //     "data": [2, 2, 3, 2, 1],
+			    //     "drilldown": "Tiga Saudara"
+			    // }
+	                // {
+	                //     "name": "Chrome",
+	                //     "y": 62.74,
+	                //     "drilldown": "Chrome"
+	                // },
+	                // {
+	                //     "name": "Firefox",
+	                //     "y": 10.57,
+	                //     "drilldown": "Firefox"
+	                // },
+	                // {
+	                //     "name": "Internet Explorer",
+	                //     "y": 7.23,
+	                //     "drilldown": "Internet Explorer"
+	                // },
+	                // {
+	                //     "name": "Safari",
+	                //     "y": 5.58,
+	                //     "drilldown": "Safari"
+	                // },
+	                // {
+	                //     "name": "Edge",
+	                //     "y": 4.02,
+	                //     "drilldown": "Edge"
+	                // },
+	                // {
+	                //     "name": "Opera",
+	                //     "y": 1.92,
+	                //     "drilldown": "Opera"
+	                // },
+	                // {
+	                //     "name": "Other",
+	                //     "y": 7.62,
+	                //     "drilldown": null
+	                // }
+	        //    ]
+	      //  }
 	    ],
 	    "drilldown": {
 	        "series": [

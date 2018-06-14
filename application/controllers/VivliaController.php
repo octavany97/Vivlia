@@ -51,36 +51,7 @@ class VivliaController extends CI_Controller {
 			}
 		}
 		else{
-			var_dump("HIHI");
 			redirect(base_url());
 		}
-
-
-
-	}
-	public function charts(){
-		$data = [];
-		$data['barchart'] = $this->AdminModel->salesPerBook(1);
-		$data['piechart'] = $this->AdminModel->salesPerStore(1);
-		$data['css'] = $this->load->view('include/style', NULL, TRUE);
-		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
-		$data['js'] = $this->load->view('include/js', NULL, TRUE);
-		$this->load->view('page/dashboard', $data);
-	}
-	public function products(){
-		$data = [];
-		$datakonten = [];
-		//ini ntar coba ditambahin ya dra
-		//$datakonten['res'] = $this->AdminModel->getAllProducts();
-		$data['css'] = $this->load->view('include/style', NULL, TRUE);
-		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
-		$data['konten'] = $this->load->view('page/products', $datakonten);
-		$data['js'] = $this->load->view('include/js', NULL, TRUE);
-
-		$this->load->view('page/home', $data);
 	}
 }

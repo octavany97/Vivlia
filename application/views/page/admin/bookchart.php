@@ -2,7 +2,7 @@
 					<div class="panel-heading" style="height: 50px;">
 						<span style="margin-top: 15px;" ><i class="fa fa-bar-chart-o fa-fw"></i> Sales per Book Item | <?php echo $bookname; ?></span>
 						<div class="pull-right">
-							<select name="buku" class="form-control" id="buku">
+							<select name="buku" class="form-control" id="buku" style="max-width: 150px;">
 								<?php
 								
 								foreach ($books as $book) {

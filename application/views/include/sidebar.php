@@ -7,6 +7,7 @@
                     <img src="<?php echo base_url(); ?>assets/img/coba.png" class="rounded-circle" alt="User Image">
                   </div>
                   <div class="info">
+                    <?php $iduser = $this->session->userdata('id_user'); ?>
                     <p><?php echo $this->session->userdata('username');?></p>
                     <p><?php if($this->session->userdata('peran') == 1){
                             echo "Admin Pabrik";

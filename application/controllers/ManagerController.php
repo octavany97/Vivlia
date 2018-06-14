@@ -61,6 +61,38 @@ class ManagerController extends CI_Controller {
 		$this->load->view('page/formRequestProduct', $data);
 	}
 
+	public function changeBookChart(){
+		$data = [];
+		
+		if(isset($_POST['idbuku'])){
+			$bookid = $_POST['idbuku'];
+		}
+		else $bookid = 1;
+		
+		$bn = $this->ManagerModel->getBookName($bookid);
+		$data['bookname'] = $bn[0]['nama_buku'];
+		$data['bookid'] = $bookid;
+		$data['books'] = $this->ManagerModel->getBooks();
+		$data['piechart'] = $this->ManagerModel->salesPerStore($bookid);
+		$this->load->view('page/bookchart', $data);
+	}
+
+	public function changeStoreChart(){
+		$data = [];
+		
+		if(isset($_POST['idtoko'])){
+			$storeid = $_POST['idtoko'];
+		}
+		else $storeid = 1;
+		
+		$bn = $this->ManagerModel->getStoreName($storeid);
+		$data['storename'] = $bn[0]['nama_toko'];
+		$data['storeid'] = $storeid;
+		$data['stores'] = $this->ManagerModel->getStores();
+		$data['barchart'] = $this->ManagerModel->salesPerBook($storeid);
+		$this->load->view('page/storechart', $data);	
+	}
+
 	public function notif(){
 		
 	}

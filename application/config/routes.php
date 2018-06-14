@@ -58,6 +58,7 @@ $route['adm/dashboard'] = 'AdminController/dashboard';
 $route['adm/products'] = 'AdminController/products';
 $route['adm/changeBookChart'] = 'AdminController/changeBookChart';
 $route['adm/changeStoreChart'] = 'AdminController/changeStoreChart';
+$route['adm/getBooksByGenre'] = 'AdminController/getBooksByGenre';
 $route['adm/tes'] = 'AdminController/tes';
 //route cashier
 $route['csh/home'] = 'CashierController/home';
