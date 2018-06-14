@@ -1,6 +1,6 @@
-				<div id="chart2" class="panel panel-default">
+				<div id="chart2" class="panel panel-blue">
 					<div class="panel-heading" style="height: 50px;">
-						<span style="margin-top: 15px;" ><i class="fa fa-bar-chart-o fa-fw"></i> Stock of Books at Publisher | <?php echo $penerbitname; ?></span>
+						<span style="margin-top: 15px;"><i class="fa fa-bar-chart-o fa-fw"></i> Stock of Books at Publisher | <?php echo $penerbitname; ?></span>
 					</div>
 					<!-- /.panel-heading -->
 					<div id="stockchart" class="panel-body">
@@ -76,7 +76,7 @@ $(function(){
 		        		echo '{"name":"'.$row['nama'].'",';
 		        		echo '"id":"'.$row['nama'].'",';
 		        		echo '"data":[';
-		        		for($i = $idx;$i<$nrow;$i++) {
+		        		for($i = $idx;$i<=$nrow;$i++) {
 		        			if($stocks[$i]['nama'] == $row['nama']){
 		        				echo '["'.$stocks[$i]['nama_buku'].'",'.$stocks[$i]['stok'].'],'."\n";		
 		        			}

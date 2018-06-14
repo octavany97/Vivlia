@@ -1,4 +1,4 @@
-				<div id="chart3" class="panel panel-default">
+				<div id="chart3" class="panel panel-blue">
 					<div class="panel-heading" style="height: 50px;">
 						<span style="margin-top: 15px;" ><i class="fa fa-bar-chart-o fa-fw"></i> Sales per Store Item | <?php echo $storename; ?></span>
 						<div class="pull-right">

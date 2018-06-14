@@ -34,7 +34,13 @@
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts</span></a>
             </li> -->
             <li>
-                <a href="<?php echo base_url(); ?>VivliaController/products"><i class="fa fa-table fa-fw"></i> Product List</a>
+                <a href="<?php if($this->session->userdata('peran') == 1){
+                            echo base_url().'adm/products';
+                        } else if($this->session->userdata('peran') == 2){
+                            echo base_url().'mgr/products';
+                        } else if ($this->session->userdata('peran') == 3) {
+                            echo base_url().'csh/products';
+                        }?>"><i class="fa fa-table fa-fw"></i> Product List</a>
             </li>  
             <?php
                 if($this->session->userdata('peran') == 2){

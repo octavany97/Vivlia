@@ -56,6 +56,9 @@ $route['translate_uri_dashes'] = FALSE;
 $route['adm/home'] = 'AdminController/home';
 $route['adm/dashboard'] = 'AdminController/dashboard';
 $route['adm/products'] = 'AdminController/products';
+$route['adm/products/(:any)'] = 'AdminController/products';
+$route['adm/products/(:any)/(:any)'] = 'AdminController/products';
+
 $route['adm/changeBookChart'] = 'AdminController/changeBookChart';
 $route['adm/changeStoreChart'] = 'AdminController/changeStoreChart';
 $route['adm/getBooksByGenre'] = 'AdminController/getBooksByGenre';

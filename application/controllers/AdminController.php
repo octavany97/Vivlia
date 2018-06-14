@@ -21,7 +21,7 @@ class AdminController extends CI_Controller {
 
 		$this->load->view('page/login', $data);
 	}
-	
+	//untuk page dashboard
 	public function dashboard(){
 		if(isset($_POST['idbuku'])){
 			$bookid = $_POST['idbuku'];
@@ -79,20 +79,6 @@ class AdminController extends CI_Controller {
 		
 		$this->load->view('page/home', $data);
 	}
-	public function products(){
-		$data = [];
-		$datakonten = [];
-		//ini ntar coba ditambahin ya dra
-		//$datakonten['res'] = $this->AdminModel->getAllProducts();
-		$data['css'] = $this->load->view('include/style', NULL, TRUE);
-		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
-		$data['konten'] = $this->load->view('page/products', $datakonten);
-		$data['js'] = $this->load->view('include/js', NULL, TRUE);
-
-		$this->load->view('page/home', $data);
-	}
 	public function changeBookChart(){
 		$data = [];
 		
@@ -139,6 +125,34 @@ class AdminController extends CI_Controller {
 		
 		$data['stockchart'] = $this->load->view('page/admin/stockchart', $dt, TRUE);
 	}
+	//untuk page products list
+	public function products(){
+		$data = [];
+		$this->load->library('grocery_CRUD');
+		$crud = new grocery_CRUD();
+		$crud->set_theme('datatables');
+		$crud->set_table('buku')
+			 ->columns('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','harga_jual','keterangan','stok','cover')
+		     ->display_as('coverlink','Cover')
+		     ->fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','harga_jual','keterangan','stok','cover')
+			 ->set_field_upload('cover','assets/uploads/buku');
+			 	// ->callback_edit_field('keterangan',array($this,'edit_description'))
+			 	// ->callback_add_field('keterangan',array($this,'add_description'));
+		$crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
+		$crud->unset_columns('id_penerbit', 'keterangan', 'harga_jual');
+
+		$output = $crud->render();
+		$data['crud'] = get_object_vars($output);
+
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['style'] = $this->load->view('include/style', $data, TRUE);
+		$data['script'] = $this->load->view('include/js', $data, TRUE);
+
+		$this->load->view('page/products', $data);
+	}
+	
 	public function tes()
 	{
 		//$data buat kirim ke home.php
