@@ -1,34 +1,34 @@
-				<div id="chart1" class="panel panel-blue">
-					<div class="panel-heading" style="height: 50px;">
-						<span style="margin-top: 15px;" ><i class="fa fa-bar-chart-o fa-fw"></i> Sales per Book Item | <?php echo $bookname; ?></span>
-						<div class="pull-right">
-							<select name="buku" class="form-control" id="buku" style="max-width: 150px;">
-								<?php
-								
-								foreach ($books as $book) {
-									if($book['id_buku'] == $bookid){
-										echo $bookid . " ". $book['id_buku'];		
-										?>
-										<option value="<?php echo $book['id_buku']; ?>" selected><?php echo $bookname; ?></option>
-										<?php
-									} else{
-										?>
-										<option value="<?php echo $book['id_buku']; ?>"><?php echo $book['nama_buku']; ?></option>
-										<?php
-									}
-									?>
-									
-									<?php
-								}
-								?>
-							</select>
-						</div>
-					</div>
-					<!-- /.panel-heading -->
-					<div id="bookchart" class="panel-body">
-						<div id="piechart"></div>
-					</div>
-				</div>
+<div id="chart1" class="panel panel-blue">
+	<div class="panel-heading">
+		<span><i class="fa fa-bar-chart-o fa-fw"></i> Sales per Book Item | <?php echo $bookname; ?></span>
+		<div class="pull-right">
+			<select name="buku" class="form-control" id="buku" style="max-width: 150px;">
+				<?php
+				
+				foreach ($books as $book) {
+					if($book['id_buku'] == $bookid){
+						echo $bookid . " ". $book['id_buku'];		
+						?>
+						<option value="<?php echo $book['id_buku']; ?>" selected><?php echo $bookname; ?></option>
+						<?php
+					} else{
+						?>
+						<option value="<?php echo $book['id_buku']; ?>"><?php echo $book['nama_buku']; ?></option>
+						<?php
+					}
+					?>
+					
+					<?php
+				}
+				?>
+			</select>
+		</div>
+	</div>
+	<!-- /.panel-heading -->
+	<div id="bookchart" class="panel-body">
+		<div id="piechart"></div>
+	</div>
+</div>
 <!-- piechart script -->
 <script type="text/javascript">
 $(document).ready(function() {

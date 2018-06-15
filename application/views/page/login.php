@@ -14,6 +14,11 @@
   </nav>
 
   <div class="container"> 
+    <div class="row">
+      <div class="col-lg-12">
+          <h1 class="page-header">User Guide | <span style="font-size: 16pt;">Admin Pabrik</span></h1>
+      </div>  
+    </div>
     <!-- start slider -->
     <!-- START CAROUSEL SLIDESHOW -->
     <div id="myCarousel" class="carousel slide" data-ride="carousel">

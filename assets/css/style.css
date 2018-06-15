@@ -320,6 +320,12 @@ table.dataTable thead .sorting:after {
 .panel-blue > a:hover {
   color: #b8cef2;
 }
+.panel-blue > .panel-heading > span > i{
+  padding: 10px;
+}
+.panel-blue > .panel-heading > i{
+  padding: 10px;
+}
 .panel-yellow {
   border-color: #f0ad4e;
 }
@@ -506,4 +512,20 @@ nav.blue-theme{
   stroke: silver;
   stroke-dasharray: 2, 2;
   stroke-width: 2px;
+}
+.highcharts-credits{
+  display:none;
+}
+/*show buat dropdown*/
+.navbar-top-links > .show {
+  display: inline-block !important;
+}
+.timeline-picture{
+  border-radius: 25px; 
+  width: 50px; 
+  height: auto; 
+  border: 1px solid #d8e7ff;
+}
+.padding-bottom-10{
+  padding-bottom: 10px;
 }

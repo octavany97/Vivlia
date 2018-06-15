@@ -61,6 +61,7 @@ class AdminController extends CI_Controller {
 			$dtstock['stackchart'] = $this->AdminModel->getBookGenreStock();
 			$dtstock['stocks'] = $this->AdminModel->getBookStock();
 		}
+
 		
 		//masukkin isi ke $data utk dikirim ke page/home
 		$data['bookid'] = $bookid;
@@ -76,8 +77,10 @@ class AdminController extends CI_Controller {
 		$data['storechart'] = $this->load->view('page/admin/storechart', $dtstore, TRUE);
 
 		$data['stockchart'] = $this->load->view('page/admin/stockchart', $dtstock, TRUE);
+
+		$data['notifpanel'] = $this->load->view('page/notifpanel', NULL, TRUE);
 		
-		$this->load->view('page/home', $data);
+		$this->load->view('page/admin/home', $data);
 	}
 	public function changeBookChart(){
 		$data = [];
@@ -132,14 +135,14 @@ class AdminController extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_theme('datatables');
 		$crud->set_table('buku')
-			 ->columns('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','harga_jual','keterangan','stok','cover')
+			 ->columns('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
 		     ->display_as('coverlink','Cover')
-		     ->fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','harga_jual','keterangan','stok','cover')
+		     ->fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
 			 ->set_field_upload('cover','assets/uploads/buku');
 			 	// ->callback_edit_field('keterangan',array($this,'edit_description'))
 			 	// ->callback_add_field('keterangan',array($this,'add_description'));
 		$crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
-		$crud->unset_columns('id_penerbit', 'keterangan', 'harga_jual');
+		$crud->unset_columns('id_penerbit', 'keterangan', 'modal', 'nama_toko');
 
 		$output = $crud->render();
 		$data['crud'] = get_object_vars($output);

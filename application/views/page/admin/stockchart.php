@@ -1,12 +1,12 @@
-				<div id="chart2" class="panel panel-blue">
-					<div class="panel-heading" style="height: 50px;">
-						<span style="margin-top: 15px;"><i class="fa fa-bar-chart-o fa-fw"></i> Stock of Books at Publisher | <?php echo $penerbitname; ?></span>
-					</div>
-					<!-- /.panel-heading -->
-					<div id="stockchart" class="panel-body">
-						<div id="stackchart"></div>
-					</div>
-				</div>
+<div id="chart2" class="panel panel-blue">
+	<div class="panel-heading" style="height: 50px;">
+		<span><i class="fa fa-bar-chart-o fa-fw"></i> Stock of Books at Publisher | <?php echo $penerbitname; ?></span>
+	</div>
+	<!-- /.panel-heading -->
+	<div id="stockchart" class="panel-body">
+		<div id="stackchart"></div>
+	</div>
+</div>
 <!-- piechart script -->
 <script type="text/javascript">
 // Book Delivered in ' + '"<?php echo $storename;?>"

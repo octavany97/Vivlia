@@ -1,34 +1,34 @@
-				<div id="chart3" class="panel panel-blue">
-					<div class="panel-heading" style="height: 50px;">
-						<span style="margin-top: 15px;" ><i class="fa fa-bar-chart-o fa-fw"></i> Sales per Store Item | <?php echo $storename; ?></span>
-						<div class="pull-right">
-							<select name="toko" class="form-control" id="toko">
-								<?php
-								
-								foreach ($stores as $store) {
-									if($store['id_toko'] == $storeid){
-										echo $storeid . " ". $store['id_toko'];		
-										?>
-										<option value="<?php echo $store['id_toko']; ?>" selected><?php echo $storename; ?></option>
-										<?php
-									} else{
-										?>
-										<option value="<?php echo $store['id_toko']; ?>"><?php echo $store['nama_toko']; ?></option>
-										<?php
-									}
-									?>
-									
-									<?php
-								}
-								?>
-							</select>
-						</div>
-					</div>
-					<!-- /.panel-heading -->
-					<div id="storechart" class="panel-body">
-						<div id="barchart"></div>
-					</div>
-				</div>
+<div id="chart3" class="panel panel-blue">
+	<div class="panel-heading">
+		<span><i class="fa fa-bar-chart-o fa-fw"></i> Sales per Store Item | <?php echo $storename; ?></span>
+		<div class="pull-right">
+			<select name="toko" class="form-control" id="toko" >
+				<?php
+				
+				foreach ($stores as $store) {
+					if($store['id_toko'] == $storeid){
+						echo $storeid . " ". $store['id_toko'];		
+						?>
+						<option value="<?php echo $store['id_toko']; ?>" selected><?php echo $storename; ?></option>
+						<?php
+					} else{
+						?>
+						<option value="<?php echo $store['id_toko']; ?>"><?php echo $store['nama_toko']; ?></option>
+						<?php
+					}
+					?>
+					
+					<?php
+				}
+				?>
+			</select>
+		</div>
+	</div>
+	<!-- /.panel-heading -->
+	<div id="storechart" class="panel-body">
+		<div id="barchart"></div>
+	</div>
+</div>
 <!-- piechart script -->
 <script type="text/javascript">
 $(document).ready(function() {
