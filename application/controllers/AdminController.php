@@ -143,6 +143,10 @@ class AdminController extends CI_Controller {
 			 	// ->callback_add_field('keterangan',array($this,'add_description'));
 		$crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
 		$crud->unset_columns('id_penerbit', 'keterangan', 'modal', 'nama_toko');
+		// $crud->unset_delete(); //buat hilangin tombol delete di action
+		// $crud->unset_edit(); //buat hilangin tombol edit di action
+		$crud->unset_clone(); //buat hilangin tombol clone di action
+		// $crud->unset_add();
 
 		$output = $crud->render();
 		$data['crud'] = get_object_vars($output);

@@ -66,10 +66,13 @@ $route['adm/tes'] = 'AdminController/tes';
 //route cashier
 $route['csh/home'] = 'CashierController/home';
 $route['csh/dashboard'] = 'CashierController/dashboard';
-$route['csh/products'] = 'AdminController/products';
+$route['csh/products'] = 'CashierController/products';
+$route['csh/products/(:any)'] = 'CashierController/products';
+$route['csh/products/(:any)/(:any)'] = 'CashierController/products';
 //route manager
 $route['mgr/home'] = 'ManagerController/home';
 $route['mgr/dashboard'] = 'ManagerController/dashboard';
 $route['mgr/products'] = 'ManagerController/products';
 $route['mgr/request_products'] = 'ManagerController/request';
-
+$route['mgr/products/(:any)'] = 'ManagerController/products';
+$route['mgr/products/(:any)/(:any)'] = 'ManagerController/products';
