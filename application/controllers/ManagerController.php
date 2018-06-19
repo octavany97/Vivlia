@@ -148,14 +148,44 @@ class ManagerController extends CI_Controller {
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
-		$data['konten'] = $this->load->view('page/dashboard', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 
 		$this->load->view('page/formRequestProduct', $data);
 	}
-
-	public function notif(){
+	//notifikasi
+	public function notifications(){
+		if(isset($_POST['id_notif'])){
+			$id_notif = $_POST['id_notif'];
+		}
+		else $id_notif = 0;
 		
+		$id = $this->session->userdata('id_user');
+		$data = [];
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
+		$dtdetail['detail'] = $this->ManagerModel->getNotifDetail($id_notif);
+		
+		$data['listnotif'] = $this->load->view('page/manager/listnotification', $dtlist, TRUE);
+
+		$data['notifdetail'] = $this->load->view('page/manager/detailnotif', $dtdetail, TRUE);
+
+		$this->load->view('page/notification', $data);
+	}
+	public function changeNotifDetail(){
+		$data = [];
+		
+		if(isset($_POST['id_notif'])){
+			$id_notif = $_POST['id_notif'];
+		}
+		else $id_notif = 0;
+		
+		$dtdetail['detail'] = $this->ManagerModel->getNotifDetail($id_notif);
+		
+		$this->load->view('page/manager/detailnotif', $dtdetail);
 	}
 
 	public function products(){

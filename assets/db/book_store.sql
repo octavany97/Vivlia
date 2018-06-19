@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2018 at 11:45 AM
+-- Generation Time: Jun 19, 2018 at 03:54 PM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -34,7 +34,8 @@ CREATE TABLE `buku` (
   `id_penerbit` int(11) NOT NULL,
   `penulis` varchar(50) NOT NULL,
   `isbn` varchar(30) NOT NULL,
-  `tahun_terbit` varchar(6) NOT NULL,
+  `tanggal_terbit` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `tahun_terbit` year(4) NOT NULL,
   `banyak_halaman` int(11) NOT NULL,
   `modal` int(11) NOT NULL,
   `keterangan` text NOT NULL,
@@ -46,19 +47,19 @@ CREATE TABLE `buku` (
 -- Dumping data for table `buku`
 --
 
-INSERT INTO `buku` (`id_buku`, `nama_buku`, `id_penerbit`, `penulis`, `isbn`, `tahun_terbit`, `banyak_halaman`, `modal`, `keterangan`, `stok`, `cover`) VALUES
-(1, 'Tiga Dunia: Si Pencuri', 1, 'Rama Nugraha', '9786025469336', '2018', 588, 55000, 'Ini kisah tentang Neena, manusia yang bisa bernapas di dalam air.\r\nDatan Woudward berumur 7 tahun ketika dirinya bertemu Ana. Sosok yang kemunculannya seketika merobohkan seluruh pengunjung pasar malam. Ana ternyata seorang Royan. Pencuri dan pembunuh elit dunia. Datan menyimpan obsesi sejak pertemuan itu. Dia ingin bertemu lagi dengan Ana, dan bercita-cita menjadi Royan. Ayah menentang sengit.\r\n\r\nDi usia ke-22, Datan memilih meninggalkan rumah dan bergabung dengan Persaudaraan Royan. Dia mengemban tugas pertama mencuri Permata Zu yang misterius, dan membuatnya bertemu Nymeria. Nymeria mencengkeram kebebasan Datan. Dia menginginkan sesuatu dari Datan.\r\n\r\nNymeria merampas hal paling berharga yang pernah Datan miliki.', 100, 'tigadunia.jpg'),
-(2, 'Koin Terakhir', 1, 'Yogie Nugraha', '9786022121212', '2013', 243, 70000, 'Sebuah data rahasia milik pemerintah yang disimpan dalam koin berongga dicuri dari Lembaga Sandi Negara. Keamanan nasional terancam hancur jika data itu disebarluaskan. Badan Intelijen Negara pun turun tangan. Mereka menugaskan Zen, agen terbaik BIN, untuk menuntaskan kasus ini.\r\n\r\nLokasi koin terdeteksi, target pun terkunci. Penugasan yang terdengar sederhana menjelma malapetaka tak terduga, membawa Zen melintasi berbagai negara Eropa, bahkan mengancam nyawanya. Waktu semakin menghimpit, Zen harus bergegas menuntaskan misinya ? hanya untuk menemukan bahwa ia berada tepat di tengah konspirasi sebuah organisasi rahasia.\r\n\r\nDi tengah gejolak politik dan ekonomi global yang berkecamuk, sebuah skenario besar telah disiapkan. Bangsa ini tersingkir menjadi orang asing di negeri sendiri. Ketika politik menjadi serupa perang tanpa peluru, batas antara kawan dan lawan semakin membingungkan. Zen pun akhirnya harus mempertanyakan, siapa sebenarnya musuh mereka?', 150, 'kointerakhir.jpeg'),
-(3, 'Konspirasi Romawi', 1, 'Richard Blake', '9786029193558', '2014', 562, 65000, '609 M. Imperium Romawi penuh kecamuk perang, wabah penyakit, dan perebutan kekuasaan internal antara kaisar, bangsawan, dan gereja. Akhirnya, kota Roma jatuh dalam kehancuran. Kotoran dan puing memblokir jalanan. Para pembunuh berkeliaran pada malam hari. Jauh di Konstantinopel, sang Kaisar memiliki banyak masalah. Gereja, institusi sakral yang dibiarkan utuh, bahkan berbalik melemahkan kekaisaran.\r\n\r\nDalam kekacauan itulah Briton Aelric?muda dan cantik, heorik, dan haus pengetahuan akan dunia sekelilingnya yang tengah sekarat?terjerumus. Ayahnya terbunuh, warisannya dicuri, dan dia secara paksa dipisahkan dari kekasihnya?dan kini dia bertekad untuk merebut kembali kebahagiaannya yang telah sirna. Namun, karena kenaifan dan ambisinya, dia tanpa sadar terlibat dalam plot sesat yang berakibat pada penipuan, pengkhianatan, dan pembunuhan terhadapnya. Akankah dia bertahan hidup?\r\n\r\nInilah novel yang sangat memukau, sebuah thriller sejarah yang memperkenalkan cerita baru anti-kepahlawanan yang sangat memikat. Novel petualangan ini akan membawa pembaca kembali ke salah satu periode sejarah paling gelap dan paling terkenal.', 139, 'konspirasiromawi.jpg'),
-(4, 'Komet', 1, 'Tere Liye', '9786020385938', '2018', 384, 69000, 'Setelah \"musuh besar\" kami lolos, dunia paralel dalam situasi genting. Hanya soal waktu, pertempuran besar akan terjadi. Bagaimana jika ribuan petarung yang bisa menghilang, mengeluarkan petir, termasuk teknologi maju lainnya muncul di permukaan Bumi? Tidak ada yang bisa membayangkan kekacauan yang akan terjadi. Situasi menjadi lebih rumit lagi saat Ali, pada detik terakhir, melompat ke portal menuju Klan Komet. Kami bertiga tersesat di klan asing untuk mencari pusaka paling hebat di dunia paralel.\r\n\r\nBuku ini berkisah tentang petualangan tiga sahabat. Raib bisa menghilang. Seli bisa mengeluarkan petir. Dan Ali bisa melakukan apa saja. Buku ini juga berkisah tentang persahabatan yang mengharukan, pengorbanan yang tulus, keberanian, dan selalu berbuat baik. Karena sejatinya, itulah kekuatan terbesar di dunia paralel.', 128, 'komet.jpg'),
-(5, 'Pergi', 1, 'Tere Liye', '9786025734052', '2018', 459, 57000, 'Sebuah kisah tentang menemukan tujuan, ke mana hendak pergi, melalui kenangan demi kenangan masa lalu, pertarungan hidup-mati, untuk memutuskan ke mana langkah kaki akan dibawa. \r\nPergi', 160, 'pergi.jpg'),
-(6, 'Bajak Laut & Purnama Terakhir', 1, 'Adhitya Mulya', '9789797808754', '2017', 340, 73000, '<p>\r\n	&quot;Kita harus ganti nama bajak laut ini. Kerapu Merah itu terdengar seperti nama rumah makan, bukan perompak yang ditakuti. Siapa sih kentut yang ngasih nama itu dulu, ya?&quot; &quot;Elo, Bang.&quot; &quot;Oh, sebenarnya Kerapu Merah gak jelek-jelek amat. Cuman kurang wibawa aja dikit. Dikiiit. Dikiiiiit. Ya udah gak apa-apa, gak usah ganti nama,&quot; sahut Jaka. ------------ Jaka Kelana punya mimpi menjadi bajak laut yang disegani bersama keempat awaknya. Kenyataannya, Jaka selalu saja gagal merompak karena dia memulainya dengan terlalu sopan, seperti, &quot;Assalamualaikum, permisi, saya mau merompak, boleh?&quot; Demi mencapai impiannya dan berkat pesan dari Dewa Ganteng, Jaka pantang menyerah. Hingga suatu hari Kerapu Merah mulai beraksi dan dikejar-kejar kompeni! Dari satu pulau ke pulau lain, petualangan Kerapu Merah dimulai dan diikuti juga dengan tiga sosok misterius yang membawa pesan sakral. Sebuah petualangan bersejarah yang harus mereka selesaikan?sebelum genap purnama terakhir.</p>\r\n', 148, 'bajaklautpurnama.jpg'),
-(7, 'Ubur-Ubur Lembur', 1, 'Raditya Dika', '9789797809157', '2018', 240, 45000, '\"Hal kedua yang gue nggak sempat kasih tahu Iman: jadi orang yang dikenal publik harus tahan dengan asumsi-asumsi orang. Misalnya, orang-orang penuh dengan asumsi yang salah. Gue kurusan dikit, dikomentarin orang yang baru ketemu, \'Bang Radit, kurusan, deh. Buat film baru, ya?\' Gue geleng, \'Enggak.\' Gue bilang, \'Emang lagi diet aja.\' Dia malah balas bilang, \'Ah, bohong! Paling abis putus cinta, kan?\"\r\n\r\nGiliran gue potong rambut botak, ada orang yang ketemu gue di mall nanya, \'Wah botak sekarang? Lagi shooting Tuyul dan Mbak Yul Reborn, ya, Bang?\' Kalau udah gitu gue cuma terkekeh sambil jawab, \'Enggak, lagi cosplay jadi kacang Sukro, nih.\' \r\n\r\n*****\r\n\r\nUbur-ubur Lembur adalah buku komedi Raditya Dika. Bercerita tentang pengalamannya belajar hidup dari apa yang dia cintai, sambil menemukan hal remeh untuk ditertawakan di sepanjang perjalanan.\r\n\r\nSeluruh bab di dalamnya diangkat dari kisah nyata.', 182, 'uburlembur.jpg'),
-(8, 'Para Penjahat dan Kesunyiannya Masing-Masing', 1, 'Eko Triono', '9786020383156', '2018', 300, 70000, 'Parta Gamin Gesit menerbangkan jiwa-jiwa manusia dan binatang ke arah bintang-bintang setelah membakar semak liar pada rembang Kamis petang. Asapnya menyebar bersama angin muson timur dan membuat panik mereka yang menghirupnya. Tetangga dan binatang berusaha mencari pegangan agar jiwa-jiwa mereka tidak melesat ke arah bintang-bintang.\r\n\r\nNamun, meski telah membakar habis semak-semak itu, Parta Gamin hanyalah orang biasa yang tak pernah tahu masa depan; bahwa kelak, anaknya, yang sekarang baru berupa gumpalan darah, akan menanam kembali semak liar berasap itu dan menjadi terkenal karenanya. Nama anaknya bahkan dihafal oleh sebelas anjing lapar, sebelum akhirnya diberi gelar kehormatan \"Penjahat Nasional\" pada Hari Anti Jahat Nasional.', 143, 'penjahatdankesunyiannya.jpg'),
-(9, 'Gadis Roma Yang Hilang', 1, 'Donato Carrisi', '9786029193794', '2016', 564, 70000, 'Seorang gadis muda hilang secara misterius di Roma. Di kala hujan lembut turun membasahi jalan-jalan kuno di kota itu, dua orang, Clemente dan Marcus, duduk di sebuah kafe dekat Piazza Navona sembari mendalami kasus ini dengan seksama. Mereka adalah anggota Penitenzeri kuno, sebuah tim unik Italia yang terhubung dengan Vatikan dan dilatih secara khusus untuk urusan deteksi kejahatan misterius.\r\n\r\nMereka tak sendirian. Sandra, ahli forensik brilian dengan masa lalu yang tragis, juga bekerja pada kasus ini. Ketika satu bagian penyelidikan mempertemukan mereka, kerja brilian mereka tidak hanya menghasilkan titik terang untuk kasus gadis yang hilang, tetapi juga menyingkap tabir dunia misterius mengerikan yang tersembunyi di relung gelap kota Roma. Sebuah dunia yang begitu sempurna bagi kejahatan...\r\n\r\nDi persembahkan oleh penulis laris dunia, inilah thriller memukau yang menawarkan jendela pengetahuan menuju dunia tersembunyi kota Roma. Sebuah karya sastra berbobot yang begitu indah menghadirkan suasana kota tua dalam halaman demi halaman, dengan plot bolak-balik yang sungguh ciamik, dan dilengkapi fakta sejarah yang mencengangkan.', 284, 'gryh.jpg'),
-(10, 'Sepatu Orang Lain', 1, 'Mia Saadah', '9786026475688', '2017', 200, 64000, '\"Karena hidup adalah sepenuhnya tentang mendengar, belajar, dan memahami.\"\r\n\r\nBagaimana jika hidup ternyata memang cuma sebentar, apakah kau akan memilih mengisinya dengan keluh atau memilih menghabiskannya dengan syukur yang penuh?\r\n\r\nApa itu definisi hidup bahagia? Bagaimana mengukurnya, karena bukankah kadar bahagia tiap orang itu sangat berbeda? Lalu, mengapa kita masih saja sering kali mengukur kaki sendiri dalam sepatu orang lain?\r\n\r\nPilih perjalananmu, jangan lihat langkah orang lain. Karena meski bahagia itu relatif, hanya diri kita sendirilah yang menentukan kapan dan bagaimana ia menjelma.\r\n\r\nMaka, sesulit apa pun hari ini, sepekat apa pun besok hari, yakinlah Allah selalu bersamamu dan kau tidak pernah berjalan sendiri.\r\n\r\nSepatu Orang Lain adalah semangkuk bakso di hari yang hujan. Segelas cokelat panas pada sebuah malam yang penuh lelah. Kau bisa memilah membaca kisahnya satu-satu, semuanya akan menghangatkan hatimu.\r\n', 114, 'sol.jpg'),
-(11, 'Ceros dan Batozar', 1, 'Tere Liye', '9786020385914', '2018', 376, 79000, 'Awalnya kami hanya mengikuti karyawisata biasa seperti murid-murid sekolah lain. Hingga Ali, dengan kegeniusan dan keisengannya, memutuskan menyelidiki sebuah ruangan kuno. Kami tiba di bagian dunia paralel lainnya, menemui petarung kuat, mendapat kekuatan baru serta teknik-teknik menakjubkan.\r\n\r\nDunia paralel ternyata sangat luas, dengan begitu banyak orang hebat di dalamnya. Kisah ini tentang petualangan tiga sahabat. Raib bisa menghilang. Seli bisa mengeluarkan petir. Dan Ali bisa melakukan apa saja. CEROS DAN BATOZAR adalah buku ke-4,5 dari serial BUMI', 140, 'cerosbatozar.jpg'),
-(12, 'Halo', 1, 'Halo Bandung', '9893028728', '2018', 342, 55000, '', 199, '5c532-uas_sem6.jpg');
+INSERT INTO `buku` (`id_buku`, `nama_buku`, `id_penerbit`, `penulis`, `isbn`, `tanggal_terbit`, `tahun_terbit`, `banyak_halaman`, `modal`, `keterangan`, `stok`, `cover`) VALUES
+(1, 'Tiga Dunia: Si Pencuri', 1, 'Rama Nugraha', '9786025469336', '2018-02-14 14:31:26', 2018, 588, 55000, 'Ini kisah tentang Neena, manusia yang bisa bernapas di dalam air.\r\nDatan Woudward berumur 7 tahun ketika dirinya bertemu Ana. Sosok yang kemunculannya seketika merobohkan seluruh pengunjung pasar malam. Ana ternyata seorang Royan. Pencuri dan pembunuh elit dunia. Datan menyimpan obsesi sejak pertemuan itu. Dia ingin bertemu lagi dengan Ana, dan bercita-cita menjadi Royan. Ayah menentang sengit.\r\n\r\nDi usia ke-22, Datan memilih meninggalkan rumah dan bergabung dengan Persaudaraan Royan. Dia mengemban tugas pertama mencuri Permata Zu yang misterius, dan membuatnya bertemu Nymeria. Nymeria mencengkeram kebebasan Datan. Dia menginginkan sesuatu dari Datan.\r\n\r\nNymeria merampas hal paling berharga yang pernah Datan miliki.', 100, 'tigadunia.jpg'),
+(2, 'Koin Terakhir', 1, 'Yogie Nugraha', '9786022121212', '2013-07-14 14:31:26', 2013, 243, 70000, 'Sebuah data rahasia milik pemerintah yang disimpan dalam koin berongga dicuri dari Lembaga Sandi Negara. Keamanan nasional terancam hancur jika data itu disebarluaskan. Badan Intelijen Negara pun turun tangan. Mereka menugaskan Zen, agen terbaik BIN, untuk menuntaskan kasus ini.\r\n\r\nLokasi koin terdeteksi, target pun terkunci. Penugasan yang terdengar sederhana menjelma malapetaka tak terduga, membawa Zen melintasi berbagai negara Eropa, bahkan mengancam nyawanya. Waktu semakin menghimpit, Zen harus bergegas menuntaskan misinya ? hanya untuk menemukan bahwa ia berada tepat di tengah konspirasi sebuah organisasi rahasia.\r\n\r\nDi tengah gejolak politik dan ekonomi global yang berkecamuk, sebuah skenario besar telah disiapkan. Bangsa ini tersingkir menjadi orang asing di negeri sendiri. Ketika politik menjadi serupa perang tanpa peluru, batas antara kawan dan lawan semakin membingungkan. Zen pun akhirnya harus mempertanyakan, siapa sebenarnya musuh mereka?', 150, 'kointerakhir.jpeg'),
+(3, 'Konspirasi Romawi', 1, 'Richard Blake', '9786029193558', '2014-11-14 14:31:26', 2014, 562, 65000, '609 M. Imperium Romawi penuh kecamuk perang, wabah penyakit, dan perebutan kekuasaan internal antara kaisar, bangsawan, dan gereja. Akhirnya, kota Roma jatuh dalam kehancuran. Kotoran dan puing memblokir jalanan. Para pembunuh berkeliaran pada malam hari. Jauh di Konstantinopel, sang Kaisar memiliki banyak masalah. Gereja, institusi sakral yang dibiarkan utuh, bahkan berbalik melemahkan kekaisaran.\r\n\r\nDalam kekacauan itulah Briton Aelric?muda dan cantik, heorik, dan haus pengetahuan akan dunia sekelilingnya yang tengah sekarat?terjerumus. Ayahnya terbunuh, warisannya dicuri, dan dia secara paksa dipisahkan dari kekasihnya?dan kini dia bertekad untuk merebut kembali kebahagiaannya yang telah sirna. Namun, karena kenaifan dan ambisinya, dia tanpa sadar terlibat dalam plot sesat yang berakibat pada penipuan, pengkhianatan, dan pembunuhan terhadapnya. Akankah dia bertahan hidup?\r\n\r\nInilah novel yang sangat memukau, sebuah thriller sejarah yang memperkenalkan cerita baru anti-kepahlawanan yang sangat memikat. Novel petualangan ini akan membawa pembaca kembali ke salah satu periode sejarah paling gelap dan paling terkenal.', 139, 'konspirasiromawi.jpg'),
+(4, 'Komet', 1, 'Tere Liye', '9786020385938', '2018-05-04 14:31:26', 2018, 384, 69000, 'Setelah \"musuh besar\" kami lolos, dunia paralel dalam situasi genting. Hanya soal waktu, pertempuran besar akan terjadi. Bagaimana jika ribuan petarung yang bisa menghilang, mengeluarkan petir, termasuk teknologi maju lainnya muncul di permukaan Bumi? Tidak ada yang bisa membayangkan kekacauan yang akan terjadi. Situasi menjadi lebih rumit lagi saat Ali, pada detik terakhir, melompat ke portal menuju Klan Komet. Kami bertiga tersesat di klan asing untuk mencari pusaka paling hebat di dunia paralel.\r\n\r\nBuku ini berkisah tentang petualangan tiga sahabat. Raib bisa menghilang. Seli bisa mengeluarkan petir. Dan Ali bisa melakukan apa saja. Buku ini juga berkisah tentang persahabatan yang mengharukan, pengorbanan yang tulus, keberanian, dan selalu berbuat baik. Karena sejatinya, itulah kekuatan terbesar di dunia paralel.', 128, 'komet.jpg'),
+(5, 'Pergi', 1, 'Tere Liye', '9786025734052', '2018-04-14 14:31:26', 2018, 459, 57000, 'Sebuah kisah tentang menemukan tujuan, ke mana hendak pergi, melalui kenangan demi kenangan masa lalu, pertarungan hidup-mati, untuk memutuskan ke mana langkah kaki akan dibawa. \r\nPergi', 160, 'pergi.jpg'),
+(6, 'Bajak Laut & Purnama Terakhir', 1, 'Adhitya Mulya', '9789797808754', '2016-12-14 14:31:26', 2016, 340, 73000, '<p>\r\n	&quot;Kita harus ganti nama bajak laut ini. Kerapu Merah itu terdengar seperti nama rumah makan, bukan perompak yang ditakuti. Siapa sih kentut yang ngasih nama itu dulu, ya?&quot; &quot;Elo, Bang.&quot; &quot;Oh, sebenarnya Kerapu Merah gak jelek-jelek amat. Cuman kurang wibawa aja dikit. Dikiiit. Dikiiiiit. Ya udah gak apa-apa, gak usah ganti nama,&quot; sahut Jaka. ------------ Jaka Kelana punya mimpi menjadi bajak laut yang disegani bersama keempat awaknya. Kenyataannya, Jaka selalu saja gagal merompak karena dia memulainya dengan terlalu sopan, seperti, &quot;Assalamualaikum, permisi, saya mau merompak, boleh?&quot; Demi mencapai impiannya dan berkat pesan dari Dewa Ganteng, Jaka pantang menyerah. Hingga suatu hari Kerapu Merah mulai beraksi dan dikejar-kejar kompeni! Dari satu pulau ke pulau lain, petualangan Kerapu Merah dimulai dan diikuti juga dengan tiga sosok misterius yang membawa pesan sakral. Sebuah petualangan bersejarah yang harus mereka selesaikan?sebelum genap purnama terakhir.</p>\r\n', 149, 'bajaklautpurnama.jpg'),
+(7, 'Ubur-Ubur Lembur', 1, 'Raditya Dika', '9789797809157', '2018-02-14 14:31:26', 2018, 240, 45000, '\"Hal kedua yang gue nggak sempat kasih tahu Iman: jadi orang yang dikenal publik harus tahan dengan asumsi-asumsi orang. Misalnya, orang-orang penuh dengan asumsi yang salah. Gue kurusan dikit, dikomentarin orang yang baru ketemu, \'Bang Radit, kurusan, deh. Buat film baru, ya?\' Gue geleng, \'Enggak.\' Gue bilang, \'Emang lagi diet aja.\' Dia malah balas bilang, \'Ah, bohong! Paling abis putus cinta, kan?\"\r\n\r\nGiliran gue potong rambut botak, ada orang yang ketemu gue di mall nanya, \'Wah botak sekarang? Lagi shooting Tuyul dan Mbak Yul Reborn, ya, Bang?\' Kalau udah gitu gue cuma terkekeh sambil jawab, \'Enggak, lagi cosplay jadi kacang Sukro, nih.\' \r\n\r\n*****\r\n\r\nUbur-ubur Lembur adalah buku komedi Raditya Dika. Bercerita tentang pengalamannya belajar hidup dari apa yang dia cintai, sambil menemukan hal remeh untuk ditertawakan di sepanjang perjalanan.\r\n\r\nSeluruh bab di dalamnya diangkat dari kisah nyata.', 182, 'uburlembur.jpg'),
+(8, 'Para Penjahat dan Kesunyiannya Masing-Masing', 1, 'Eko Triono', '9786020383156', '2018-05-01 02:31:26', 2018, 300, 70000, 'Parta Gamin Gesit menerbangkan jiwa-jiwa manusia dan binatang ke arah bintang-bintang setelah membakar semak liar pada rembang Kamis petang. Asapnya menyebar bersama angin muson timur dan membuat panik mereka yang menghirupnya. Tetangga dan binatang berusaha mencari pegangan agar jiwa-jiwa mereka tidak melesat ke arah bintang-bintang.\r\n\r\nNamun, meski telah membakar habis semak-semak itu, Parta Gamin hanyalah orang biasa yang tak pernah tahu masa depan; bahwa kelak, anaknya, yang sekarang baru berupa gumpalan darah, akan menanam kembali semak liar berasap itu dan menjadi terkenal karenanya. Nama anaknya bahkan dihafal oleh sebelas anjing lapar, sebelum akhirnya diberi gelar kehormatan \"Penjahat Nasional\" pada Hari Anti Jahat Nasional.', 143, 'penjahatdankesunyiannya.jpg'),
+(9, 'Gadis Roma Yang Hilang', 1, 'Donato Carrisi', '9786029193794', '2018-01-14 14:31:26', 2016, 564, 70000, 'Seorang gadis muda hilang secara misterius di Roma. Di kala hujan lembut turun membasahi jalan-jalan kuno di kota itu, dua orang, Clemente dan Marcus, duduk di sebuah kafe dekat Piazza Navona sembari mendalami kasus ini dengan seksama. Mereka adalah anggota Penitenzeri kuno, sebuah tim unik Italia yang terhubung dengan Vatikan dan dilatih secara khusus untuk urusan deteksi kejahatan misterius.\r\n\r\nMereka tak sendirian. Sandra, ahli forensik brilian dengan masa lalu yang tragis, juga bekerja pada kasus ini. Ketika satu bagian penyelidikan mempertemukan mereka, kerja brilian mereka tidak hanya menghasilkan titik terang untuk kasus gadis yang hilang, tetapi juga menyingkap tabir dunia misterius mengerikan yang tersembunyi di relung gelap kota Roma. Sebuah dunia yang begitu sempurna bagi kejahatan...\r\n\r\nDi persembahkan oleh penulis laris dunia, inilah thriller memukau yang menawarkan jendela pengetahuan menuju dunia tersembunyi kota Roma. Sebuah karya sastra berbobot yang begitu indah menghadirkan suasana kota tua dalam halaman demi halaman, dengan plot bolak-balik yang sungguh ciamik, dan dilengkapi fakta sejarah yang mencengangkan.', 284, 'gryh.jpg'),
+(10, 'Sepatu Orang Lain', 1, 'Mia Saadah', '9786026475688', '2017-09-14 14:31:26', 2017, 200, 64000, '\"Karena hidup adalah sepenuhnya tentang mendengar, belajar, dan memahami.\"\r\n\r\nBagaimana jika hidup ternyata memang cuma sebentar, apakah kau akan memilih mengisinya dengan keluh atau memilih menghabiskannya dengan syukur yang penuh?\r\n\r\nApa itu definisi hidup bahagia? Bagaimana mengukurnya, karena bukankah kadar bahagia tiap orang itu sangat berbeda? Lalu, mengapa kita masih saja sering kali mengukur kaki sendiri dalam sepatu orang lain?\r\n\r\nPilih perjalananmu, jangan lihat langkah orang lain. Karena meski bahagia itu relatif, hanya diri kita sendirilah yang menentukan kapan dan bagaimana ia menjelma.\r\n\r\nMaka, sesulit apa pun hari ini, sepekat apa pun besok hari, yakinlah Allah selalu bersamamu dan kau tidak pernah berjalan sendiri.\r\n\r\nSepatu Orang Lain adalah semangkuk bakso di hari yang hujan. Segelas cokelat panas pada sebuah malam yang penuh lelah. Kau bisa memilah membaca kisahnya satu-satu, semuanya akan menghangatkan hatimu.\r\n', 114, 'sol.jpg'),
+(11, 'Ceros dan Batozar', 1, 'Tere Liye', '9786020385914', '2018-06-14 14:31:26', 2018, 376, 79000, 'Awalnya kami hanya mengikuti karyawisata biasa seperti murid-murid sekolah lain. Hingga Ali, dengan kegeniusan dan keisengannya, memutuskan menyelidiki sebuah ruangan kuno. Kami tiba di bagian dunia paralel lainnya, menemui petarung kuat, mendapat kekuatan baru serta teknik-teknik menakjubkan.\r\n\r\nDunia paralel ternyata sangat luas, dengan begitu banyak orang hebat di dalamnya. Kisah ini tentang petualangan tiga sahabat. Raib bisa menghilang. Seli bisa mengeluarkan petir. Dan Ali bisa melakukan apa saja. CEROS DAN BATOZAR adalah buku ke-4,5 dari serial BUMI', 140, 'cerosbatozar.jpg'),
+(13, 'Semangat', 1, 'Andy Sanjaya', '9020182749031', '2018-06-14 16:59:43', 2018, 345, 56000, '<p>\r\n	Kisah seorang anak perempuan bernama Sarah yang menempuh banyak perjuangan dalam hidupnya.&nbsp;</p>\r\n<p>\r\n	Dapatkah Sarah tetap semangat dalam mencapai impiannya?</p>\r\n', 368, '9c61b-004.jpg');
 
 -- --------------------------------------------------------
 
@@ -137,7 +138,20 @@ INSERT INTO `detail_transaksi` (`id_transaksi`, `id_buku`, `quantity`, `harga_sa
 (27, 4, 1, 79000),
 (28, 3, 3, 75000),
 (28, 6, 1, 83000),
-(28, 10, 2, 74000);
+(28, 10, 2, 74000),
+(29, 4, 3, 79000),
+(29, 8, 1, 80000),
+(29, 9, 1, 80000),
+(30, 3, 3, 75000),
+(30, 10, 2, 74000),
+(31, 4, 1, 79000),
+(31, 5, 2, 67000),
+(31, 1, 1, 65000),
+(32, 3, 3, 75000),
+(32, 11, 2, 89000),
+(33, 3, 3, 75000),
+(33, 10, 2, 74000),
+(33, 1, 1, 79000);
 
 -- --------------------------------------------------------
 
@@ -228,7 +242,7 @@ INSERT INTO `histori_pengiriman` (`id_histori`, `id_penerbit`, `id_toko`, `id_bu
 (5, 1, 1, 5, 30, '2018-04-29 15:00:00'),
 (6, 1, 1, 6, 30, '2018-04-29 15:00:00'),
 (7, 1, 1, 7, 30, '2018-04-29 15:00:00'),
-(8, 1, 1, 8, 30, '2018-04-29 15:00:00'),
+(8, 1, 1, 8, 30, '2018-05-01 15:00:00'),
 (9, 1, 1, 9, 30, '2018-04-29 15:00:00'),
 (10, 1, 1, 10, 30, '2018-04-29 15:00:00'),
 (11, 1, 2, 1, 30, '2018-04-29 15:00:00'),
@@ -238,9 +252,14 @@ INSERT INTO `histori_pengiriman` (`id_histori`, `id_penerbit`, `id_toko`, `id_bu
 (15, 1, 2, 5, 30, '2018-04-29 15:00:00'),
 (16, 1, 2, 6, 30, '2018-04-29 15:00:00'),
 (17, 1, 2, 7, 30, '2018-04-29 15:00:00'),
-(18, 1, 2, 8, 30, '2018-04-29 15:00:00'),
+(18, 1, 2, 8, 30, '2018-05-01 15:00:00'),
 (19, 1, 2, 9, 30, '2018-04-29 15:00:00'),
-(20, 1, 2, 10, 30, '2018-04-29 15:00:00');
+(20, 1, 2, 10, 30, '2018-04-29 15:00:00'),
+(21, 1, 2, 11, 30, '2018-05-05 15:00:00'),
+(22, 1, 1, 11, 30, '2018-05-05 15:00:00'),
+(23, 1, 2, 13, 30, '2018-05-05 15:00:00'),
+(24, 1, 1, 13, 30, '2018-05-05 15:00:00'),
+(25, 1, 1, 4, 30, '2018-06-11 11:35:50');
 
 -- --------------------------------------------------------
 
@@ -250,13 +269,21 @@ INSERT INTO `histori_pengiriman` (`id_histori`, `id_penerbit`, `id_toko`, `id_bu
 
 CREATE TABLE `notif` (
   `id_notif` int(11) NOT NULL,
-  `notf_msg` text NOT NULL,
-  `notif_time` datetime DEFAULT NULL,
-  `publish_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `notif_subject` varchar(200) NOT NULL,
+  `notif_msg` text NOT NULL,
+  `notif_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_sender` int(11) NOT NULL,
   `id_receiver` int(11) NOT NULL,
-  `flag` tinyint(1) NOT NULL
+  `flag` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `notif`
+--
+
+INSERT INTO `notif` (`id_notif`, `notif_subject`, `notif_msg`, `notif_time`, `id_sender`, `id_receiver`, `flag`) VALUES
+(1, 'Your Book Stock is Below The Minimum Inventory', 'Do you mind if I send 30 books titled \"Komet\"?', '2018-06-11 04:34:35', 1, 2, 1),
+(2, 'Your Book Stock is Below The Minimum Inventory', 'Do you mind if I send 30 books titled \"Konspirasi Romawi\"?', '2018-06-12 02:23:25', 1, 4, 2);
 
 -- --------------------------------------------------------
 
@@ -318,26 +345,28 @@ CREATE TABLE `stok_toko` (
 --
 
 INSERT INTO `stok_toko` (`id_toko`, `id_buku`, `stok`, `harga_jual`) VALUES
-(1, 1, 30, 65000),
+(1, 1, 29, 65000),
 (1, 3, 16, 75000),
-(1, 4, 14, 79000),
-(1, 5, 25, 67000),
+(1, 4, 40, 79000),
+(1, 5, 23, 67000),
 (1, 7, 20, 55000),
-(1, 8, 26, 80000),
-(1, 9, 29, 80000),
+(1, 8, 25, 80000),
+(1, 9, 28, 80000),
 (1, 10, 25, 74000),
 (2, 1, 26, 65000),
-(2, 3, 18, 75000),
+(2, 3, 9, 75000),
 (2, 4, 22, 79000),
 (2, 5, 28, 67000),
 (2, 7, 29, 55000),
 (2, 8, 24, 80000),
 (2, 9, 29, 80000),
-(2, 10, 28, 74000),
+(2, 10, 26, 74000),
 (1, 2, 26, 80000),
-(1, 6, 29, 83000),
 (2, 2, 29, 80000),
-(2, 6, 28, 83000);
+(1, 11, 30, 89000),
+(1, 13, 30, 66000),
+(2, 11, 28, 89000),
+(2, 13, 30, 66000);
 
 -- --------------------------------------------------------
 
@@ -397,34 +426,39 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`id_transaksi`, `id_toko`, `tanggal`, `harga_total`) VALUES
-(1, 2, '2018-05-01 10:45:35', 140000),
-(2, 1, '2018-05-01 10:51:40', 217000),
-(3, 1, '2018-05-01 14:57:23', 80000),
-(4, 1, '2018-05-02 09:35:53', 184000),
-(5, 1, '2018-05-02 09:54:01', 318000),
-(6, 2, '2018-05-02 10:45:00', 140000),
-(7, 1, '2018-05-03 09:53:00', 217000),
-(8, 1, '2018-05-03 11:43:54', 80000),
-(9, 1, '2018-05-04 15:34:32', 184000),
-(10, 2, '2018-06-04 16:23:23', 318000),
-(11, 2, '2018-05-05 10:45:35', 140000),
-(12, 1, '2018-05-05 10:51:40', 217000),
-(13, 1, '2018-05-06 14:57:23', 80000),
-(14, 1, '2018-05-06 16:35:53', 184000),
-(15, 1, '2018-05-07 09:54:01', 318000),
-(16, 2, '2018-06-07 10:45:00', 140000),
-(17, 1, '2018-06-07 14:53:00', 217000),
-(18, 1, '2018-06-08 11:43:54', 80000),
-(19, 1, '2018-06-08 15:34:32', 184000),
-(20, 2, '2018-06-08 16:23:23', 318000),
-(21, 2, '2018-06-10 10:12:00', 147000),
-(22, 1, '2018-06-10 15:53:23', 379000),
-(23, 2, '2018-06-10 16:33:54', 454000),
-(24, 1, '2018-06-11 15:34:32', 184000),
-(25, 2, '2018-06-11 16:23:23', 318000),
-(26, 2, '2018-06-12 10:33:54', 364000),
-(27, 1, '2018-06-12 15:34:32', 459000),
-(28, 2, '2018-06-12 16:23:23', 456000);
+(1, 2, '2018-05-11 10:45:35', 140000),
+(2, 1, '2018-05-11 10:51:40', 217000),
+(3, 1, '2018-05-11 14:57:23', 80000),
+(4, 1, '2018-05-12 09:35:53', 184000),
+(5, 1, '2018-05-12 09:54:01', 318000),
+(6, 2, '2018-05-12 10:45:00', 140000),
+(7, 1, '2018-05-13 09:53:00', 217000),
+(8, 1, '2018-05-13 11:43:54', 80000),
+(9, 1, '2018-05-14 15:34:32', 184000),
+(10, 2, '2018-06-01 16:23:23', 318000),
+(11, 2, '2018-05-15 10:45:35', 140000),
+(12, 1, '2018-05-15 10:51:40', 217000),
+(13, 1, '2018-05-16 14:57:23', 80000),
+(14, 1, '2018-05-16 16:35:53', 184000),
+(15, 1, '2018-05-17 09:54:01', 318000),
+(16, 2, '2018-06-04 10:45:00', 140000),
+(17, 1, '2018-06-04 14:53:00', 217000),
+(18, 1, '2018-06-05 11:43:54', 80000),
+(19, 1, '2018-06-05 15:34:32', 184000),
+(20, 2, '2018-06-05 16:23:23', 318000),
+(21, 2, '2018-06-07 10:12:00', 147000),
+(22, 1, '2018-06-07 15:53:23', 379000),
+(23, 2, '2018-06-07 16:33:54', 454000),
+(24, 1, '2018-06-08 15:34:32', 184000),
+(25, 2, '2018-06-08 16:23:23', 318000),
+(26, 2, '2018-06-09 10:33:54', 364000),
+(27, 1, '2018-06-09 15:34:32', 459000),
+(28, 2, '2018-06-09 16:23:23', 456000),
+(29, 1, '2018-06-10 10:25:43', 397000),
+(30, 2, '2018-06-10 13:54:54', 373000),
+(31, 1, '2018-06-11 11:34:32', 278000),
+(32, 2, '2018-06-11 15:23:23', 403000),
+(33, 2, '2018-06-12 09:23:23', 452000);
 
 -- --------------------------------------------------------
 
@@ -437,7 +471,7 @@ CREATE TABLE `users` (
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(200) DEFAULT NULL,
   `salt` int(11) NOT NULL,
-  `foto` varchar(100) NOT NULL,
+  `foto` varchar(100) DEFAULT NULL,
   `peran` int(11) NOT NULL,
   `id_toko` int(11) DEFAULT NULL,
   `ip_addr` varchar(20) DEFAULT NULL
@@ -448,11 +482,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `username`, `password`, `salt`, `foto`, `peran`, `id_toko`, `ip_addr`) VALUES
-(1, 'Anthony', '$2y$10$PzVqMHRPbbsNAiZyCtwgFexMCNW7tXbVseZlrZDrLAOMIxQbo9XaG', 1234, '', 1, 1, '192.168.56.1'),
-(2, 'Octavany', '$2y$10$xfSLm9K1iqkwjHcAcGG5aOSkmzlbpcE2PCmt5rKnxIN94CazRG7ae', 4321, '', 2, 1, '192.168.0.22'),
-(3, 'Indra', '$2y$10$gjLbzFOxXv3ItdKPWSffxOes57cWPrAWdAf0bAJY.QbHZDpZEiXNW', 1024, '', 3, 1, '192.168.0.11'),
-(4, 'Alvin', '$2y$10$/Nx7yeaHMqPIUoA3cw1ZkuTDa96azdjpOklFP3ymRr8yIGN2yxv26', 1245, '', 2, 2, '192.168.0.10'),
-(5, 'AnthonyAnt', 'anthonyant123', 5483, '', 3, 2, '192.168.0.22');
+(1, 'Anthony', '$2y$10$PzVqMHRPbbsNAiZyCtwgFexMCNW7tXbVseZlrZDrLAOMIxQbo9XaG', 1234, NULL, 1, 1, '192.168.56.1'),
+(2, 'Octavany', '$2y$10$xfSLm9K1iqkwjHcAcGG5aOSkmzlbpcE2PCmt5rKnxIN94CazRG7ae', 4321, NULL, 2, 1, '192.168.0.22'),
+(3, 'Indra', '$2y$10$gjLbzFOxXv3ItdKPWSffxOes57cWPrAWdAf0bAJY.QbHZDpZEiXNW', 1024, NULL, 3, 1, '192.168.0.11'),
+(4, 'Alvin', '$2y$10$/Nx7yeaHMqPIUoA3cw1ZkuTDa96azdjpOklFP3ymRr8yIGN2yxv26', 1245, NULL, 2, 2, '192.168.0.10'),
+(5, 'AnthonyAnt', 'anthonyant123', 5483, NULL, 3, 2, '192.168.0.22');
 
 --
 -- Indexes for dumped tables
@@ -567,12 +601,12 @@ ALTER TABLE `genre`
 -- AUTO_INCREMENT for table `histori_pengiriman`
 --
 ALTER TABLE `histori_pengiriman`
-  MODIFY `id_histori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_histori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `notif`
 --
 ALTER TABLE `notif`
-  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `penerbit`
 --
@@ -597,7 +631,7 @@ ALTER TABLE `toko`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `users`
 --

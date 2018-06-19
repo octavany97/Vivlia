@@ -62,6 +62,8 @@ class AdminController extends CI_Controller {
 			$dtstock['stocks'] = $this->AdminModel->getBookStock();
 		}
 
+		$dtmbs['booksent'] = $this->AdminModel->getMostBookSent();
+		$dtbs['bestseller'] = $this->AdminModel->getBestSeller();
 		
 		//masukkin isi ke $data utk dikirim ke page/home
 		$data['bookid'] = $bookid;
@@ -77,6 +79,10 @@ class AdminController extends CI_Controller {
 		$data['storechart'] = $this->load->view('page/admin/storechart', $dtstore, TRUE);
 
 		$data['stockchart'] = $this->load->view('page/admin/stockchart', $dtstock, TRUE);
+
+		$data['booksentpanel'] = $this->load->view('page/admin/booksent', $dtmbs, TRUE);
+
+		$data['bestsellerbook'] = $this->load->view('page/admin/bestseller', $dtbs, TRUE);
 
 		$data['notifpanel'] = $this->load->view('page/notifpanel', NULL, TRUE);
 		
@@ -160,6 +166,43 @@ class AdminController extends CI_Controller {
 		$this->load->view('page/products', $data);
 	}
 	
+	public function notifications(){
+		if(isset($_POST['id_penerbit'])){
+			$id = $_POST['id_penerbit'];
+		}
+		else $id = 1;
+		if(isset($_POST['id_notif'])){
+			$id_notif = $_POST['id_notif'];
+		}
+		else $id_notif = 0;
+
+		$data = [];
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
+		$dtdetail['detail'] = $this->AdminModel->getNotifDetail($id_notif);
+
+		$data['listnotif'] = $this->load->view('page/admin/listnotification', $dtlist, TRUE);
+
+		$data['notifdetail'] = $this->load->view('page/admin/detailnotif', $dtdetail, TRUE);
+
+		$this->load->view('page/notification', $data);
+	}
+	public function changeNotifDetail(){
+		$data = [];
+		
+		if(isset($_POST['id_notif'])){
+			$id_notif = $_POST['id_notif'];
+		}
+		else $id_notif = 0;
+		
+		$dtdetail['detail'] = $this->AdminModel->getNotifDetail($id_notif);
+		
+		$this->load->view('page/admin/detailnotif', $dtdetail);
+	}
 	public function tes()
 	{
 		//$data buat kirim ke home.php

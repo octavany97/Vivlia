@@ -6,9 +6,10 @@
 	<?php echo $js; ?>
 </head>
 <body>
-	<?php echo $header; ?>
-	<?php echo $menuheader; ?>
-	<?php echo $sidebar; ?>
-</nav>
+	<?php echo $header;
+	echo $menuheader;
+	echo $sidebar;
+	?>
+	</nav>
 </body>
 </html>

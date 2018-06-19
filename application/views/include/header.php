@@ -17,7 +17,7 @@
                             echo base_url().'mgr/dashboard';
                         } else if ($this->session->userdata('peran') == 3) {
                             echo base_url().'csh/dashboard';
-                        }?>"><img id="logo" src="<?php echo base_url(); ?>assets/img/logo/LogoVivlia.png"></a>
+                        }?>"><img id="logo" src="<?php echo base_url(); ?>assets/uploads/logo/LogoVivlia.png"></a>
             </div>
             <!-- /.navbar-header -->         
             <!-- /.navbar-static-side -->

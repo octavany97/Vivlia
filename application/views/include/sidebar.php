@@ -4,7 +4,7 @@
             <li>
                 <div class="user-panel">
                   <div class="image">
-                    <img src="<?php echo base_url(); ?>assets/img/coba.png" class="rounded-circle" alt="User Image">
+                    <img src="<?php if($this->session->userdata('foto') == NULL){ echo base_url(); ?>assets/uploads/profiles/default.png <?php } else{ echo base_url(); ?>assets/uploads/profiles/<?php echo $this->session->userdata('username'); } ?>" style="background-color: #e7e7e7;" class="rounded-circle" alt="User Image">
                   </div>
                   <div class="info">
                     <?php $iduser = $this->session->userdata('id_user'); ?>

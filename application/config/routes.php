@@ -53,15 +53,18 @@ $route['default_controller'] = 'VivliaController';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 //route admin
+//$route['adm/(:any)'] = 'AdminController';
 $route['adm/home'] = 'AdminController/home';
 $route['adm/dashboard'] = 'AdminController/dashboard';
 $route['adm/products'] = 'AdminController/products';
+$route['adm/notifications'] = 'AdminController/notifications';
 $route['adm/products/(:any)'] = 'AdminController/products';
 $route['adm/products/(:any)/(:any)'] = 'AdminController/products';
 
 $route['adm/changeBookChart'] = 'AdminController/changeBookChart';
 $route['adm/changeStoreChart'] = 'AdminController/changeStoreChart';
 $route['adm/getBooksByGenre'] = 'AdminController/getBooksByGenre';
+$route['adm/changeNotifDetail'] = 'AdminController/changeNotifDetail';
 $route['adm/tes'] = 'AdminController/tes';
 //route cashier
 $route['csh/home'] = 'CashierController/home';
@@ -76,3 +79,5 @@ $route['mgr/products'] = 'ManagerController/products';
 $route['mgr/request_products'] = 'ManagerController/request';
 $route['mgr/products/(:any)'] = 'ManagerController/products';
 $route['mgr/products/(:any)/(:any)'] = 'ManagerController/products';
+$route['mgr/notifications'] = 'ManagerController/notifications';
+$route['mgr/changeNotifDetail'] = 'ManagerController/changeNotifDetail';

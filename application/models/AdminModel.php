@@ -30,6 +30,26 @@ class AdminModel extends CI_Model {
 		return $query->result_array();
 	}
 
+	//ambil buku yang paling banyak dikirim (secara keseluruhan)
+	public function getMostBookSent(){
+		$query = $this->db->query("SELECT b.nama_buku, SUM(hp.stok) AS total FROM histori_pengiriman hp
+			LEFT JOIN buku b ON b.id_buku = hp.id_buku
+			GROUP BY b.id_buku
+			ORDER BY total DESC
+			LIMIT 5");
+		return $query->result_array();
+	}
+	//ambil buku yang paling laku
+	public function getBestSeller(){
+		$query = $this->db->query("SELECT t.id_toko, tk.nama_toko, b.id_buku, b.nama_buku, SUM(dt.quantity) AS total 
+			FROM detail_transaksi dt, buku b,transaksi t, toko tk
+			WHERE b.id_buku = dt.id_buku AND dt.id_transaksi = t.id_transaksi AND t.id_toko = tk.id_toko
+			GROUP BY t.id_toko, dt.id_buku
+			ORDER BY total DESC
+			LIMIT 5");
+		return $query->result_array();
+	}
+
 	//ambil semua buku
 	public function getBooks(){
 		return $this->db->query("SELECT id_buku, nama_buku, stok FROM buku")->result_array();
@@ -59,6 +79,20 @@ class AdminModel extends CI_Model {
 	public function getPenerbitName($id){
 		return $this->db->query("SELECT nama_penerbit FROM penerbit WHERE id_penerbit = '$id'")->row_array();
 	}
-
+	//ambil semua notifikasi untuk admin pabrik
+	public function getAllNotif($id){
+		$query = $this->db->query("SELECT n.id_notif, n.notif_subject, n.notif_msg, TIME(n.notif_time) AS jam, DATE(n.notif_time) AS tanggal, n.notif_time,  n.id_sender, u1.username, n.id_receiver, u2.username, p.id_penerbit, p.nama_penerbit, t.id_toko, t.nama_toko, n.flag
+			FROM notif n, users u1, users u2, penerbit p, toko t
+			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u1.peran = 1 AND u1.id_toko = p.id_penerbit AND u2.id_toko = t.id_toko AND id_sender='$id'");
+		return $query->result_array();
+	}
+	
+	//ambil deskripsi notifikasi untuk ditampilin sebagai detail
+	public function getNotifDetail($id_notif){
+		$query = $this->db->query("SELECT n.id_notif, n.notif_subject, n.notif_msg, TIME(n.notif_time) AS jam, DATE(n.notif_time) AS tanggal, n.notif_time,  n.id_sender, u1.username, n.id_receiver, u2.username, p.id_penerbit, p.nama_penerbit, t.id_toko, t.nama_toko, n.flag
+			FROM notif n, users u1, users u2, penerbit p, toko t
+			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u1.id_toko = p.id_penerbit AND u2.id_toko = t.id_toko AND n.id_notif = '$id_notif'");
+		return $query->row_array();
+	}
 }
 

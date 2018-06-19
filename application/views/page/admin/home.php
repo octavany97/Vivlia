@@ -16,6 +16,8 @@
 			<div class="col-lg-12">
                 <h1 class="page-header">Dashboard | <small style="font-size: 16pt;">Latest Statistic</small></h1>
             </div>	
+            
+
 		</div>
 		<div class="row">
 			<div class="col-lg-8">
@@ -29,6 +31,12 @@
 			<div class="col-lg-8">
 				<?php echo $stockchart; ?>
 			</div>
+			<div class="col-lg-4">
+				<?php echo $booksentpanel; ?>
+            </div>
+            <div class="col-lg-4">
+				<?php echo $bestsellerbook; ?>
+            </div>
 		</div>
 		<div class="row">
 			<div class="col-lg-8">

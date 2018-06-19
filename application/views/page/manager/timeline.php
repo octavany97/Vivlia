@@ -30,21 +30,48 @@
                             <p><small class="text-muted"><i class="fa fa-clock-o"></i> 
                                 <?php
                                 $now = date('y-m-d H:i:s');
-                                
-                                $diff_time = (strtotime($now) - strtotime($row['tanggal_kirim']))/(60*60*24);
-                                if($diff_time < 1){
-                                    $diff_minute = (strtotime(date('H:i:s')) - strtotime($row['jam']))/(60);
 
-                                    if($diff_minute < 60){
-                                        echo floor($diff_minute) . " minutes ago";    
+                                $diff_time = (strtotime($now) - strtotime($row['tanggal_kirim']))/(60*60*24);
+
+                                if($diff_time > 365){
+                                //  echo (strtotime(date('y-m-d')) - strtotime($row['tanggal']))/(60*60*24*365) . " years ";
+                                    echo floor($diff_time/365) . " years ";
+                                    $diff_time -= 365;
+                                }
+                                if($diff_time > 30){
+                                    echo floor($diff_time/30) . " months ";
+                                    $diff_time -= 30;
+                                }
+                                if($diff_time >= 1){
+                                    //echo (strtotime(date('y-m-d')) - strtotime($row['tanggal']))/(60*60*24) . " days ";
+                                    echo floor($diff_time) . " days ";
+                                    $diff_time -= floor($diff_time);
+                                }
+                                if($diff_time < 1){
+                                    //$diff_minute = (strtotime(date('H:i:s')) - strtotime($row['jam']))/(60);
+                                    $diff_time *= (24*60);
+                                    if($diff_time >= 60){
+                                        echo floor($diff_time/60) . " hours ";
                                     }
                                     else{
-                                        echo floor($diff_minute/60) . " hours ago";
+                                        echo floor($diff_time) . " minutes ";
                                     }
                                 }
-                                else {
-                                    echo (strtotime(date('y-m-d')) - strtotime($row['tanggal']))/(60*60*24) . " days ago";
-                                }
+                                echo "ago\n";
+                                // $diff_time = (strtotime($now) - strtotime($row['tanggal_kirim']))/(60*60*24);
+                                // if($diff_time < 1){
+                                //     $diff_minute = (strtotime(date('H:i:s')) - strtotime($row['jam']))/(60);
+
+                                //     if($diff_minute < 60){
+                                //         echo floor($diff_minute) . " minutes ago";    
+                                //     }
+                                //     else{
+                                //         echo floor($diff_minute/60) . " hours ago";
+                                //     }
+                                // }
+                                // else {
+                                //     echo (strtotime(date('y-m-d')) - strtotime($row['tanggal']))/(60*60*24) . " days ago";
+                                // }
                                 ?>
                             </small></p>
                         </div>

@@ -32,7 +32,13 @@
             </li>
             <li class="divider"></li>
             <li>
-                <a class="text-center" href="#">
+                <a class="text-center" href="<?php if($this->session->userdata('peran') == 1){
+                            echo base_url().'adm/notifications';
+                        } else if($this->session->userdata('peran') == 2){
+                            echo base_url().'mgr/notifications';
+                        } else if ($this->session->userdata('peran') == 3) {
+                            echo base_url().'csh/notifications';
+                        }?>">
                     <strong>See All Notifications</strong>
                     <i class="fa fa-angle-right"></i>
                 </a>

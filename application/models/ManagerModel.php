@@ -28,8 +28,7 @@ class ManagerModel extends CI_Model {
 			LEFT JOIN buku b ON hp.id_buku = b.id_buku
 			LEFT JOIN toko t ON hp.id_toko = t.id_toko
             LEFT JOIN penerbit p ON hp.id_penerbit = p.id_penerbit
-			WHERE hp.id_toko = 1
-			GROUP BY hp.id_buku
+			WHERE hp.id_toko = '$storeid'
 			ORDER BY tanggal_kirim DESC");
 		return $query->result_array();
 		//SELECT nama_buku, penulis, DATE_FORMAT(tanggal_terbit, "%M") AS bulan, YEAR(tanggal_terbit) AS tahun, keterangan FROM buku ORDER BY tanggal_terbit DESC
@@ -46,5 +45,20 @@ class ManagerModel extends CI_Model {
 		);
 		*/
 		$this->db->insert('notif', $data);
+	}
+
+	//ambil semua notifikasi untuk manager
+	public function getAllNotif($id){
+		$query = $this->db->query("SELECT n.id_notif, n.notif_subject, n.notif_msg, TIME(n.notif_time) AS jam, DATE(n.notif_time) AS tanggal, n.notif_time,  n.id_sender, u1.username, n.id_receiver, u2.username, p.id_penerbit, p.nama_penerbit, t.id_toko, t.nama_toko, n.flag
+			FROM notif n, users u1, users u2, penerbit p, toko t
+			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u1.peran = 1 AND u1.id_toko = p.id_penerbit AND u2.id_toko = t.id_toko AND id_receiver='$id'");
+		return $query->result_array();
+	}
+	//ambil deskripsi notifikasi untuk ditampilin sebagai detail
+	public function getNotifDetail($id_notif){
+		$query = $this->db->query("SELECT n.id_notif, n.notif_subject, n.notif_msg, TIME(n.notif_time) AS jam, DATE(n.notif_time) AS tanggal, n.notif_time, n.id_sender, u1.username, n.id_receiver, u2.username, p.id_penerbit, p.nama_penerbit, t.id_toko, t.nama_toko, n.flag
+			FROM notif n, users u1, users u2, penerbit p, toko t
+			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u1.id_toko = p.id_penerbit AND u2.id_toko = t.id_toko AND n.id_notif = '$id_notif'");
+		return $query->row_array();
 	}
 }
