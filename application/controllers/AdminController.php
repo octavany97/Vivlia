@@ -158,7 +158,6 @@ class AdminController extends CI_Controller {
 		$crud->required_fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover');
 		$crud->set_relation_n_n('nama', 'genre_buku', 'genre', 'id_buku','id_genre','nama');
 		$crud->set_relation('id_penerbit', 'penerbit', 'nama_penerbit');
-		
 		// $crud->unset_delete(); //buat hilangin tombol delete di action
 		// $crud->unset_edit(); //buat hilangin tombol edit di action
 		$crud->unset_clone(); //buat hilangin tombol clone di action
