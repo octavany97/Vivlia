@@ -139,20 +139,31 @@ class AdminController extends CI_Controller {
 		$data = [];
 		$this->load->library('grocery_CRUD');
 		$crud = new grocery_CRUD();
+
 		$crud->set_theme('datatables');
 		$crud->set_table('buku')
-			 ->columns('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
+			 // ->columns('nama_buku','id_penerbit','nama','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
 		     ->display_as('coverlink','Cover')
-		     ->fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
+		     ->display_as('id_penerbit','Nama penerbit')
+		     ->display_as('nama','Genre')
+		     ->display_as('modal','Harga')
+		     ->display_as('isbn','ISBN')
+
+
+		     ->fields('nama_buku','id_penerbit','nama','penulis','isbn','tanggal_terbit','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
 			 ->set_field_upload('cover','assets/uploads/buku');
 			 	// ->callback_edit_field('keterangan',array($this,'edit_description'))
 			 	// ->callback_add_field('keterangan',array($this,'add_description'));
-		$crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
-		$crud->unset_columns('id_penerbit', 'keterangan', 'modal', 'nama_toko');
+		$crud->unset_columns('id_penerbit','tanggal_terbit','banyak_halaman','keterangan', 'modal');
+		$crud->required_fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover');
+		$crud->set_relation_n_n('nama', 'genre_buku', 'genre', 'id_buku','id_genre','nama');
+		$crud->set_relation('id_penerbit', 'penerbit', 'nama_penerbit');
+		
 		// $crud->unset_delete(); //buat hilangin tombol delete di action
 		// $crud->unset_edit(); //buat hilangin tombol edit di action
 		$crud->unset_clone(); //buat hilangin tombol clone di action
 		// $crud->unset_add();
+		$crud->unset_print();
 
 		$output = $crud->render();
 		$data['crud'] = get_object_vars($output);
