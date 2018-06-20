@@ -193,15 +193,20 @@ class ManagerController extends CI_Controller {
 		$this->load->library('grocery_CRUD');
 		$crud = new grocery_CRUD();
 		$crud->set_theme('datatables');
+		//$crud->where('stok_toko.id_toko', 1);
 		$crud->set_table('buku')
-			 ->columns('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
+			  ->columns('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','cover','stok_buku','harga_jual')
 		     ->display_as('coverlink','Cover')
-		     ->fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
+		     ->display_as('id_penerbit','Nama penerbit')
+		     ->fields('nama_buku','stok_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
 			 ->set_field_upload('cover','assets/uploads/buku');
 			 	// ->callback_edit_field('keterangan',array($this,'edit_description'))
 			 	// ->callback_add_field('keterangan',array($this,'add_description'));
-		$crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
-		$crud->unset_columns('id_penerbit', 'keterangan', 'modal', 'nama_toko');
+		$crud->set_relation_n_n('stok', 'stok_toko', 'buku', 'id_buku', 'id_buku', 'stok');
+		//$crud->set_relation('id_buku','stok_toko','stok_buku');
+		$crud->set_relation('id_penerbit', 'penerbit', 'nama_penerbit');
+		//$crud->set_relation('id_toko','toko','nama_toko');
+		$crud->unset_columns('stok_buku', 'keterangan', 'isbn', 'banyak_halaman', 'tahun_terbit');
 		// $crud->unset_delete(); //buat hilangin tombol delete di action
 		$crud->unset_edit(); //buat hilangin tombol edit di action
 		$crud->unset_clone(); //buat hilangin tombol clone di action
