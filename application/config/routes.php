@@ -72,6 +72,7 @@ $route['adm/tes'] = 'AdminController/tes';
 //route cashier
 $route['csh/home'] = 'CashierController/home';
 $route['csh/dashboard'] = 'CashierController/dashboard';
+$route['csh/addItem'] = 'CashierController/addItem';
 $route['csh/buy'] = 'CashierController/buy';
 $route['csh/products'] = 'CashierController/products';
 $route['csh/products/(:any)'] = 'CashierController/products';

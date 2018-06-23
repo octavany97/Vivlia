@@ -14,6 +14,15 @@ class CashierModel extends CI_Model {
 		$this->db->replace('stok_toko', $data);
 		//$this->db->query("UPDATE stok_toko SET stok = stok - 'stok' WHERE id_toko = '$id_toko' AND id_buku = '$id_buku'");
 	}
+	//ambil detail buku
+	public function getBookDetail($id){
+		$query = $this->db->query("SELECT nama_buku FROM buku WHERE id_buku = '$id'");
+		return $query->row_array();//ambil 1 baris
+	}
+	public function getPrice($id_buku, $id_toko){
+		$query = $this->db->query("SELECT harga_jual FROM stok_toko WHERE id_buku = '$id_buku' AND id_toko='$id_toko'");
+		return $query->row_array();//ambil 1 baris	
+	}
 	//ambil semua notifikasi untuk kasir
 	public function getAllNotif($id){
 		$query = $this->db->query("SELECT n.id_notif, n.notif_subject, n.notif_msg, TIME(n.notif_time) AS jam, DATE_FORMAT(n.notif_time, '%Y %M %d') AS tanggal, n.notif_time,  n.id_sender, u1.username AS user1, u1.foto, n.id_receiver, u2.username AS user2, p.id_penerbit, p.nama_penerbit, p.email AS email2, t.id_toko, t.nama_toko, t.email AS email1, n.flag
