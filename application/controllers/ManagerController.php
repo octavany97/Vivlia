@@ -11,6 +11,7 @@ class ManagerController extends CI_Controller {
 		
 		$this->load->model('CashierModel');*/
 		$this->load->library('session');
+		$this->load->library('email');
 	}
 	/**
 	 * Index Page for this controller.
@@ -83,12 +84,13 @@ class ManagerController extends CI_Controller {
 		// $data['bookid'] = $bookid;
 		// $data['barchart'] = $this->AdminModel->salesPerBook(1);
 		// $data['stores'] = $this->AdminModel->getStores();
-
+		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
 		$dttimeline['histori'] = $this->ManagerModel->getBooksTimeline($storeid);
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		$data['timeline'] = $this->load->view('page/manager/timeline', $dttimeline, TRUE);
 		// $data['bookchart'] = $this->load->view('page/admin/bookchart',$dtbook, TRUE);
@@ -143,28 +145,31 @@ class ManagerController extends CI_Controller {
 
 	//untuk form request buku
 	public function request(){
+		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 
 		$this->load->view('page/formRequestProduct', $data);
 	}
 	//notifikasi
 	public function notifications(){
-		if(isset($_POST['id_notif'])){
-			$id_notif = $_POST['id_notif'];
+		if($this->uri->segment('3') != NULL){
+			$id_notif = $this->uri->segment('3');
 		}
 		else $id_notif = 0;
 		
 		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
 		$dtdetail['detail'] = $this->ManagerModel->getNotifDetail($id_notif);
@@ -173,7 +178,12 @@ class ManagerController extends CI_Controller {
 
 		$data['notifdetail'] = $this->load->view('page/manager/detailnotif', $dtdetail, TRUE);
 
-		$this->load->view('page/notification', $data);
+		if($this->uri->segment('3') == NULL){
+			$this->load->view('page/notification', $data);
+		}
+		else{
+			$this->load->view('page/notif', $data);
+		}
 	}
 	public function changeNotifDetail(){
 		$data = [];
@@ -212,15 +222,21 @@ class ManagerController extends CI_Controller {
 		$crud->unset_clone(); //buat hilangin tombol clone di action
 		$crud->unset_add();
 
+		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
 		$output = $crud->render();
 		$data['crud'] = get_object_vars($output);
 
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['style'] = $this->load->view('include/style', $data, TRUE);
 		$data['script'] = $this->load->view('include/js', $data, TRUE);
 
 		$this->load->view('page/products', $data);
+	}
+
+	public function receiveNotif(){
+
 	}
 }

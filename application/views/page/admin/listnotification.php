@@ -13,11 +13,16 @@
 		}
 		else if($row['flag'] == 2){
 		?>
+		<div class="notif notif-asking" onclick="showDetailAdmin(<?php echo $row['id_notif']; ?>)">
+		<?php
+		}
+		else if($row['flag'] == 3){
+		?>
 		<div class="notif notif-rejected" onclick="showDetailAdmin(<?php echo $row['id_notif']; ?>)">
 		<?php
 		}
 		?>
-			<h4><?php echo $row['nama_penerbit'] . " had send a notification"; ?></h4>
+			<h4><?php echo $row['nama_toko'] . " had sent a notification"; ?></h4>
 			<?php echo "<br>"; ?>
 			<h5>
 			<?php 

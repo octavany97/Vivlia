@@ -37,14 +37,38 @@ class CashierController extends CI_Controller {
 		$this->load->view('page/login', $data);
 	}
 	public function dashboard(){
+		$id = $this->session->userdata('id_toko');
+		$dtlist['list'] = $this->CashierModel->getAllNotif($id);
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 
-		$this->load->view('page/home', $data);
+		$this->load->view('page/cashier/home', $data);
+	}
+	public function buy(){
+		if(isset($_POST['buy'])){
+			$dataAddTranksaksi = array(
+				'id_toko' => '',
+				'tanggal' => '',
+				'harga_total' => ''
+			);
+			for($i = 0;$i<$_POST['qty'];$i++){
+				$dataAddDetail[$i] = array(
+					'id_transaksi' => '',
+					'id_buku' => '',
+					'quantity' => '',
+					'harga_satuan' => ''
+				);	
+			}
+			var_dump($dataAddDetail);
+			$dataUpdate = [];
+
+			$this->CashierModel->addTransaction($dataAddTranksaksi);
+			$this->CashierModel->updateStock($dataUpdate);
+		}
 	}
 
 	public function products(){
@@ -66,16 +90,48 @@ class CashierController extends CI_Controller {
 		$crud->unset_clone(); //buat hilangin tombol clone di action
 		$crud->unset_add();
 
+		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->CashierModel->getAllNotif($id);
+
 		$output = $crud->render();
 		$data['crud'] = get_object_vars($output);
 
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['style'] = $this->load->view('include/style', $data, TRUE);
 		$data['script'] = $this->load->view('include/js', $data, TRUE);
 
 		$this->load->view('page/products', $data);
+	}
+
+	public function notifications(){
+		if($this->uri->segment('3') != NULL){
+			$id_notif = $this->uri->segment('3');
+		}
+		else $id_notif = 0;
+		
+		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->CashierModel->getAllNotif($id);
+		$data = [];
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		$dtlist['list'] = $this->CashierModel->getAllNotif($id);
+		$dtdetail['detail'] = $this->CashierModel->getNotifDetail($id_notif);
+		
+		$data['listnotif'] = $this->load->view('page/manager/listnotification', $dtlist, TRUE);
+
+		$data['notifdetail'] = $this->load->view('page/manager/detailnotif', $dtdetail, TRUE);
+
+		if($this->uri->segment('3') == NULL){
+			$this->load->view('page/notification', $data);
+		}
+		else{
+			$this->load->view('page/notif', $data);
+		}
 	}
 
 	public function authentication(){
@@ -106,10 +162,50 @@ class CashierController extends CI_Controller {
 			}
 		}
 		else{
-			var_dump("HIHI");
 			redirect(base_url());
 		}
-
-
 	}
+
+	public function tes($from = 'saudarapenerbit@gmail.com', $to = 'duasaudarads2018@gmail.com'){
+		$this->load->helper('email');
+		if(valid_email($from) && valid_email($to)){
+			$config = [
+	               'useragent' => 'CodeIgniter',
+	               'protocol'  => 'smtp',
+	               'mailpath'  => '/usr/sbin/sendmail',
+	               'smtp_host' => 'ssl://smtp.gmail.com',
+	               'smtp_user' => 'saudarapenerbit@gmail.com',   // Ganti dengan email gmail Anda.
+	               'smtp_pass' => 'saudara123',             // Password gmail Anda.
+	               'smtp_port' => 465,
+	               'smtp_keepalive' => TRUE,
+	               'smtp_crypto' => 'SSL',
+	               'wordwrap'  => TRUE,
+	               'wrapchars' => 80,
+	               'mailtype'  => 'html',
+	               'charset'   => 'utf-8',
+	               'validate'  => TRUE,
+	               'crlf'      => "\r\n",
+	               'newline'   => "\r\n",
+	           ];
+	 	
+	        // Load library email dan konfigurasinya.
+	        $this->load->library('email', $config);
+
+			$this->email->from($from, 'Saudara Penerbit');
+			$this->email->to($to);
+			$this->email->subject('Testing');
+			$this->email->message('Ini email buat test');
+
+			if($this->email->send()){
+				echo "Email has been sent!";
+			}
+			else{
+				echo "Error! Email can not send";
+			}
+		}
+		else{
+			echo "Email doesn't valid!";
+		}
+	}
+	
 }

@@ -17,7 +17,7 @@
 		<?php
 		}
 		?>
-			<h4><?php echo $row['nama_penerbit'] . " had send a notification"; ?></h4>
+			<h4><?php echo $row['nama_penerbit'] . " had sent a notification"; ?></h4>
 			<?php echo "<br>"; ?>
 			<h5>
 			<?php 

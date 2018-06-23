@@ -60,8 +60,8 @@
   
 
   <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
+    <div class="modal-dialog">
+      <div class="loginmodal-container">
           <h1>Login</h1><br>
           <form method="POST" action="<?php echo base_url();?>index.php/VivliaController/authentication">
             <input type="text" name="username" placeholder="Username">
@@ -76,39 +76,28 @@
           <div class="login-help">
             <a href="#">Forgot Password</a>
           </div>
-        </div>
       </div>
-      </div>
+    </div>
+  </div>
 </body>
 <?php echo $js; ?>
 
 <script type="text/javascript">
-	 $(document).ready(function() {
-        $('#loginModal').modal({
-            backdrop: 'static',
-            show: false,
-            keyboard: true // to prevent closing with Esc button (if you want this too)
-    	})
-    });
-
-	 function showModalLogin(){
+	function showModalLogin(){
 		$('#loginModal').modal({
 		    backdrop: 'static',
 		    show: true,
-		    keyboard: false  // to prevent closing with Esc button (if you want this too)
+		    keyboard: true  // to prevent closing with Esc button (if you want this too)
 		});
 	 }
   function showPassword() {
-    
     var key_attr = $('#key').attr('type');
     
     if(key_attr != 'text') {
-        
         $('.checkbox').addClass('show');
         $('#key').attr('type', 'text');
         
     } else {
-        
         $('.checkbox').removeClass('show');
         $('#key').attr('type', 'password');
         

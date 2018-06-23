@@ -57,21 +57,28 @@ $route['translate_uri_dashes'] = FALSE;
 $route['adm/home'] = 'AdminController/home';
 $route['adm/dashboard'] = 'AdminController/dashboard';
 $route['adm/products'] = 'AdminController/products';
-$route['adm/notifications'] = 'AdminController/notifications';
 $route['adm/products/(:any)'] = 'AdminController/products';
 $route['adm/products/(:any)/(:any)'] = 'AdminController/products';
+$route['adm/notifications'] = 'AdminController/notifications';
+$route['adm/notifications/(:any)'] = 'AdminController/notifications';
+
 
 $route['adm/changeBookChart'] = 'AdminController/changeBookChart';
 $route['adm/changeStoreChart'] = 'AdminController/changeStoreChart';
 $route['adm/getBooksByGenre'] = 'AdminController/getBooksByGenre';
 $route['adm/changeNotifDetail'] = 'AdminController/changeNotifDetail';
+$route['adm/changeNotifFlag'] = 'AdminController/changeNotifFlag';
 $route['adm/tes'] = 'AdminController/tes';
 //route cashier
 $route['csh/home'] = 'CashierController/home';
 $route['csh/dashboard'] = 'CashierController/dashboard';
+$route['csh/buy'] = 'CashierController/buy';
 $route['csh/products'] = 'CashierController/products';
 $route['csh/products/(:any)'] = 'CashierController/products';
 $route['csh/products/(:any)/(:any)'] = 'CashierController/products';
+$route['csh/notifications'] = 'CashierController/notifications';
+$route['csh/notifications/(:any)'] = 'CashierController/notifications';
+$route['csh/tes'] = 'CashierController/tes';
 //route manager
 $route['mgr/home'] = 'ManagerController/home';
 $route['mgr/dashboard'] = 'ManagerController/dashboard';
@@ -80,4 +87,6 @@ $route['mgr/request_products'] = 'ManagerController/request';
 $route['mgr/products/(:any)'] = 'ManagerController/products';
 $route['mgr/products/(:any)/(:any)'] = 'ManagerController/products';
 $route['mgr/notifications'] = 'ManagerController/notifications';
+$route['mgr/notifications/(:any)'] = 'ManagerController/notifications';
 $route['mgr/changeNotifDetail'] = 'ManagerController/changeNotifDetail';
+$route['mgr/changeNotifFlag'] = 'ManagerController/changeNotifFlag';

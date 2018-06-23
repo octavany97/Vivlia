@@ -10,6 +10,7 @@ class AdminController extends CI_Controller {
 		/*$this->load->model('ManagerModel');
 		$this->load->model('CashierModel');*/
 		$this->load->library('session');
+		$this->load->library('email');
 	}
 	public function index()
 	{
@@ -35,7 +36,9 @@ class AdminController extends CI_Controller {
 			$roleid = $_POST['idperan'];
 		}
 		else $roleid = 1;
+
 		$userid= $this->session->userdata('id_user');
+		
 		//$dtbook utk dikirim ke view $data['bookchart'] atau page/bookchart
 		$dtbook['bookid'] = $bookid;
 		$bn = $this->AdminModel->getBookName($bookid);
@@ -65,6 +68,7 @@ class AdminController extends CI_Controller {
 		$dtmbs['booksent'] = $this->AdminModel->getMostBookSent();
 		$dtbs['bestseller'] = $this->AdminModel->getBestSeller();
 		
+		$dtlist['list'] = $this->AdminModel->getAllNotif($userid);
 		//masukkin isi ke $data utk dikirim ke page/home
 		$data['bookid'] = $bookid;
 		$data['barchart'] = $this->AdminModel->salesPerBook(1);
@@ -72,7 +76,7 @@ class AdminController extends CI_Controller {
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		$data['bookchart'] = $this->load->view('page/admin/bookchart',$dtbook, TRUE);
 
@@ -127,13 +131,7 @@ class AdminController extends CI_Controller {
 		$bbg = $this->AdminModel->getBookStock($genreid);
 		echo json_encode($bbg);
 	}
-	public function test($bookid){
-		$dt['bookid'] = $bookid;
-		$dt['books'] = $this->AdminModel->getBooks();
-		$dt['piechart'] = $this->AdminModel->salesPerStore($bookid);
-		
-		$data['stockchart'] = $this->load->view('page/admin/stockchart', $dt, TRUE);
-	}
+	
 	//untuk page products list
 	public function products(){
 		$data = [];
@@ -166,10 +164,11 @@ class AdminController extends CI_Controller {
 
 		$output = $crud->render();
 		$data['crud'] = get_object_vars($output);
-
+		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['style'] = $this->load->view('include/style', $data, TRUE);
 		$data['script'] = $this->load->view('include/js', $data, TRUE);
 
@@ -177,29 +176,50 @@ class AdminController extends CI_Controller {
 	}
 	
 	public function notifications(){
-		if(isset($_POST['id_penerbit'])){
-			$id = $_POST['id_penerbit'];
-		}
-		else $id = 1;
-		if(isset($_POST['id_notif'])){
-			$id_notif = $_POST['id_notif'];
+		$id = $this->session->userdata('id_user');
+		
+		if($this->uri->segment('3') != NULL){
+			$id_notif = $this->uri->segment('3');
 		}
 		else $id_notif = 0;
+
+		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
+		$dtdetail['segment'] = $this->uri->segment('3');
+		$dtdetail['detail'] = $this->AdminModel->getNotifDetail($id_notif);
 
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
-		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
-		$dtdetail['detail'] = $this->AdminModel->getNotifDetail($id_notif);
-
+		
 		$data['listnotif'] = $this->load->view('page/admin/listnotification', $dtlist, TRUE);
 
 		$data['notifdetail'] = $this->load->view('page/admin/detailnotif', $dtdetail, TRUE);
+		if($this->uri->segment('3') == NULL){
+			$this->load->view('page/notification', $data);
+		}
+		else{
+			$this->load->view('page/notif', $data);
+		}
+		
+	}
+	public function changeNotifFlag(){
+		if(isset($_POST['id_notif'])){
+			$id_notif = $_POST['id_notif'];
+		}
+		else $id_notif = 0;
+		if(isset($_POST['flag'])){
+			$flag = $_POST['flag'];
+		}
+		// else $flag = 0;
+		//$flag = 2;
+		$id = $this->session->userdata('id_user');
+		$this->AdminModel->updateNotifFlag($flag, $id_notif);
 
-		$this->load->view('page/notification', $data);
+		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
+		$this->load->view('page/admin/listnotification',$dtlist);
 	}
 	public function changeNotifDetail(){
 		$data = [];
@@ -210,6 +230,7 @@ class AdminController extends CI_Controller {
 		else $id_notif = 0;
 		
 		$dtdetail['detail'] = $this->AdminModel->getNotifDetail($id_notif);
+
 		
 		$this->load->view('page/admin/detailnotif', $dtdetail);
 	}
@@ -221,12 +242,13 @@ class AdminController extends CI_Controller {
 			$bookid = $_POST['idbuku'];
 		}
 		else $bookid = 1;
-		
+		$id = $this->session->userdata('id_user');
 		$dt['bookid'] = $bookid;
 		$bn = $this->AdminModel->getBookName($bookid);
 		$dt['bookname'] = $bn['nama_buku'];
 		$dt['books'] = $this->AdminModel->getBooks();
 		$dt['piechart'] = $this->AdminModel->salesPerStore($bookid);
+		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
 		//masukkin isi ke $data
 		$data['bookid'] = $bookid;
 		$data['barchart'] = $this->AdminModel->salesPerBook(1);
@@ -234,11 +256,32 @@ class AdminController extends CI_Controller {
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		$data['bookchart'] = $this->load->view('page/admin/stockchart',$dt, TRUE);
 		
 		$this->load->view('page/tes', $data);
+	}
+	//ketika mengirim notif
+	public function sendNotif(){
+		$msg = '';
+		$time = date('y-m-d H:i:s');
+		$idsender = $this->session->userdata('id_user');
+		$idreceiver = 2;
+
+
+		$data = array(
+			'notif_msg' => '$msg',
+			'notif_time' => '$time',
+			'id_sender' => '$idsender',
+			'id_receiver' => '$idreceiver',
+			'flag' => 'false'
+		);
+		$this->AdminModel->saveNotif($data);
+	}
+	//dapat notif dari toko kalau stoknya sudah sampai batas minimum atau toko request buku
+	public function receiveNotif(){
+
 	}
 }
 
