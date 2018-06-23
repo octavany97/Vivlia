@@ -102,19 +102,27 @@ class CashierController extends CI_Controller {
 		$this->load->library('grocery_CRUD');
 		$crud = new grocery_CRUD();
 		$crud->set_theme('datatables');
-		$crud->set_table('buku')
-			 ->columns('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
-		     ->display_as('coverlink','Cover')
-		     ->fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
-			 ->set_field_upload('cover','assets/uploads/buku');
+		// $crud->field_type('modal','hidden');
+		// $crud->field_type('id_toko','hidden');
+		$crud->Where('id_toko', $this->session->userdata('id_toko'));
+		$crud->set_table('stok_toko')
+			 ->display_as('id_buku','Nama buku');
+			 // ->columns('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover')
+		  //    ->display_as('coverlink','Cover')
+		  //    // ->fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover')
+			 // ->set_field_upload('cover','assets/uploads/buku');
 			 	// ->callback_edit_field('keterangan',array($this,'edit_description'))
 			 	// ->callback_add_field('keterangan',array($this,'add_description'));
-		$crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
-		$crud->unset_columns('id_penerbit', 'keterangan', 'modal', 'nama_toko');
+		// $crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
+		$crud->unset_columns('id_toko');
+		$crud->set_relation('id_buku','buku','nama_buku');
 		$crud->unset_delete(); //buat hilangin tombol delete di action
 		$crud->unset_edit(); //buat hilangin tombol edit di action
 		$crud->unset_clone(); //buat hilangin tombol clone di action
 		$crud->unset_add();
+		
+		$crud->unset_print();
+
 
 		$id = $this->session->userdata('id_user');
 		$dtlist['list'] = $this->CashierModel->getAllNotif($id);
