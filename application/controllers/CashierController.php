@@ -94,7 +94,6 @@ class CashierController extends CI_Controller {
 		$crud->unset_edit(); //buat hilangin tombol edit di action
 		$crud->unset_clone(); //buat hilangin tombol clone di action
 		$crud->unset_add();
-		
 		$crud->unset_print();
 
 

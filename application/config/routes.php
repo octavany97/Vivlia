@@ -61,7 +61,7 @@ $route['adm/products/(:any)'] = 'AdminController/products';
 $route['adm/products/(:any)/(:any)'] = 'AdminController/products';
 $route['adm/notifications'] = 'AdminController/notifications';
 $route['adm/notifications/(:any)'] = 'AdminController/notifications';
-
+$route['adm/editprofile'] = 'AdminController/editProfile';
 
 $route['adm/changeBookChart'] = 'AdminController/changeBookChart';
 $route['adm/changeStoreChart'] = 'AdminController/changeStoreChart';
