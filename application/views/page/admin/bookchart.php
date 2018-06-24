@@ -37,7 +37,7 @@ $(document).ready(function() {
 		$('#buku > option selected').text(idbuku);
 		$.ajax({
 			method: "POST",
-			url: "<?php echo base_url() ?>adm/changeBookChart/",
+			url: "<?php echo base_url(); ?>adm/changeBookChart/",
 			data: 'idbuku='+idbuku,
 			success: function(classes){
 				$('#chart1').empty().html(classes)				
