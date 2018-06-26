@@ -66,4 +66,17 @@ class ManagerModel extends CI_Model {
 		$this->db->where('id_notif', $id_notif);
 		$this->db->update('flag', $flag);
 	}
+
+	//buat dapetin banyak baris, id nya di + 1
+	public function getFormID(){
+		$query = $this->db->query("SELECT COUNT(*) FROM form_manager")->row_array();
+		//var_dump(intval($query["COUNT(*)"]));
+		//die();
+		return intval($query["COUNT(*)"]) + 1;
+	}
+
+	public function getBooks(){
+		$query = $this->db->query("SELECT * FROM buku")->result_array();
+		return $query;
+	}
 }

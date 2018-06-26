@@ -14,7 +14,9 @@ class VivliaController extends CI_Controller {
 	
 	public function index()
 	{
+
 		$data = [];
+		$data['idx'] = 1;
 		$data['css'] = $this->load->view('include/styleLogin', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/notlogin', NULL, TRUE);
@@ -31,11 +33,11 @@ class VivliaController extends CI_Controller {
 		$password = $password . $salt;
 		if(password_verify($password, $user['password'])){
 			$userdata = array(
-			        'username'  => $username,
-			        'id_user'     => $user['id_user'],
-			        'peran'  => $user['peran'],
-			        'id_toko'     => $user['id_toko'],
-			        'ip_address'     => $user['ip_addr']
+			        'username'   => $username,
+			        'id_user'    => $user['id_user'],
+			        'peran'      => $user['peran'],
+			        'id_toko'    => $user['id_toko'],
+			        'ip_address' => $user['ip_addr']
 			);
 
 			$this->session->set_userdata($userdata);
@@ -51,6 +53,7 @@ class VivliaController extends CI_Controller {
 			}
 		}
 		else{
+			$this->session->set_userdata('error_login', 'true');
 			redirect(base_url());
 		}
 	}

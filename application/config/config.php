@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 // http://localhost:1000/Semester6/UAS/Vivlia/Vivlia
 
-$config['base_url'] = 'http://localhost/vivlia';
+$config['base_url'] = 'http://localhost:1000/Semester6/UAS/Vivlia/Vivlia';
 
 /*
 |--------------------------------------------------------------------------

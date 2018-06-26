@@ -24,8 +24,8 @@ class LoginModel extends CI_Model {
 	}
 
 	public function getUser($val){
-		$str = "SELECT * FROM users WHERE username=\"".$val."\"";
-		$query = $this->db->query($str)->row_array();
+		$str = "SELECT * FROM users WHERE username = ?" ;
+		$query = $this->db->query($str, array($this->db->escape_str($val)))->row_array();
 		//row_array(); //dapet data pertama		
 		//result_array(); //dapet banyak data
 

@@ -79,8 +79,9 @@ class CashierController extends CI_Controller {
 		// $crud->field_type('modal','hidden');
 		// $crud->field_type('id_toko','hidden');
 		$crud->Where('id_toko', $this->session->userdata('id_toko'));
-		$crud->set_table('stok_toko')
-			 ->display_as('id_buku','Nama buku');
+		$crud->set_table('stok_toko', 'buku')
+			 ->display_as('id_buku','Nama buku')
+			 ->display_as('id_buku', 'Haha');
 			 // ->columns('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover')
 		  //    ->display_as('coverlink','Cover')
 		  //    // ->fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover')

@@ -146,16 +146,15 @@ class AdminController extends CI_Controller {
 		     ->display_as('nama','Genre')
 		     ->display_as('modal','Harga')
 		     ->display_as('isbn','ISBN')
-
-
 		     ->fields('nama_buku','id_penerbit','nama','penulis','isbn','tanggal_terbit','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
 			 ->set_field_upload('cover','assets/uploads/buku');
 			 	// ->callback_edit_field('keterangan',array($this,'edit_description'))
 			 	// ->callback_add_field('keterangan',array($this,'add_description'));
-		$crud->unset_columns('id_penerbit','tanggal_terbit','banyak_halaman','keterangan', 'modal');
-		$crud->required_fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover');
-		$crud->set_relation_n_n('nama', 'genre_buku', 'genre', 'id_buku','id_genre','nama');
 		$crud->set_relation('id_penerbit', 'penerbit', 'nama_penerbit');
+		$crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
+		$crud->set_relation_n_n('nama', 'genre_buku', 'genre', 'id_buku','id_genre','nama');
+		$crud->required_fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover');
+		$crud->unset_columns('id_penerbit','tanggal_terbit','banyak_halaman','keterangan', 'modal');
 		// $crud->unset_delete(); //buat hilangin tombol delete di action
 		// $crud->unset_edit(); //buat hilangin tombol edit di action
 		$crud->unset_clone(); //buat hilangin tombol clone di action

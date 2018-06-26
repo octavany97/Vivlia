@@ -153,9 +153,26 @@ class ManagerController extends CI_Controller {
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
-
+		$data['id_form'] = $this->ManagerModel->getFormID();
+		$data['title'] = $this->ManagerModel->getBooks();
 		$this->load->view('page/formRequestProduct', $data);
 	}
+
+	//untuk autentikasi form request
+	public function form_request(){
+
+		if(isset($_POST['btnCancel'])){
+			redirect(base_url().'mgr/dashboard');
+		}
+		else{
+			$id_form = $this->input->post('id_form');
+			
+
+
+			redirect(base_url().'mgr/dashboard');
+		}
+	}
+
 	//notifikasi
 	public function notifications(){
 		if($this->uri->segment('3') != NULL){

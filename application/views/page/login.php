@@ -1,7 +1,10 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<!DOCTYPE html>
 	<?php echo $css; ?>
 
 
@@ -63,9 +66,14 @@
     <div class="modal-dialog">
       <div class="loginmodal-container">
           <h1>Login</h1><br>
+          <?php 
+            if($this->session->has_userdata('error_login')){
+              echo "<span style=\"color:red;\">Username or Password Invalid</span>";
+            }
+          ?>
           <form method="POST" action="<?php echo base_url();?>index.php/VivliaController/authentication">
-            <input type="text" name="username" placeholder="Username">
-            <input type="password" name="password" id="key" placeholder="Password">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" id="key" placeholder="Password" required>
 
             <input id="box1" type="checkbox" onclick="showPassword()" />
               <label for="box1">Show Password</label>
@@ -80,15 +88,20 @@
     </div>
   </div>
 </body>
-<?php echo $js; ?>
+<?php echo $js;
+    
+ ?>
 
 <script type="text/javascript">
 	function showModalLogin(){
 		$('#loginModal').modal({
-		    backdrop: 'static',
+		    backdrop: 'false',
 		    show: true,
 		    keyboard: true  // to prevent closing with Esc button (if you want this too)
 		});
+    <?php
+      $idx = 2;
+    ?>
 	 }
   function showPassword() {
     var key_attr = $('#key').attr('type');
@@ -105,4 +118,12 @@
   }
   
 </script>
+<?php
+  if($this->session->has_userdata('error_login')){
+    echo '<script type="text/javascript">',
+          'showModalLogin();',
+          '</script>';
+    unset($_SESSION['error_login']);
+  }
+?>
 </html>
