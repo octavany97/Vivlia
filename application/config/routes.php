@@ -68,18 +68,19 @@ $route['adm/changeStoreChart'] = 'AdminController/changeStoreChart';
 $route['adm/getBooksByGenre'] = 'AdminController/getBooksByGenre';
 $route['adm/changeNotifDetail'] = 'AdminController/changeNotifDetail';
 $route['adm/changeNotifFlag'] = 'AdminController/changeNotifFlag';
+$route['adm/getCountNotif'] = 'AdminController/getCountNotif';
 $route['adm/tes'] = 'AdminController/tes';
 //route cashier
 $route['csh/home'] = 'CashierController/home';
 $route['csh/dashboard'] = 'CashierController/dashboard';
 $route['csh/addItem'] = 'CashierController/addItem';
 $route['csh/buy'] = 'CashierController/buy';
+$route['csh/getCountNotif'] = 'CashierController/getCountNotif';
 $route['csh/products'] = 'CashierController/products';
 $route['csh/products/(:any)'] = 'CashierController/products';
 $route['csh/products/(:any)/(:any)'] = 'CashierController/products';
 $route['csh/notifications'] = 'CashierController/notifications';
 $route['csh/notifications/(:any)'] = 'CashierController/notifications';
-$route['csh/tes'] = 'CashierController/tes';
 //route manager
 $route['mgr/home'] = 'ManagerController/home';
 $route['mgr/dashboard'] = 'ManagerController/dashboard';

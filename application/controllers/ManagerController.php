@@ -91,6 +91,7 @@ class ManagerController extends CI_Controller {
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		$data['timeline'] = $this->load->view('page/manager/timeline', $dttimeline, TRUE);
 		// $data['bookchart'] = $this->load->view('page/admin/bookchart',$dtbook, TRUE);
@@ -187,6 +188,7 @@ class ManagerController extends CI_Controller {
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
 		$dtdetail['detail'] = $this->ManagerModel->getNotifDetail($id_notif);
@@ -252,6 +254,7 @@ class ManagerController extends CI_Controller {
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['js'] = $this->load->view('include/script', NULL, TRUE);
 		$data['style'] = $this->load->view('include/style', $data, TRUE);
 		$data['script'] = $this->load->view('include/js', $data, TRUE);
 

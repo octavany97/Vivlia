@@ -18,6 +18,7 @@ class AdminModel extends CI_Model {
 	public function stockDelivered(){
 
 	}
+
 	//untuk chart1 admin
 	//ambil jumlah stok buku di pabrik penerbit berdasarkan genre
 	public function getBookGenreStock(){
@@ -105,6 +106,16 @@ class AdminModel extends CI_Model {
 	//notifikasi
 	public function saveNotif($data){
 		$this->db->insert('notif', $data);
+	}
+	//lihat jumlah notif yang belum diputuskan
+	public function getUnseenNotif($id){
+		return $this->db->query("SELECT COUNT(*) AS total FROM notif WHERE id_receiver='$id' AND flag=0")->row_array();
+	}
+	public function getStoreUser($id){
+		return $this->db->query("SELECT t.id_toko, t.nama_toko, t.no_telp, t.email, u.id_user, u.username, u.id_toko FROM toko t, users u WHERE u.id_toko = t.id_toko AND t.id_toko='$id' AND u.peran = '2'")->row_array();
+	}
+	public function getPabrikUser($id){
+		return $this->db->query("SELECT p.id_penerbit, p.nama_penerbit, p.no_telp, p.email, u.id_user, u.username, u.id_toko FROM penerbit p, users u WHERE u.id_toko = p.id_penerbit AND u.id_toko='$id' AND u.peran = '1'")->row_array();
 	}
 }
 

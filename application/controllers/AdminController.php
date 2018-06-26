@@ -76,6 +76,7 @@ class AdminController extends CI_Controller {
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		$data['bookchart'] = $this->load->view('page/admin/bookchart',$dtbook, TRUE);
@@ -168,6 +169,7 @@ class AdminController extends CI_Controller {
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['js'] = $this->load->view('include/script', NULL, TRUE);
 		$data['style'] = $this->load->view('include/style', $data, TRUE);
 		$data['script'] = $this->load->view('include/js', $data, TRUE);
 
@@ -191,6 +193,7 @@ class AdminController extends CI_Controller {
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		
 		$data['listnotif'] = $this->load->view('page/admin/listnotification', $dtlist, TRUE);
@@ -214,6 +217,9 @@ class AdminController extends CI_Controller {
 		}
 		// else $flag = 0;
 		//$flag = 2;
+		if($flag == 2){
+			$this->sendEmail($from, $to, $username, $data);
+		}
 		$id = $this->session->userdata('id_user');
 		$this->AdminModel->updateNotifFlag($flag, $id_notif);
 
@@ -278,9 +284,61 @@ class AdminController extends CI_Controller {
 		);
 		$this->AdminModel->saveNotif($data);
 	}
-	//dapat notif dari toko kalau stoknya sudah sampai batas minimum atau toko request buku
-	public function receiveNotif(){
+	public function sendEmail($from, $to, $username, $data){
+		$this->load->helper('email');
+		
+		$pass = explode('@', $from);
+		$password = $pass[0]."$123";
 
+		if(valid_email($from) && valid_email($to)){
+			//email
+			$config = [
+	               'useragent' => 'CodeIgniter',
+	               'protocol'  => 'smtp',
+	               'mailpath'  => '/usr/sbin/sendmail',
+	               'smtp_host' => 'ssl://smtp.gmail.com',
+	               'smtp_user' => $from,   // Ganti dengan email gmail Anda.
+	               'smtp_pass' => $password,             // Password gmail Anda.
+	               'smtp_port' => 465,
+	               'smtp_keepalive' => TRUE,
+	               'smtp_crypto' => 'SSL',
+	               'wordwrap'  => TRUE,
+	               'wrapchars' => 80,
+	               'mailtype'  => 'html',
+	               'charset'   => 'utf-8',
+	               'validate'  => TRUE,
+	               'crlf'      => "\r\n",
+	               'newline'   => "\r\n",
+	           ];
+	 	
+	        // Load library email dan konfigurasinya.
+	        $this->load->library('email', $config);
+
+			$this->email->from($from, $username);
+			$this->email->to($to);
+			$this->email->subject($data['notif_subject']);
+			$this->email->message($data['notif_msg']);
+
+			if($this->email->send()){
+				$unseenNotif = getCountNotif();
+				//echo $unseenNotif
+				return "Email has been sent!";
+			}
+			else{
+				return "Error! Email can not send";
+			}
+
+
+		}
+		else{
+			return "Email doesn't valid!";
+		}
+	}
+	//dapat notif dari toko kalau stoknya sudah sampai batas minimum atau toko request buku
+	public function getCountNotif(){
+		$id_user = $this->session->userdata('id_user');
+		$unseenNotif = $this->AdminModel->getUnseenNotif($id_user);
+		echo $unseenNotif['total'];
 	}
 
 	public function editProfile(){

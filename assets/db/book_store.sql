@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2018 at 01:15 PM
+-- Generation Time: Jun 26, 2018 at 05:34 AM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -60,6 +60,18 @@ INSERT INTO `buku` (`id_buku`, `nama_buku`, `id_penerbit`, `penulis`, `isbn`, `t
 (10, 'Sepatu Orang Lain', 1, 'Mia Saadah', '9786026475688', '2017-09-14', 2017, 200, 64000, '\"Karena hidup adalah sepenuhnya tentang mendengar, belajar, dan memahami.\"\r\n\r\nBagaimana jika hidup ternyata memang cuma sebentar, apakah kau akan memilih mengisinya dengan keluh atau memilih menghabiskannya dengan syukur yang penuh?\r\n\r\nApa itu definisi hidup bahagia? Bagaimana mengukurnya, karena bukankah kadar bahagia tiap orang itu sangat berbeda? Lalu, mengapa kita masih saja sering kali mengukur kaki sendiri dalam sepatu orang lain?\r\n\r\nPilih perjalananmu, jangan lihat langkah orang lain. Karena meski bahagia itu relatif, hanya diri kita sendirilah yang menentukan kapan dan bagaimana ia menjelma.\r\n\r\nMaka, sesulit apa pun hari ini, sepekat apa pun besok hari, yakinlah Allah selalu bersamamu dan kau tidak pernah berjalan sendiri.\r\n\r\nSepatu Orang Lain adalah semangkuk bakso di hari yang hujan. Segelas cokelat panas pada sebuah malam yang penuh lelah. Kau bisa memilah membaca kisahnya satu-satu, semuanya akan menghangatkan hatimu.\r\n', 114, 'sol.jpg'),
 (11, 'Ceros dan Batozar', 1, 'Tere Liye', '9786020385914', '2018-06-14', 2018, 376, 79000, 'Awalnya kami hanya mengikuti karyawisata biasa seperti murid-murid sekolah lain. Hingga Ali, dengan kegeniusan dan keisengannya, memutuskan menyelidiki sebuah ruangan kuno. Kami tiba di bagian dunia paralel lainnya, menemui petarung kuat, mendapat kekuatan baru serta teknik-teknik menakjubkan.\r\n\r\nDunia paralel ternyata sangat luas, dengan begitu banyak orang hebat di dalamnya. Kisah ini tentang petualangan tiga sahabat. Raib bisa menghilang. Seli bisa mengeluarkan petir. Dan Ali bisa melakukan apa saja. CEROS DAN BATOZAR adalah buku ke-4,5 dari serial BUMI', 140, 'cerosbatozar.jpg'),
 (13, 'Semangat', 1, 'Andy Sanjaya', '9020182749031', '2018-06-14', 2018, 345, 56000, '<p>\r\n	Kisah seorang anak perempuan bernama Sarah yang menempuh banyak perjuangan dalam hidupnya.&nbsp;</p>\r\n<p>\r\n	Dapatkah Sarah tetap semangat dalam mencapai impiannya?</p>\r\n', 368, '9c61b-004.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `detail_form_manager`
+--
+
+CREATE TABLE `detail_form_manager` (
+  `id_form` int(11) NOT NULL,
+  `id_buku` int(11) NOT NULL,
+  `qty` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -151,7 +163,26 @@ INSERT INTO `detail_transaksi` (`id_transaksi`, `id_buku`, `quantity`, `harga_sa
 (32, 11, 2, 89000),
 (33, 3, 3, 75000),
 (33, 10, 2, 74000),
-(33, 1, 1, 79000);
+(33, 1, 1, 79000),
+(34, 1, 4, 65000),
+(34, 4, 7, 79000),
+(34, 7, 3, 55000),
+(35, 1, 4, 65000),
+(35, 4, 7, 79000),
+(35, 7, 3, 55000),
+(36, 1, 4, 65000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `form_manager`
+--
+
+CREATE TABLE `form_manager` (
+  `id_form` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `tanggal` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -336,6 +367,7 @@ INSERT INTO `peran` (`id_peran`, `nama_peran`) VALUES
 --
 
 CREATE TABLE `stok_toko` (
+  `id` int(11) NOT NULL,
   `id_toko` int(11) NOT NULL,
   `id_buku` int(11) NOT NULL,
   `stok` int(11) NOT NULL,
@@ -346,29 +378,31 @@ CREATE TABLE `stok_toko` (
 -- Dumping data for table `stok_toko`
 --
 
-INSERT INTO `stok_toko` (`id_toko`, `id_buku`, `stok`, `harga_jual`) VALUES
-(1, 1, 29, 65000),
-(1, 3, 16, 75000),
-(1, 4, 40, 79000),
-(1, 5, 23, 67000),
-(1, 7, 20, 55000),
-(1, 8, 25, 80000),
-(1, 9, 28, 80000),
-(1, 10, 25, 74000),
-(2, 1, 26, 65000),
-(2, 3, 9, 75000),
-(2, 4, 22, 79000),
-(2, 5, 28, 67000),
-(2, 7, 29, 55000),
-(2, 8, 24, 80000),
-(2, 9, 29, 80000),
-(2, 10, 26, 74000),
-(1, 2, 26, 80000),
-(2, 2, 29, 80000),
-(1, 11, 30, 89000),
-(1, 13, 30, 66000),
-(2, 11, 28, 89000),
-(2, 13, 30, 66000);
+INSERT INTO `stok_toko` (`id`, `id_toko`, `id_buku`, `stok`, `harga_jual`) VALUES
+(1, 1, 1, 25, 65000),
+(2, 1, 3, 16, 75000),
+(3, 1, 4, 33, 79000),
+(4, 1, 5, 23, 67000),
+(5, 1, 7, 17, 55000),
+(6, 1, 8, 25, 80000),
+(7, 1, 9, 28, 80000),
+(8, 1, 10, 25, 74000),
+(9, 2, 1, 26, 65000),
+(10, 2, 3, 9, 75000),
+(11, 2, 4, 22, 79000),
+(12, 2, 5, 28, 67000),
+(13, 2, 7, 29, 55000),
+(14, 2, 8, 24, 80000),
+(15, 2, 9, 29, 80000),
+(16, 2, 10, 26, 74000),
+(17, 1, 2, 26, 80000),
+(18, 2, 2, 29, 80000),
+(19, 1, 11, 30, 89000),
+(20, 1, 13, 30, 66000),
+(21, 2, 11, 28, 89000),
+(22, 2, 13, 30, 66000),
+(23, 1, 6, 25, 83000),
+(24, 2, 6, 23, 83000);
 
 -- --------------------------------------------------------
 
@@ -460,7 +494,10 @@ INSERT INTO `transaksi` (`id_transaksi`, `id_toko`, `tanggal`, `harga_total`) VA
 (30, 2, '2018-06-10 13:54:54', 373000),
 (31, 1, '2018-06-11 11:34:32', 278000),
 (32, 2, '2018-06-11 15:23:23', 403000),
-(33, 2, '2018-06-12 09:23:23', 452000);
+(33, 2, '2018-06-12 09:23:23', 452000),
+(34, 1, '2018-06-26 04:06:44', 978000),
+(35, 1, '2018-06-26 04:07:02', 978000),
+(36, 1, '2018-06-26 04:07:15', 978000);
 
 -- --------------------------------------------------------
 
@@ -502,11 +539,25 @@ ALTER TABLE `buku`
   ADD KEY `id_penerbit` (`id_penerbit`);
 
 --
+-- Indexes for table `detail_form_manager`
+--
+ALTER TABLE `detail_form_manager`
+  ADD PRIMARY KEY (`id_form`),
+  ADD KEY `id_buku` (`id_buku`);
+
+--
 -- Indexes for table `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
   ADD KEY `id_transaksi` (`id_transaksi`),
   ADD KEY `id_buku` (`id_buku`);
+
+--
+-- Indexes for table `form_manager`
+--
+ALTER TABLE `form_manager`
+  ADD PRIMARY KEY (`id_form`),
+  ADD KEY `id_user` (`id_user`);
 
 --
 -- Indexes for table `genre`
@@ -554,6 +605,7 @@ ALTER TABLE `peran`
 -- Indexes for table `stok_toko`
 --
 ALTER TABLE `stok_toko`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `id_toko` (`id_toko`),
   ADD KEY `id_buku` (`id_buku`);
 
@@ -595,6 +647,16 @@ ALTER TABLE `users`
 ALTER TABLE `buku`
   MODIFY `id_buku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
+-- AUTO_INCREMENT for table `detail_form_manager`
+--
+ALTER TABLE `detail_form_manager`
+  MODIFY `id_form` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `form_manager`
+--
+ALTER TABLE `form_manager`
+  MODIFY `id_form` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `genre`
 --
 ALTER TABLE `genre`
@@ -620,6 +682,11 @@ ALTER TABLE `penerbit`
 ALTER TABLE `peran`
   MODIFY `id_peran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT for table `stok_toko`
+--
+ALTER TABLE `stok_toko`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+--
 -- AUTO_INCREMENT for table `threshold_stok`
 --
 ALTER TABLE `threshold_stok`
@@ -633,7 +700,7 @@ ALTER TABLE `toko`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `users`
 --
@@ -650,11 +717,23 @@ ALTER TABLE `buku`
   ADD CONSTRAINT `buku_ibfk_1` FOREIGN KEY (`id_penerbit`) REFERENCES `penerbit` (`id_penerbit`);
 
 --
+-- Constraints for table `detail_form_manager`
+--
+ALTER TABLE `detail_form_manager`
+  ADD CONSTRAINT `detail_form_manager_ibfk_1` FOREIGN KEY (`id_buku`) REFERENCES `buku` (`id_buku`);
+
+--
 -- Constraints for table `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
   ADD CONSTRAINT `detail_transaksi_ibfk_1` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id_transaksi`),
   ADD CONSTRAINT `detail_transaksi_ibfk_2` FOREIGN KEY (`id_buku`) REFERENCES `buku` (`id_buku`);
+
+--
+-- Constraints for table `form_manager`
+--
+ALTER TABLE `form_manager`
+  ADD CONSTRAINT `form_manager_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`);
 
 --
 -- Constraints for table `genre_buku`

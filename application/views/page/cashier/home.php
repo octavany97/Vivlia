@@ -6,7 +6,7 @@
 	<?php echo $css; ?>
 	<?php echo $js; ?>
 </head>
-<body onload="initialize()">
+<body onload="initialize(); load_unseen_notification_toko()">
 	<?php echo $header;
 	echo $menuheader;
 	echo $sidebar;
@@ -56,17 +56,24 @@
 	<!-- Edit Modal HTML -->
 	<div id="addEmployeeModal" class="modal fade">
 		<div class="modal-dialog">
-			<div class="loginmodal-container">
+			<div class="loginmodal-container" style="min-width: 500px;">
 				<h1>Add Product</h1>
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<br><br>
 				<div class="form-group">
-					<label>Product Code</label>
-					<input type="text" id="kode" class="form-control" required name="kode">
+					<input type="text" id="kode" list="buku" class="form-control" required name="kode" placeholder="Nama Buku">
+					<datalist id="buku">
+						<?php
+						foreach ($book as $row) {
+							?>
+							<option value="<?php echo $row['isbn']; ?>"><?php echo $row['nama_buku']; ?></option>
+							<?php
+						}
+						?>
+					</datalist>
 				</div>
 				<div class="form-group">
-					<label>Quantity</label>
-					<input type="text" id = "qty" class="form-control" required name="qty">
+					<input type="text" id = "qty" class="form-control" required name="qty" placeholder="Quantity">
 				</div>				
 				<input type="submit" id="btn_add" class="login loginmodal-submit" value="Add">
 			</div>
@@ -95,24 +102,24 @@
 	          <br><br>
 	          <div>Please Check The Purchase Again</div>
 	          <br>
-	          <form method="POST" action="<?php echo base_url();?>csh/buy">
+	          <!-- <form method="POST" action="<?php echo base_url();?>csh/buy"> -->
 	       	  	<div class="col-md-12">
 	       	  		<input name="qty" id="qty" type="hidden">
 	       	  	</div>
 
 	            <input type="submit" name="buy" id="btn_confirm" class="login loginmodal-submit" value="Buy">
-	          </form>
+	          <!-- </form> -->
 	      </div>
 	    </div>
 	</div>
 </body>
 </html>
+<?php echo $script;?>
 <script>
 $(document).ready(function(){
-	
 	$( "#btn_add" ).click(function() {
 		var data = $("#form_add").serializeArray();
-		var productId = $('#kode').val();
+		var isbn = $('#kode').val();
 		var quantity = $('#qty').val();
 		var idtoko = 1;
 		var idx = 0;
@@ -122,7 +129,7 @@ $(document).ready(function(){
 		$.ajax({
 			method:"POST",
 			url:'<?php echo base_url() ?>csh/addItem',
-			data: "id="+productId+"&qty="+quantity+"&tokoid="+idtoko+"&idx="+(idx+1),
+			data: "id="+isbn+"&qty="+quantity+"&tokoid="+idtoko+"&idx="+(idx+1),
 			success: function(response){
 				var obj = JSON.parse(response);
 				
@@ -149,8 +156,8 @@ $(document).ready(function(){
 			    col.innerHTML = idx+1;
 			    col2.innerHTML = obj.nama;
 			    col3.innerHTML = obj.qty;
-			    col4.innerHTML = obj.price;
-			    col5.innerHTML = obj.total;
+			    col4.innerHTML = "Rp. "+obj.price+",00";
+			    col5.innerHTML = "Rp. "+obj.total+",00";
 			    col6.innerHTML = "<button class='btn btn-xs btn-danger' name='delete' id='delete' onclick='showModalDelete("+(idx+1)+")' id='delete'><i class='material-icons' style='font-size:18px'>&#xe872;</i></button>"
 			    var table = document.getElementById("txtHint"); // find table to append to
       			table.appendChild(row); // append row to table
@@ -217,15 +224,19 @@ $(document).ready(function(){
 	})
 	$("#btn_confirm").click(function(){
 		var total = document.getElementById('grandTotal').innerHTML
-		var data = localStorage.getItem('temp_item')
-		console.log(total)
+		var data = JSON.stringify(localStorage.getItem('temp_item'))
 
 		$.ajax({
 			method: "POST",
 			url: "<?php echo base_url(); ?>csh/buy",
-			data: 'total=200000',
+			data: 'total='+total+'&data='+data,
 			success: function(classes){
+				console.log(classes)
 				$('#success').innerHTML = "Transaction has been added!"
+				$('#ConfirmModal').modal('hide')
+				localStorage.setItem('temp_item', "[]");
+				document.getElementById('txtHint').innerHTML = ''
+				document.getElementById('grandTotal').innerHTML = "Rp. 0,00"
 			},
 			error: function(xhr, status){
 				alert("Oops there is an error!")

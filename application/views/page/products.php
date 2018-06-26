@@ -22,7 +22,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php endforeach;
     ?>
 </head>
-<body>
+<body onload="<?php if($this->session->userdata('peran') == 1) { ?>load_unseen_notification_admin()<?php }
+    else{?> load_unseen_notification_toko()<?php }?>">
     <?php echo $header; 
     echo $menuheader;
     echo $sidebar;
@@ -42,3 +43,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
 </body>
 </html>
+<?php echo $js; ?>

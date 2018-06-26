@@ -44,7 +44,9 @@ class CashierController extends CI_Controller {
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		$data['book'] = $this->CashierModel->autocomplete();
 
 		$this->load->view('page/cashier/home', $data);
 	}
@@ -56,10 +58,11 @@ class CashierController extends CI_Controller {
 		$idx = $_POST['idx'];
 
 		$buku = $this->CashierModel->getBookDetail($kode);
-		$harga = $this->CashierModel->getPrice($kode, $id_toko);
+		$harga = $this->CashierModel->getPrice($buku['id_buku'], $id_toko);
 
 		$json_data = array(
 			"nomor" => $idx,
+			"id_buku" => $buku['id_buku'],
 			"nama" => $buku['nama_buku'],
 			"qty" => $quantity,
 			"total" => $quantity*$harga['harga_jual'],
@@ -69,32 +72,86 @@ class CashierController extends CI_Controller {
 
 	}
 	public function buy(){
+		date_default_timezone_set('Asia/Jakarta');
 		$id_toko = $this->session->userdata('id_toko');
 		$date = date("Y-m-d H:i:s");
 		$total = $_POST['total'];
-		$data = json_encode($_POST['data']);
+		$gt = substr($total, 4);
+		$gt_explode = explode(',', $gt);
 		
-		if(isset($_POST['buy'])){
-			$dataAddTranksaksi = array(
-				'id_toko' => $id_toko,
-				'tanggal' => $date,
-				'harga_total' => $total
+		$data = json_decode($_POST['data']);
+		$data2 = (array) json_decode($data);
+		
+		$dataAddTranksaksi = array(
+			'id_toko' => $id_toko,
+			'tanggal' => $date,
+			'harga_total' => $gt_explode[0]
+		);
+		
+		$this->CashierModel->addTransaction($dataAddTranksaksi);
+		
+		$id_transaksi = $this->CashierModel->getIdTransaksi($id_toko);
+		
+		$i = 0;
+		$dataAddDetail = [];
+		$dataStock = [];
+		foreach ($data2 as $row) {
+			$dt = (array) $row;
+			$dataAddDetail = array(
+				'id_transaksi' => $id_transaksi['id'],
+				'id_buku' => $dt['id_buku'],
+				'quantity' => $dt['qty'],
+				'harga_satuan' => $dt['price']
 			);
-			echo depth($data);
-			for($i = 0;$i<depth($data);$i++){
-				$dataAddDetail[$i] = array(
-					'id_transaksi' => '',
-					'id_buku' => '',
-					'quantity' => '',
-					'harga_satuan' => ''
-				);	
+			$this->CashierModel->addDetailTransaction($dataAddDetail);
+			$this->CashierModel->updateStock($dt['qty'], $id_toko, $dt['id_buku']);
+			$checkStock = (array) $this->CashierModel->getStockThreshold($id_toko, $dt['id_buku']);
+			
+			var_dump($checkStock);
+			
+			if(count($checkStock) > 0){
+				
+					$cs = (array) $checkStock;
+					$dataStock[$i] = array(
+						'id_toko' => $cs['id_toko'],
+						'nama_toko' => $cs['nama_toko'],
+						'email_toko' => $cs['email'],
+						'id_buku' => $cs['id_buku'],
+						'nama_buku' => $cs['nama_buku'],
+					);
+				
+				$i++;
 			}
-			var_dump($dataAddDetail);
-			$dataUpdate = [];
-
-			$this->CashierModel->addTransaction($dataAddTranksaksi);
-			$this->CashierModel->updateStock($dataUpdate);
 		}
+		
+		if(count($dataStock) > 0){
+			$toko = $this->CashierModel->getStoreUser($id_toko);
+			$pabrik = $this->CashierModel->getPabrikUser(1);
+			
+			$subject = "Book Stock is Below The Minimum Inventory";
+			$msg = "The book entitled ";
+			$j = 0;
+			foreach ($dataStock as $row3) {
+				if($j > 0){ 
+					if($j == count($dataStock) - 1) $msg .= " and "; 
+					else $msg .= ", ";
+				}
+				$msg .= "\"". $row3['nama_buku']."\"";
+				$j++;
+			}
+			$msg .= " at the \"". $toko['nama_toko']. "\" store reached the threshold\n\n\nBest Regards,\n\n\n".$toko['nama_toko'];
+			$dataNotif = array(
+				'notif_subject' => $subject,
+				'notif_msg' => $msg,
+				'notif_time' => $date,
+				'id_sender' => $toko['id_user'],
+				'id_receiver' => 1,
+				'flag' => 0,
+			);
+			$this->CashierModel->addNotif($dataNotif);
+			$this->sendEmail($toko['email'], $pabrik['email'], $toko['nama_toko'], $dataNotif);
+		}
+		
 	}
 
 	public function products(){
@@ -133,6 +190,7 @@ class CashierController extends CI_Controller {
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['js'] = $this->load->view('include/script', NULL, TRUE);
 		$data['style'] = $this->load->view('include/style', $data, TRUE);
 		$data['script'] = $this->load->view('include/js', $data, TRUE);
 
@@ -152,6 +210,7 @@ class CashierController extends CI_Controller {
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		$dtlist['list'] = $this->CashierModel->getAllNotif($id);
 		$dtdetail['detail'] = $this->CashierModel->getNotifDetail($id_notif);
@@ -200,16 +259,21 @@ class CashierController extends CI_Controller {
 		}
 	}
 
-	public function tes($from = 'saudarapenerbit@gmail.com', $to = 'duasaudarads2018@gmail.com'){
+	public function sendEmail($from, $to, $username, $data){
 		$this->load->helper('email');
+		
+		$pass = explode('@', $from);
+		$password = $pass[0]."$123";
+
 		if(valid_email($from) && valid_email($to)){
+			//email
 			$config = [
 	               'useragent' => 'CodeIgniter',
 	               'protocol'  => 'smtp',
 	               'mailpath'  => '/usr/sbin/sendmail',
 	               'smtp_host' => 'ssl://smtp.gmail.com',
-	               'smtp_user' => 'saudarapenerbit@gmail.com',   // Ganti dengan email gmail Anda.
-	               'smtp_pass' => 'saudara123',             // Password gmail Anda.
+	               'smtp_user' => $from,   // Ganti dengan email gmail Anda.
+	               'smtp_pass' => $password,             // Password gmail Anda.
 	               'smtp_port' => 465,
 	               'smtp_keepalive' => TRUE,
 	               'smtp_crypto' => 'SSL',
@@ -225,21 +289,30 @@ class CashierController extends CI_Controller {
 	        // Load library email dan konfigurasinya.
 	        $this->load->library('email', $config);
 
-			$this->email->from($from, 'Saudara Penerbit');
+			$this->email->from($from, $username);
 			$this->email->to($to);
-			$this->email->subject('Testing');
-			$this->email->message('Ini email buat test');
+			$this->email->subject($data['notif_subject']);
+			$this->email->message($data['notif_msg']);
 
 			if($this->email->send()){
-				echo "Email has been sent!";
+				$unseenNotif = getCountNotif();
+				//echo $unseenNotif
+				return "Email has been sent!";
 			}
 			else{
-				echo "Error! Email can not send";
+				return "Error! Email can not send";
 			}
+
+
 		}
 		else{
-			echo "Email doesn't valid!";
+			return "Email doesn't valid!";
 		}
+	}
+	public function getCountNotif(){
+		$id_user = $this->CashierModel->getStoreUser($this->session->userdata('id_toko'));
+		$unseenNotif = (array) $this->CashierModel->getUnseenNotif($id_user['id_user']);
+		return $unseenNotif;
 	}
 	
 }

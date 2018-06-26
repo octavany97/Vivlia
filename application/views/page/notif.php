@@ -5,7 +5,8 @@
 	<?php echo $css; ?>
 	<?php echo $js; ?>
 </head>
-<body>
+<body onload="<?php if($this->session->userdata('peran') == 1) { ?>load_unseen_notification_admin()<?php }
+	else{?> load_unseen_notification_toko()<?php }?>">
 	<?php echo $header; ?>
 	<?php echo $menuheader; ?>
 	<?php echo $sidebar; ?>
@@ -25,44 +26,4 @@
 	</div>
 </body>
 </html>
-
-<script>
-	function changeFlagAdmin(flag,id){
-		$.ajax({
-			method: "POST",
-			url: "<?php echo base_url() ?>adm/changeNotifFlag/",
-			data: 'flag='+flag+'&id_notif='+id,
-			success: function(classes){
-				$('#listNotif').empty().html(classes)		
-			},
-			error: function(xhr, status){
-				alert("Oops there is an error!")
-			}
-		})
-		$.ajax({
-			method: "POST",
-			url: "<?php echo base_url() ?>adm/changeNotifDetail/",
-			data: 'id_notif='+id,
-			success: function(classes){
-				$('#detailNotif').empty().html(classes)		
-			},
-			error: function(xhr, status){
-				alert("Oops there is an error!")
-			}
-		})
-	}
-
-	function changeFlagManager(flag,id){
-		$.ajax({
-			method: "POST",
-			url: "<?php echo base_url() ?>mgr/changeNotifFlag/",
-			data: 'flag='+flag+'&id_notif='+id,
-			success: function(classes){
-				$('#listNotif').empty().html(classes)		
-			},
-			error: function(xhr, status){
-				alert("Oops there is an error!")
-			}
-		})
-	}
-</script>
+<?php echo $script; ?>
