@@ -350,7 +350,8 @@ class AdminController extends CI_Controller {
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
-		
+		$data['username'] = $this->session->userdata('username');
+		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
 		$this->load->view('page/admin/editprofile', $data);
 	}
 }

@@ -107,6 +107,7 @@ class AdminModel extends CI_Model {
 	public function saveNotif($data){
 		$this->db->insert('notif', $data);
 	}
+
 	//lihat jumlah notif yang belum diputuskan
 	public function getUnseenNotif($id){
 		return $this->db->query("SELECT COUNT(*) AS total FROM notif WHERE id_receiver='$id' AND flag=0")->row_array();
@@ -116,6 +117,15 @@ class AdminModel extends CI_Model {
 	}
 	public function getPabrikUser($id){
 		return $this->db->query("SELECT p.id_penerbit, p.nama_penerbit, p.no_telp, p.email, u.id_user, u.username, u.id_toko FROM penerbit p, users u WHERE u.id_toko = p.id_penerbit AND u.id_toko='$id' AND u.peran = '1'")->row_array();
+
 	}
+	public function getinfouser($id){
+		$query = $this->db->query("SELECT u.username,p.nama_peran,t.email,t.nama_toko,u.ip_addr FROM users u, peran p, toko t WHERE u.peran = p.id_peran AND u.id_toko = t.id_toko AND u.id_user = '$id'");
+		return $query->row_array();
+
+	}
+	// public function save($id){
+	// 	$query = $this->db->query("UPDATE ")
+	// }
 }
 
