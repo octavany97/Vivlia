@@ -282,5 +282,18 @@ class AdminController extends CI_Controller {
 	public function receiveNotif(){
 
 	}
+
+	public function editProfile(){
+		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
+		$data = [];
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		
+		$this->load->view('page/admin/editprofile', $data);
+	}
 }
 

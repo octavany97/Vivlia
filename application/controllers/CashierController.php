@@ -48,14 +48,40 @@ class CashierController extends CI_Controller {
 
 		$this->load->view('page/cashier/home', $data);
 	}
+
+	public function addItem(){
+		$kode = $_POST['id'];
+		$quantity = $_POST['qty'];
+		$id_toko = $_POST['tokoid'];
+		$idx = $_POST['idx'];
+
+		$buku = $this->CashierModel->getBookDetail($kode);
+		$harga = $this->CashierModel->getPrice($kode, $id_toko);
+
+		$json_data = array(
+			"nomor" => $idx,
+			"nama" => $buku['nama_buku'],
+			"qty" => $quantity,
+			"total" => $quantity*$harga['harga_jual'],
+			"price" => $harga['harga_jual']
+		);
+		echo json_encode($json_data);
+
+	}
 	public function buy(){
+		$id_toko = $this->session->userdata('id_toko');
+		$date = date("Y-m-d H:i:s");
+		$total = $_POST['total'];
+		$data = json_encode($_POST['data']);
+		
 		if(isset($_POST['buy'])){
 			$dataAddTranksaksi = array(
-				'id_toko' => '',
-				'tanggal' => '',
-				'harga_total' => ''
+				'id_toko' => $id_toko,
+				'tanggal' => $date,
+				'harga_total' => $total
 			);
-			for($i = 0;$i<$_POST['qty'];$i++){
+			echo depth($data);
+			for($i = 0;$i<depth($data);$i++){
 				$dataAddDetail[$i] = array(
 					'id_transaksi' => '',
 					'id_buku' => '',
@@ -95,7 +121,6 @@ class CashierController extends CI_Controller {
 		$crud->unset_edit(); //buat hilangin tombol edit di action
 		$crud->unset_clone(); //buat hilangin tombol clone di action
 		$crud->unset_add();
-		
 		$crud->unset_print();
 
 
