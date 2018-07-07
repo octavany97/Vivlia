@@ -74,8 +74,65 @@ class ManagerModel extends CI_Model {
 		return intval($query["maks"]) + 1;
 	}
 
+
 	public function getBooks(){
 		$query = $this->db->query("SELECT * FROM buku")->result_array();
 		return $query;
 	}
+
+	//buat nyari yg paling laris
+	public function getBestSeller($id_toko){
+		$query = $this->db->query("SELECT t.id_toko, tk.nama_toko, b.id_buku, b.nama_buku, SUM(dt.quantity) AS total 
+			FROM detail_transaksi dt, buku b,transaksi t, toko tk
+			WHERE b.id_buku = dt.id_buku AND dt.id_transaksi = t.id_transaksi AND t.id_toko = tk.id_toko AND t.id_toko = '$id_toko' 
+			GROUP BY t.id_toko, dt.id_buku
+			ORDER BY total DESC
+			LIMIT 5");
+		return $query->result_array();
+	}
+
+	//buat nyari jumlah stock per genre di toko
+	public function getBookGenreStock($id_toko){
+		$query = $this->db->query("SELECT b.id_buku, b.nama_buku, gb.id_genre, g.nama, SUM(st.stok) AS total FROM buku b, genre_buku gb, genre g, stok_toko st WHERE b.id_buku = gb.id_buku AND g.id_genre = gb.id_genre AND b.id_buku = st.id_buku AND st.id_toko = '$id_toko' GROUP BY gb.id_genre");
+
+		return $query->result_array();
+	}
+
+
+	//buat nyari jumlah stock per buku di toko
+	public function getBookStock($id_toko){
+		$query = $this->db->query("SELECT b.id_buku, b.nama_buku, gb.id_genre, g.nama, st.stok FROM buku b, genre_buku gb, genre g, stok_toko st WHERE b.id_buku = gb.id_buku AND g.id_genre = gb.id_genre AND b.id_buku = st.id_buku AND st.id_toko ='$id_toko' GROUP BY gb.id_genre, b.id_buku");
+		return $query->result_array();
+	}
+
+	//buat dapetin nama toko
+	public function getStoreName($id){
+		return $this->db->query("SELECT nama_toko FROM toko WHERE id_toko = '$id'")->row_array();
+	}
+	/*public function getTransaksi($id_toko){
+		$query = $this->db->query("SELECT id_transaksi, harga_total
+			FROM transaksi
+			WHERE id_toko = '$id_toko'");
+		return $query->result_array();
+	}
+
+	public function getDetailTransaksi($id_toko){
+		$query = $this->db->query("SELECT dt.id_buku, dt.quantity, dt.harga_satuan
+			FROM detail_transaksi dt, transaksi t
+			WHERE dt.id_transaksi = t.id_transaksi AND t.id_toko = '$id_toko'");
+		return $query->result_array();
+	}*/
+
+	public function getPendapatan($id_toko, $month){
+		$query = $this->db->query("SELECT SUM(t.harga_total) - SUM(dt.harga_satuan * dt.quantity) AS pendapatan
+			FROM detail_transaksi dt, transaksi t
+			WHERE t.id_transaksi = dt.id_transaksi AND t.id_toko = '$id_toko' 
+			AND MONTH(t.tanggal) = '$month'")->row_array();
+		if($query['pendapatan'] == null)
+		return 0;
+		return intval($query['pendapatan']);
+		
+	}
+
+
 }

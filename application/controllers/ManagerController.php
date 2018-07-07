@@ -7,9 +7,9 @@ class ManagerController extends CI_Controller {
 		parent::__construct();
 		$this->load->model('LoginModel');
 		$this->load->model('ManagerModel');
-		/*$this->load->model('AdminModel');*/
+		/*$this->load->model('AdminModel');
 		
-		$this->load->model('CashierModel');
+		$this->load->model('CashierModel');*/
 		$this->load->library('session');
 		$this->load->library('email');
 	}
@@ -94,6 +94,35 @@ class ManagerController extends CI_Controller {
 		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		$data['timeline'] = $this->load->view('page/manager/timeline', $dttimeline, TRUE);
+
+		//buat best seller di toko
+		$dtbs['bestseller'] = $this->ManagerModel->getBestSeller($storeid);
+		$data['bestsellerbooks'] = $this->load->view('page/manager/bestsellerbooks', $dtbs, TRUE);
+
+		//buat pendapatan
+		$month = date('m')-0;
+		$dtpendapatan['month'] = $month;
+		for($i = 1; $i < $month; $i++){
+
+			$dtpendapatan['bulan'][$i] = $this->ManagerModel->getPendapatan($storeid, $i);
+		}
+		$data['pendapatan'] = $this->load->view('page/manager/pendapatan', $dtpendapatan, TRUE);
+
+		//buat stock
+		$dtstock['storename'] = $this->ManagerModel->getStoreName($storeid);
+		$dtstock['genres'] = $this->ManagerModel->getBookGenreStock($storeid);
+		$dtstock['books'] = $this->ManagerModel->getBookStock($storeid);
+		$data['stockbooks'] = $this->load->view('page/manager/stockbooks', $dtstock, TRUE);
+
+		/*$dtstock['storeid'] = $storeid;
+		$dtstock['roleid'] = $roleid;
+		if($roleid == 1){
+			$pn = $this->AdminModel->getPenerbitName($storeid);
+			$dtstock['penerbitname'] = $pn['nama_penerbit'];
+			$dtstock['stackchart'] = $this->AdminModel->getBookGenreStock();
+			$dtstock['stocks'] = $this->AdminModel->getBookStock();
+		} */
+
 		// $data['bookchart'] = $this->load->view('page/admin/bookchart',$dtbook, TRUE);
 
 		// $data['storechart'] = $this->load->view('page/admin/storechart', $dtstore, TRUE);
@@ -167,6 +196,9 @@ class ManagerController extends CI_Controller {
 		}
 		else{
 			$id_form = $this->input->post('id_form');
+			
+
+
 			redirect(base_url().'mgr/dashboard');
 		}
 	}
@@ -240,6 +272,7 @@ class ManagerController extends CI_Controller {
 			 ->set_relation_n_n('keterangan','buku','penerbit','id_buku','id_penerbit','keterangan','tahun_terbit')
 			 ->set_relation_n_n('cover','buku','penerbit','id_buku','id_penerbit','cover','cover')
 			 ->Where('stok_toko`.`id_toko', $this->session->userdata('id_toko'));
+		//$crud->unset_columns('id_toko');
 		// $crud->unset_delete(); //buat hilangin tombol delete di action
 		$crud->unset_edit(); //buat hilangin tombol edit di action
 		$crud->unset_clone(); //buat hilangin tombol clone di action

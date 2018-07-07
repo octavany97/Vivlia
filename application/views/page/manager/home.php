@@ -24,15 +24,17 @@
 			<div class="col-lg-4">
 				<?php echo $notifpanel; ?>
             </div>
+            <div class="col-lg-4">
+            	<?php echo $bestsellerbooks; ?>
+            </div>
 		</div>
 		<div class="row">
 			<div class="col-lg-8">
-				<!-- <?php echo $stockchart; ?> -->
-			</div>
+				 <?php echo $pendapatan; ?>
 		</div>
 		<div class="row">
 			<div class="col-lg-8">
-				<!-- <?php echo $storechart; ?> -->
+				 <?php echo $stockbooks; ?>
 			</div>
 		</div>
 	</div>

@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
 		</div>
 		<div class="row">
-			<form autocomplete="off" class="form-horizontal" method="POST" action="<?php echo base_url();?>index.php/ManagerController/form_request">
+			<form id="request" name="request" autocomplete="off" class="form-horizontal" method="POST" action="<?php echo base_url();?>index.php/ManagerController/form_request">
 			<fieldset>
 			<!-- Text input-->
 				<div class="form-group">
@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="form-group">
 				  <label class="col-md-3 control-label" for="product_name">Product Name</label>  
 				  <div class="col-md-3">
-					  <input id="product_name1" name="product_name1" type="text" placeholder="Product Name" class="form-control input-md" list="buku">
+					  <input id="product_name1" name="product_name1" type="text" placeholder="Product Name" class="form-control input-md" list="buku" >
 					  	<datalist id="buku">
 					  		<?php
 					  		foreach ($title as $row) {
@@ -47,10 +47,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				  </div>
 				  <label class="col-md-1 control-label" for="qty">Quantity</label>  
 				  <div class="col-md-2">
-				  	<input id="qty1" name="qty1" type="number" placeholder="Quantity" class="form-control input-md">
+				  	<input id="qty1" name="qty1" type="number" placeholder="Quantity" class="form-control input-md" >
 				  </div>
 				  <div class="input-group-btn">
-	            		<button class="btn btn-success" type="button"  onclick="product_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+	            		<button class="btn btn-success" type="button" onclick="product_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
 	          	  </div>
 				</div>
 
@@ -126,19 +126,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?php echo base_url().'assets/vendor/jquery/jquery-ui.js';?>"></script>
 <script type="text/javascript">
 	var room = 1;
+	function isEmpty(n){
+		for(var i = 1; i<=n; i++){
+			var product_name = document.getElementById("product_name" + i);
+			var qty = document.getElementById("qty" + i);
+			   
+			   if (product_name.value == "" || qty.value == "")
+			   {
+			      if (product_name.value == "")
+			      {
+			         product_name.focus();
+			         return true;
+			      }
+			      else
+			      {
+			         qty.focus();
+			         return true;
+			      }
+			   }
+		}
+		return false;
+	}
+
 	function product_fields() {
-	    room++;
-	    var objTo = document.getElementById('product_fields')
-	    var divtest = document.createElement("div");
-		divtest.setAttribute("class", "form-group removeclass"+room);
-		var rdiv = 'removeclass'+room;
-		divtest.innerHTML = '<label class="col-md-3 control-label" for="product_name">Product Name</label><div class="col-md-3"><input id="product_name'+room+'" list="buku" name="product_name'+room+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-2"><input id="qty'+room+'" name="qty'+room+'" type="number" placeholder="Quantity" class="form-control input-md" ></div><div class="input-group-btn"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
-	    objTo.appendChild(divtest)
+		if(!isEmpty(room)){
+		    room++;
+		    var objTo = document.getElementById('product_fields')
+		    var divtest = document.createElement("div");
+			divtest.setAttribute("class", "form-group removeclass"+room);
+			var rdiv = 'removeclass'+room;
+			divtest.innerHTML = '<label class="col-md-3 control-label" for="product_name">Product Name</label><div class="col-md-3"><input id="product_name'+room+'" list="buku" name="product_name'+room+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-2"><input id="qty'+room+'" name="qty'+room+'" type="number" placeholder="Quantity" class="form-control input-md" ></div><div class="input-group-btn"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
+		    objTo.appendChild(divtest)
+		}
 
 
 	}
    function remove_product_fields(rid) {
 	   $('.removeclass'+rid).remove();
+	   room--;
    }
 
    function renderAllItems(items){
