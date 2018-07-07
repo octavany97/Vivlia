@@ -350,9 +350,29 @@ class AdminController extends CI_Controller {
 		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
-		$data['username'] = $this->session->userdata('username');
+		//$data['username'] = $this->session->userdata('username');
 		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
 		$this->load->view('page/admin/editprofile', $data);
+	}
+
+	public function confirmProfile(){
+		$id = $this->session->userdata('id_user');
+		$idtoko = $this->session->userdata('id_toko');
+		$name = $this->input->post('id_form1');
+		$email = $this->input->post('id_form3');
+		$ipaddress = $this->input->post('id_form5');
+		
+		$values = array(
+			'username' => $name,
+			'ip_addr' => $ipaddress
+			
+		);
+		$toko = array(
+			'email' => $email
+		);
+		$this->AdminModel->updateProfile($values,$idtoko,$id,$toko);
+		
+		redirect(base_url().'adm/editprofile');
 	}
 }
 

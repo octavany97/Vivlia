@@ -127,5 +127,13 @@ class AdminModel extends CI_Model {
 	// public function save($id){
 	// 	$query = $this->db->query("UPDATE ")
 	// }
+
+	public function updateProfile($values,$id_toko,$id_user,$toko){
+		$this->db->where('id_user', $id_user);
+		$this->db->update('users', $values);
+
+		$this->db->where('id_toko',$id_toko);
+		$this->db->update('toko', $toko);
+	}
 }
 
