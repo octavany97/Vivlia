@@ -134,5 +134,14 @@ class ManagerModel extends CI_Model {
 		
 	}
 
+	public function validateProduct($isbn){
+		$query = $this->db->query("SELECT COUNT(*) as jumlah FROM buku WHERE isbn = '$isbn'")->row_array();
+		if(intval($query['jumlah']) == 0){
+			return FALSE;
+		}
+		else
+			return TRUE;
+	}
+
 
 }

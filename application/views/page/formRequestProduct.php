@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
 		</div>
 		<div class="row">
-			<form id="request" name="request" autocomplete="off" class="form-horizontal" method="POST" action="<?php echo base_url();?>index.php/ManagerController/form_request">
+			<form id="request" name="request" autocomplete="off" class="form-horizontal" method="POST" action="<?php echo base_url();?>index.php/ManagerController/form_request" enctype="multipart/form-data">
 			<fieldset>
 			<!-- Text input-->
 				<div class="form-group">
@@ -35,6 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				  <label class="col-md-3 control-label" for="product_name">Product Name</label>  
 				  <div class="col-md-3">
 					  <input id="product_name1" name="product_name1" type="text" placeholder="Product Name" class="form-control input-md" list="buku" >
+					  <label style="color: red;"><?php echo form_error('product_name1');?>
 					  	<datalist id="buku">
 					  		<?php
 					  		foreach ($title as $row) {
@@ -48,6 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				  <label class="col-md-1 control-label" for="qty">Quantity</label>  
 				  <div class="col-md-2">
 				  	<input id="qty1" name="qty1" type="number" placeholder="Quantity" class="form-control input-md" >
+				  	<label style="color: red;"><?php echo form_error('qty1');?></label>
 				  </div>
 				  <div class="input-group-btn">
 	            		<button class="btn btn-success" type="button" onclick="product_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>

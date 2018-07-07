@@ -188,13 +188,59 @@ class ManagerController extends CI_Controller {
 		$this->load->view('page/formRequestProduct', $data);
 	}
 
+	public function validate_qty($qty){
+		if($qty>0){
+	     return TRUE;
+	   	}
+	   	else
+	   	{
+	   	  return FALSE;
+	   	}
+	}
+
+	public function validate_product($isbn){
+		if($this->ManagerModel->validateProduct($isbn)){
+			return TRUE;
+		}
+		else
+			return FALSE;
+	}
+
 	//untuk autentikasi form request
 	public function form_request(){
+		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
+		$data = [];
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		$data['id_form'] = $this->ManagerModel->getFormID();
+		$data['title'] = $this->ManagerModel->getBooks();
 
 		if(isset($_POST['btnCancel'])){
 			redirect(base_url().'mgr/dashboard');
 		}
 		else{
+
+			$this->load->helper(array('url', 'form'));
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('product_name1', 'product_name1', 'callback_validate_product',
+            	array('validate_product' => '*Invalid product name!'));
+
+            $this->form_validation->set_rules('qty1', 'qty1', 'max_length[3]|callback_validate_qty',
+            	array('max_length' => '*Maximum number is 999!',
+            		'validate_qty' =>'*Minimum number is 1!'));
+
+            if ($this->form_validation->run() == FALSE)
+            {
+            	
+            	$this->load->view('page/formRequestProduct', $data);
+            	return;
+            }
+
 			$id_form = $this->input->post('id_form');
 			
 
