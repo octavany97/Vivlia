@@ -3,6 +3,7 @@
 <head>
 	<title></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<?php echo $css; ?>
 	<?php echo $js; ?>
 </head>
@@ -21,6 +22,7 @@
 		 	<h3><a href="#" style="position: absolute;padding-top: 1%; right: 100px; " class="fa fa-facebook"></a></h3>
 			<h3><a href="#" style="position: absolute;padding-top: 1%; right: 150px; " class="fa fa-twitter"></a></h3>
 			<h3><a href="#" style="position: absolute;padding-top: 1%; right: 200px; " class="fa fa-instagram"></a></h3>
+			<i onclick="ubahFoto()" class="material-icons">&#xe7fa;</i>
 		</div>
 
 			<!-- The Modal -->
@@ -51,45 +53,48 @@
 				    modal.style.display = "none";
 				}
 			</script> -->
-		<div class="form-group" style="padding-bottom: 30px;">
-			 <label class="col-md-3 control-label" for="name">Username</label>  
-			 <div class="col-md-9">
-		  		<input id="id_form1" name="id_form1" type="text" class="form-control input-md" value="<?php echo $user['username']?>" readonly>
-		  	 </div>
-		</div>
+			<form id="formprofile" method="post" action="<?php echo base_url();?>/AdminController/confirmProfile">
+				<div class="form-group" style="padding-bottom: 30px;">
+					 <label class="col-md-3 control-label" for="name">Username</label>  
+					 <div class="col-md-9">
+				  		<input id="id_form1" name="id_form1" type="text" class="form-control input-md" value="<?php echo $user['username']?>" readonly>
+				  	 </div>
+				</div>
 
-		<div class="form-group" style="padding-bottom: 30px;">
-			 <label class="col-md-3 control-label" for="name">Position</label>  
-			 <div class="col-md-9">
-		  		<input id="id_form2" name="id_form2" type="text" class="form-control input-md" value="<?php echo $user['nama_peran']?>" readonly>
-		  	 </div>
-		</div>
+				<div class="form-group" style="padding-bottom: 30px;">
+					 <label class="col-md-3 control-label" for="name">Position</label>  
+					 <div class="col-md-9">
+				  		<input id="id_form2" name="id_form2" type="text" class="form-control input-md" value="<?php echo $user['nama_peran']?>" readonly>
+				  	 </div>
+				</div>
 
-		<div class="form-group" style="padding-bottom: 30px;">
-			 <label class="col-md-3 control-label" for="name">Email</label>  
-			 <div class="col-md-9">
-		  		<input id="id_form3" name="id_form3" type="text" class="form-control input-md" value="<?php echo $user['email']?>" readonly>
-		  	 </div>
-		</div>
+				<div class="form-group" style="padding-bottom: 30px;">
+					 <label class="col-md-3 control-label" for="name">Email</label>  
+					 <div class="col-md-9">
+				  		<input id="id_form3" name="id_form3" type="text" class="form-control input-md" value="<?php echo $user['email']?>" readonly>
+				  	 </div>
+				</div>
 
-		<div class="form-group" style="padding-bottom: 30px;">
-			 <label class="col-md-3 control-label" for="name">Nama toko</label>  
-			 <div class="col-md-9">
-		  		<input id="id_form4" name="id_form2" type="text" class="form-control input-md" value="<?php echo $user['nama_toko']?>" readonly>
-		  	 </div>
-		</div>
+				<div class="form-group" style="padding-bottom: 30px;">
+					 <label class="col-md-3 control-label" for="name">Nama toko</label>  
+					 <div class="col-md-9">
+				  		<input id="id_form4" name="id_form4" type="text" class="form-control input-md" value="<?php echo $user['nama_toko']?>" readonly>
+				  	 </div>
+				</div>
 
-		<div class="form-group" style="padding-bottom: 30px;">
-			 <label class="col-md-3 control-label" for="name">IP address</label>  
-			 <div class="col-md-9">
-		  		<input id="id_form5" name="id_form3" type="text" class="form-control input-md" value="<?php echo $user['ip_addr']?>" readonly>
-		  	 </div>
-		</div>
+				<div class="form-group" style="padding-bottom: 30px;">
+					 <label class="col-md-3 control-label" for="name">IP address</label>  
+					 <div class="col-md-9">
+				  		<input id="id_form5" name="id_form5" type="text" class="form-control input-md" value="<?php echo $user['ip_addr']?>" readonly>
+				  	 </div>
+				</div>
 
-		<div class="form-group" id="btn-area">		
-			<button type="button" onclick="removeAlignment()" id="btnedit" class="btn btn-primary" name="btnedit">Edit</button>
-<!-- 				<button type="button"  class="btn btn-warning" name="btnCancel">Cancel</button> -->
-			</div>
+				<div class="form-group" id="btn-area">		
+					<button type="button" onclick="removeAlignment()" id="btnedit" class="btn btn-primary" name="btnedit">Edit</button>
+		<!-- 				<button type="button"  class="btn btn-warning" name="btnCancel">Cancel</button> -->
+					</div>
+			</form>
+	
 		</div>
 			
 		
@@ -99,23 +104,28 @@
    		 var read1 = document.getElementById("id_form1").removeAttribute("readonly",0);
    		 // var read2 = document.getElementById("id_form2").removeAttribute("readonly",0);
    		 var read3 = document.getElementById("id_form3").removeAttribute("readonly",0);
-   		 var read4 = document.getElementById("id_form4").removeAttribute("readonly",0);
+   		 // var read4 = document.getElementById("id_form4").removeAttribute("readonly",0);
   		 var read5 = document.getElementById("id_form5").removeAttribute("readonly",0);
   		 document.getElementById('btn-area').innerHTML = '';
-  		 document.getElementById('btn-area').innerHTML = '<button type="button" onclick="save()" id="btnsave" class="btn btn-primary" name="btnsave">Apply</button><button type="button" onclick="cancel()"  class="btn btn-danger" name="btnCancel">Cancel</button></div>';
+  		 document.getElementById('btn-area').innerHTML = '<button type="submit"  id="btnsave" class="btn btn-primary" name="btnsave">Apply</button><button type="button" onclick="cancel()"  class="btn btn-danger" name="btnCancel">Cancel</button></div>';
   		 console.log("btn edit")
   	  }
   	  function cancel(){
   	  	 var read1 = document.getElementById("id_form1").setAttribute("readonly",1);
    		 // var read2 = document.getElementById("id_form2").removeAttribute("readonly",0);
    		 var read3 = document.getElementById("id_form3").setAttribute("readonly",1);
-   		 var read4 = document.getElementById("id_form4").setAttribute("readonly",1);
+   		 // var read4 = document.getElementById("id_form4").setAttribute("readonly",1);
   		 var read5 = document.getElementById("id_form5").setAttribute("readonly",1);
   		 document.getElementById('btn-area').innerHTML = '';
   		 document.getElementById('btn-area').innerHTML = '<button type="button" onclick="removeAlignment()" id="btnedit" class="btn btn-primary" name="btnedit">Edit</button>';
   		 console.log("btn cancel")
+  	  }	
+  	  // function apply(){
+  	  // 	var read`
+  	  // }
+  	  function ubahFoto(){
+
   	  }
-  	
   	</script>			
 
 </body>
