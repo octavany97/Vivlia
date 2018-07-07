@@ -5,7 +5,7 @@
             url:"<?php echo base_url();?>adm/getCountNotif",
             method:"POST",
             success:function(data){
-                $('.count').html(data)
+                if(data > 0) $('.count').html(data)
             },
             error: function(xhr, status){
                 alert("Oops there is an error!")
@@ -17,7 +17,8 @@
             url:"<?php echo base_url();?>csh/getCountNotif",
             method:"POST",
             success:function(data){
-                $('.count').html(data)
+                if(data > 0) $('.count').html(data)
+                console.log(data)
             },
             error: function(xhr, status){
                 alert("Oops there is an error!")

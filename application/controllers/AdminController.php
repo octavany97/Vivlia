@@ -151,7 +151,8 @@ class AdminController extends CI_Controller {
 			 ->set_field_upload('cover','assets/uploads/buku');
 			 	// ->callback_edit_field('keterangan',array($this,'edit_description'))
 			 	// ->callback_add_field('keterangan',array($this,'add_description'));
-		$crud->set_relation('id_penerbit', 'penerbit', 'nama_penerbit');
+		$crud->set_relation('id_penerbit', 'penerbit', 'nama_penerbit')
+			->set_relation('penulis','penulis','nama_penulis');
 		$crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
 		$crud->set_relation_n_n('nama', 'genre_buku', 'genre', 'id_buku','id_genre','nama');
 		$crud->required_fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover');
@@ -215,13 +216,52 @@ class AdminController extends CI_Controller {
 		if(isset($_POST['flag'])){
 			$flag = $_POST['flag'];
 		}
-		// else $flag = 0;
-		//$flag = 2;
+		
+
 		if($flag == 2){
-			$this->sendEmail($from, $to, $username, $data);
+			var_dump($flag);
+			date_default_timezone_set('Asia/Jakarta');
+			$id_toko = $this->session->userdata('id_toko');
+			$date = date("Y-m-d H:i:s");
+			var_dump($id_notif);
+			$notif_item = (array) $this->AdminModel->getNotifItem($id_notif);
+			var_dump($notif_item);
+			$dataStockNotif = [];
+			if(count($notif_item) > 0){
+				$toko = $this->AdminModel->getStoreUser($id_toko);
+				$pabrik = $this->AdminModel->getPabrikUser(1);
+				
+				$subject = "Your Book Stock is Below The Minimum Inventory";
+				$msg = "Do you mind if I send ";
+				$j = 0;
+				foreach ($notif_item as $row3) {
+					if($j > 0){ 
+						if($j == count($notif_item) - 1) $msg .= " and "; 
+						else $msg .= ", ";
+					}
+					$msg .= floor($row3['banyak'])." books titled \"". $row3['nama_buku']."\"";
+					$j++;
+				}
+				$msg .= "?\\n\\n\\nBest Regards,\\n\\n\\n".$pabrik['nama_penerbit'];
+				$dataNotif = array(
+					'notif_subject' => $subject,
+					'notif_msg' => $msg,
+					'notif_time' => $date,
+					'id_sender' => $pabrik['id_user'],
+					'id_receiver' => $toko['id_user'],
+					'flag' => 0,
+				);
+				//$this->AdminModel->addNotif($dataNotif);
+				var_dump($pabrik);
+				var_dump($toko);
+				var_dump($dataNotif);
+				$this->sendEmail($pabrik['email'], $toko['email'], $pabrik['nama_penerbit'], $dataNotif);
+			}
+				
 		}
+		
 		$id = $this->session->userdata('id_user');
-		$this->AdminModel->updateNotifFlag($flag, $id_notif);
+		//$this->AdminModel->updateNotifFlag($flag, $id_notif);
 
 		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
 		$this->load->view('page/admin/listnotification',$dtlist);
@@ -267,31 +307,25 @@ class AdminController extends CI_Controller {
 		
 		$this->load->view('page/tes', $data);
 	}
-	//ketika mengirim notif
-	public function sendNotif(){
-		$msg = '';
-		$time = date('y-m-d H:i:s');
-		$idsender = $this->session->userdata('id_user');
-		$idreceiver = 2;
-
-
-		$data = array(
-			'notif_msg' => '$msg',
-			'notif_time' => '$time',
-			'id_sender' => '$idsender',
-			'id_receiver' => '$idreceiver',
-			'flag' => 'false'
-		);
-		$this->AdminModel->saveNotif($data);
-	}
+	
 	public function sendEmail($from, $to, $username, $data){
 		$this->load->helper('email');
+		$this->load->library('email');
 		
 		$pass = explode('@', $from);
 		$password = $pass[0]."$123";
-
+		var_dump($password);
+		var_dump($from);
+		var_dump($to);
 		if(valid_email($from) && valid_email($to)){
 			//email
+			// $config = array(
+			// 	'charset' => 'utf-8',
+			// 	'wordwrap' => TRUE,
+			// 	'mailtype' => 'html'
+			// );
+			// $this->email->initialize($config);
+
 			$config = [
 	               'useragent' => 'CodeIgniter',
 	               'protocol'  => 'smtp',
@@ -320,18 +354,17 @@ class AdminController extends CI_Controller {
 			$this->email->message($data['notif_msg']);
 
 			if($this->email->send()){
-				$unseenNotif = getCountNotif();
-				//echo $unseenNotif
-				return "Email has been sent!";
+				echo "Email has been sent!";
 			}
 			else{
-				return "Error! Email can not send";
+				echo $this->email->print_debugger();
+				//echo "Error! Email can not send";
 			}
 
 
 		}
 		else{
-			return "Email doesn't valid!";
+			echo "Email doesn't valid!";
 		}
 	}
 	//dapat notif dari toko kalau stoknya sudah sampai batas minimum atau toko request buku

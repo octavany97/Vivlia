@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<title>Vivlia</title>
 	<?php echo $css; ?>
 </head>
-<body>
+<body onload="initialize()">
 	<?php echo $header; ?>
 	<?php echo $menuheader; ?>
 	<?php echo $sidebar; ?>	
@@ -24,44 +24,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<form autocomplete="off" class="form-horizontal" method="POST" action="<?php echo base_url();?>index.php/ManagerController/form_request">
 			<fieldset>
 			<!-- Text input-->
-			<div class="form-group">
-			  <label class="col-md-3 control-label" for="name">Form Request ID</label>  
-			  <div class="col-md-6">
-			  	<input id="id_form" name="id_form" type="text" class="form-control input-md" value="<?php echo $id_form;?>" disabled>
-			  </div>
-			</div>
-			<!-- Text input-->
-			<div class="form-group">
-			  <label class="col-md-3 control-label" for="product_name">Product Name</label>  
-			  <div class="col-md-3">
-			  <input id="product_name" name="product_name" type="text" placeholder="Product Name" class="form-control input-md">
-			  </div>
-			  <label class="col-md-1 control-label" for="qty">Quantity</label>  
-			  <div class="col-md-2">
-			  <input id="qty" name="qty" type="number" placeholder="Quantity" class="form-control input-md">
-			  </div>
-			  <div class="input-group-btn">
-            		<button class="btn btn-success" type="button"  onclick="product_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
-          	  </div>
-			</div>
+				<div class="form-group">
+				  <label class="col-md-3 control-label" for="name">Form Request ID</label>  
+				  <div class="col-md-6">
+				  	<input id="id_form" name="id_form" type="text" class="form-control input-md" value="<?php echo $id_form;?>" disabled>
+				  </div>
+				</div>
+				<!-- Text input-->
+				<div class="form-group">
+				  <label class="col-md-3 control-label" for="product_name">Product Name</label>  
+				  <div class="col-md-3">
+					  <input id="product_name1" name="product_name1" type="text" placeholder="Product Name" class="form-control input-md" list="buku">
+					  	<datalist id="buku">
+					  		<?php
+					  		foreach ($title as $row) {
+				  			?>
+								<option value="<?php echo $row['isbn']; ?>"><?php echo $row['nama_buku']; ?></option>
+							<?php
+					  		}
+					  		?>
+					  	</datalist>
+				  </div>
+				  <label class="col-md-1 control-label" for="qty">Quantity</label>  
+				  <div class="col-md-2">
+				  	<input id="qty1" name="qty1" type="number" placeholder="Quantity" class="form-control input-md">
+				  </div>
+				  <div class="input-group-btn">
+	            		<button class="btn btn-success" type="button"  onclick="product_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+	          	  </div>
+				</div>
 
-			<!-- buat product klo nambah -->
-			<div id="product_fields">
-			</div>
+				<!-- buat product klo nambah -->
+				<div id="product_fields">
+				</div>
 
-			<!-- Text input-->
-			<div class="form-group">
-			  <label class="col-md-3 control-label" for="description">Description</label>  
-			  <div class="col-md-6">
-			  <textarea id="description" name="description" type="text" placeholder="Description" class="form-control input-md">
-			  </textarea> 
-			  </div>
-			</div>
+				<!-- Text input-->
+				<div class="form-group">
+				  <label class="col-md-3 control-label" for="description">Description</label>  
+				  <div class="col-md-6">
+				  <textarea id="description" name="description" type="text" placeholder="Description" class="form-control input-md">
+				  </textarea> 
+				  </div>
+				</div>
 
-			<div class="form-group">
-				<button type="button" onclick="showModalRequest()" class="btn btn-primary" name="btnRequest">Request</button>
-				<button type="button" onclick="showModalCancel()" class="btn btn-warning" name="btnCancel">Cancel</button>
-			</div>
+				<div class="form-group" style="text-align: center;">
+					<button type="button" onclick="showModalRequest()" class="btn btn-primary" name="btnRequest">Request</button>
+					<button type="button" onclick="showModalCancel()" class="btn btn-danger" name="btnCancel">Cancel</button>
+				</div>
 			</fieldset>
 
 			<!-- start modal cancel -->
@@ -108,28 +117,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </body>
 <?php echo $js; ?>
 <?php 
-				$array = array();
-				foreach ($title as $res) {
-					$array[] = $res['nama_buku'];
-				}
-				echo '<script> var array = '.json_encode($array).';</script>';
-			?>
+	$array = array();
+	foreach ($title as $res) {
+		$array[] = $res['nama_buku'];
+	}
+	echo '<script> var array = '.json_encode($array).';</script>';
+?>
 <script src="<?php echo base_url().'assets/vendor/jquery/jquery-ui.js';?>"></script>
 <script type="text/javascript">
 	var room = 1;
 	function product_fields() {
-	 
 	    room++;
 	    var objTo = document.getElementById('product_fields')
 	    var divtest = document.createElement("div");
 		divtest.setAttribute("class", "form-group removeclass"+room);
 		var rdiv = 'removeclass'+room;
-		divtest.innerHTML = '<label class="col-md-3 control-label" for="product_name">Product Name</label><div class="col-md-3"><input id="product_name'+room+'" onfocus="addAutocomplete('+room+')" name="product_name'+room+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-2"><input id="qty'+room+'" name="qty'+room+'" type="number" placeholder="Quantity" class="form-control input-md" ></div><div class="input-group-btn"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
+		divtest.innerHTML = '<label class="col-md-3 control-label" for="product_name">Product Name</label><div class="col-md-3"><input id="product_name'+room+'" list="buku" name="product_name'+room+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-2"><input id="qty'+room+'" name="qty'+room+'" type="number" placeholder="Quantity" class="form-control input-md" ></div><div class="input-group-btn"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
 	    objTo.appendChild(divtest)
+
+
 	}
    function remove_product_fields(rid) {
 	   $('.removeclass'+rid).remove();
    }
+
+   function renderAllItems(items){
+		item = JSON.parse(JSON.stringify(items));
+		
+		for (var i = 1; i <= items.length - 1; i++) {
+			var objTo = document.getElementById('product_fields')
+			var divtest = document.createElement("div")
+			divtest.setAttribute("class", "form-group removeclass"+room);
+			var rdiv = 'removeclass'+room;
+			divtest.innerHTML = '<label class="col-md-3 control-label" for="product_name">Product Name</label><div class="col-md-3"><input id="product_name'+room+'" list="buku" name="product_name'+room+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-2"><input id="qty'+room+'" name="qty'+room+'" type="number" placeholder="Quantity" class="form-control input-md" ></div><div class="input-group-btn"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
+		}
+	}
+	function initialize(){
+		let items = localStorage.getItem("product_request");
+		if(items == null){
+			var data = {}
+			localStorage.setItem("product_request", JSON.stringify(data))
+
+			items = localStorage.getItem("product_request")
+		}
+		items = JSON.parse(items)
+
+		renderAllItems(items)
+		document.getElementById('description').innerHTML = ''
+	}
 
    function showModalCancel(){
    		$('#cancelModal').modal({
@@ -146,7 +181,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
    }
 </script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
@@ -246,9 +281,9 @@ document.addEventListener("click", function (e) {
 
 </script>
  <script>
- autocomplete(document.getElementById("product_name"), array);
+ autocomplete(document.getElementById("product_name1"), array);
  function addAutocomplete(id){
  	autocomplete(document.getElementById("product_name"+id), array)
  }
-</script> 
+</script>  -->
 </html>

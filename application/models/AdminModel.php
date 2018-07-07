@@ -96,15 +96,20 @@ class AdminModel extends CI_Model {
 		return $query->row_array();
 	}
 
+	public function getNotifItem($id_notif){
+		$query = $this->db->query("SELECT n.id_notif, ni.id_buku, b.nama_buku, ni.jumlah, (SELECT ((MAX(n2.notif_time)-MAX(hp.tanggal_kirim)))/(60*60*24*30*(DATE_FORMAT(NOW(), '%Y')-bk.tahun_terbit+1)) FROM histori_pengiriman hp, notif_item ni2, buku bk, notif n2 WHERE hp.id_buku = bk.id_buku AND ni2.id_buku = bk.id_buku AND hp.id_buku = ni2.id_buku AND hp.id_penerbit = (SELECT DISTINCT id_penerbit FROM penerbit p, notif, users u WHERE u.id_user = notif.id_sender AND u.id_toko = p.id_penerbit AND u.peran = 1) AND ni2.id_notif = n2.id_notif AND n2.id_notif = ni.id_notif) AS banyak
+			FROM notif n, notif_item ni, buku b
+			WHERE n.id_notif = ni.id_notif AND b.id_buku = ni.id_buku AND ni.id_notif = '$id_notif'");
+		return $query->result_array();
+	}
 	//ganti flag notif
 	public function updateNotifFlag($flag,$id_notif){
 		$data = array('flag' => $flag );
 		$this->db->where('id_notif', $id_notif);
 		$this->db->update('notif', $data);
 	}
-
 	//notifikasi
-	public function saveNotif($data){
+	public function addNotif($data){
 		$this->db->insert('notif', $data);
 	}
 

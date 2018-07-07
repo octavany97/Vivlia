@@ -35,6 +35,7 @@ class CashierModel extends CI_Model {
 		$this->db->insert('notif', $data);
 	}
 	public function getUnseenNotif($id){
+		
 		return $this->db->query("SELECT COUNT(*) FROM notif WHERE id_receiver='$id' AND flag=0")->result_array();
 	}
 	//autocomplete buku tp ga jalan

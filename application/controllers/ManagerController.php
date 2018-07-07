@@ -7,9 +7,9 @@ class ManagerController extends CI_Controller {
 		parent::__construct();
 		$this->load->model('LoginModel');
 		$this->load->model('ManagerModel');
-		/*$this->load->model('AdminModel');
+		/*$this->load->model('AdminModel');*/
 		
-		$this->load->model('CashierModel');*/
+		$this->load->model('CashierModel');
 		$this->load->library('session');
 		$this->load->library('email');
 	}
@@ -167,9 +167,6 @@ class ManagerController extends CI_Controller {
 		}
 		else{
 			$id_form = $this->input->post('id_form');
-			
-
-
 			redirect(base_url().'mgr/dashboard');
 		}
 	}
@@ -222,24 +219,27 @@ class ManagerController extends CI_Controller {
 		$this->load->library('grocery_CRUD');
 		$crud = new grocery_CRUD();
 		$crud->set_theme('datatables');
-		$crud->Where('id_toko', $this->session->userdata('id_user'));
-		$crud->set_table('stok_toko')
-			 ->columns('id_buku','stok_buku','harga_jual')
-		     ->display_as('id_buku','Nama buku')
-		//      ->display_as('id_penerbit','Nama penerbit')
-		     ->fields('id_buku','stok_buku','harga_jual');
-		// 	 ->set_field_upload('cover','assets/uploads/buku');
-		// 	 	// ->callback_edit_field('keterangan',array($this,'edit_description'))
-		// 	 	// ->callback_add_field('keterangan',array($this,'add_description'));
-		// $crud->set_relation_n_n('Toko', 'stok_toko','stok_toko', 'id_toko', 'id_buku','modal');
-		// // //$crud->set_relation('id_buku','stok_toko','stok_buku');
-		// $crud->set_relation('id_penerbit', 'penerbit', 'nama_penerbit');
-		$crud->set_relation('id_buku','buku','nama_buku',NULL, 'modal ASC');
-		$crud->field_type('id_toko', 'hidden');
 	
-		// $crud->set_relation('modal','buku','modal');
-		// $crud->set_relation('id_buku','buku','harga_modal');
-		$crud->unset_columns('id_toko');
+		$crud->set_table('stok_toko')
+			 ->set_primary_key('id_buku')
+			 ->columns('id_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover','harga_jual')
+			 ->fields('id_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover','harga_jual')
+			 ->display_as('isbn','ISBN')
+			 ->display_as('id_buku','Nama buku')
+			 ->display_as('id_toko','Nama toko')
+			 ->display_as('id_penerbit','Nama penerbit')
+		     ->set_field_upload('cover','assets/uploads/buku')
+			 ->unset_columns('id_toko', 'cover', 'keterangan', 'isbn','banyak_halaman','tahun_terbit')
+			 ->set_relation('id_buku','buku','nama_buku')
+			 ->set_relation('id_toko','toko','nama_toko')
+			 ->set_relation_n_n('penulis','buku','penulis','id_buku','penulis','nama_penulis')
+			 ->set_relation_n_n('tahun_terbit','buku','penerbit','id_buku','id_penerbit','tahun_terbit','tahun_terbit')
+			 ->set_relation_n_n('isbn','buku','penerbit','id_buku','id_penerbit','isbn','tahun_terbit')
+			 ->set_relation_n_n('banyak_halaman','buku','penerbit','id_buku','id_penerbit','banyak_halaman','tahun_terbit')
+			 ->set_relation_n_n('id_penerbit','buku','penerbit','id_buku','id_penerbit','nama_penerbit')
+			 ->set_relation_n_n('keterangan','buku','penerbit','id_buku','id_penerbit','keterangan','tahun_terbit')
+			 ->set_relation_n_n('cover','buku','penerbit','id_buku','id_penerbit','cover','cover')
+			 ->Where('stok_toko`.`id_toko', $this->session->userdata('id_toko'));
 		// $crud->unset_delete(); //buat hilangin tombol delete di action
 		$crud->unset_edit(); //buat hilangin tombol edit di action
 		$crud->unset_clone(); //buat hilangin tombol clone di action

@@ -6,8 +6,8 @@ class CashierController extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('LoginModel');
-		$this->load->model('AdminModel');
-		$this->load->model('ManagerModel');
+		// $this->load->model('AdminModel');
+		// $this->load->model('ManagerModel');
 		$this->load->model('CashierModel');
 		$this->load->library('session');
 	}
@@ -107,18 +107,15 @@ class CashierController extends CI_Controller {
 			$this->CashierModel->updateStock($dt['qty'], $id_toko, $dt['id_buku']);
 			$checkStock = (array) $this->CashierModel->getStockThreshold($id_toko, $dt['id_buku']);
 			
-			var_dump($checkStock);
-			
 			if(count($checkStock) > 0){
-				
-					$cs = (array) $checkStock;
-					$dataStock[$i] = array(
-						'id_toko' => $cs['id_toko'],
-						'nama_toko' => $cs['nama_toko'],
-						'email_toko' => $cs['email'],
-						'id_buku' => $cs['id_buku'],
-						'nama_buku' => $cs['nama_buku'],
-					);
+				$cs = (array) $checkStock;
+				$dataStock[$i] = array(
+					'id_toko' => $cs['id_toko'],
+					'nama_toko' => $cs['nama_toko'],
+					'email_toko' => $cs['email'],
+					'id_buku' => $cs['id_buku'],
+					'nama_buku' => $cs['nama_buku'],
+				);
 				
 				$i++;
 			}
@@ -139,7 +136,7 @@ class CashierController extends CI_Controller {
 				$msg .= "\"". $row3['nama_buku']."\"";
 				$j++;
 			}
-			$msg .= " at the \"". $toko['nama_toko']. "\" store reached the threshold\n\n\nBest Regards,\n\n\n".$toko['nama_toko'];
+			$msg .= " at the \"". $toko['nama_toko']. "\" store reached the threshold\\n\\n\\nBest Regards,\n\n\n".$toko['nama_toko'];
 			$dataNotif = array(
 				'notif_subject' => $subject,
 				'notif_msg' => $msg,
@@ -159,21 +156,28 @@ class CashierController extends CI_Controller {
 		$this->load->library('grocery_CRUD');
 		$crud = new grocery_CRUD();
 		$crud->set_theme('datatables');
-		// $crud->field_type('modal','hidden');
-		// $crud->field_type('id_toko','hidden');
-		$crud->Where('id_toko', $this->session->userdata('id_toko'));
-		$crud->set_table('stok_toko', 'buku')
+	
+		$crud->set_table('stok_toko')
+			 ->set_primary_key('id_buku')
+			 ->columns('id_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover','harga_jual')
+			 ->fields('id_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover','harga_jual')
+			 ->display_as('isbn','ISBN')
 			 ->display_as('id_buku','Nama buku')
-			 ->display_as('id_buku', 'Haha');
-			 // ->columns('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover')
-		  //    ->display_as('coverlink','Cover')
-		  //    // ->fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover')
-			 // ->set_field_upload('cover','assets/uploads/buku');
-			 	// ->callback_edit_field('keterangan',array($this,'edit_description'))
-			 	// ->callback_add_field('keterangan',array($this,'add_description'));
-		// $crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
-		$crud->unset_columns('id_toko');
-		$crud->set_relation('id_buku','buku','nama_buku');
+			 ->display_as('id_toko','Nama toko')
+			 ->display_as('id_penerbit','Nama penerbit')
+		     ->set_field_upload('cover','assets/uploads/buku')
+			 ->unset_columns('id_toko', 'cover', 'keterangan', 'isbn','banyak_halaman','tahun_terbit')
+			 ->set_relation('id_buku','buku','nama_buku')
+			 ->set_relation('id_toko','toko','nama_toko')
+			 ->set_relation_n_n('penulis','buku','penulis','id_buku','penulis','nama_penulis')
+			 ->set_relation_n_n('tahun_terbit','buku','penerbit','id_buku','id_penerbit','tahun_terbit','tahun_terbit')
+			 ->set_relation_n_n('isbn','buku','penerbit','id_buku','id_penerbit','isbn','tahun_terbit')
+			 ->set_relation_n_n('banyak_halaman','buku','penerbit','id_buku','id_penerbit','banyak_halaman','tahun_terbit')
+			 ->set_relation_n_n('id_penerbit','buku','penerbit','id_buku','id_penerbit','nama_penerbit')
+			 ->set_relation_n_n('keterangan','buku','penerbit','id_buku','id_penerbit','keterangan','tahun_terbit')
+			 ->set_relation_n_n('cover','buku','penerbit','id_buku','id_penerbit','cover','cover')
+			 ->Where('stok_toko`.`id_toko', $this->session->userdata('id_toko'));
+			 
 		$crud->unset_delete(); //buat hilangin tombol delete di action
 		$crud->unset_edit(); //buat hilangin tombol edit di action
 		$crud->unset_clone(); //buat hilangin tombol clone di action
@@ -196,6 +200,12 @@ class CashierController extends CI_Controller {
 
 		$this->load->view('page/products', $data);
 	}
+	// public function getPenerbit($data, $primary_key){
+	// 	var_dump($data);
+	// 	var_dump($primary_key);
+
+	// 	//$result = $this->CashierModel->getPenerbitName($primary_key);
+	// }
 
 	public function notifications(){
 		if($this->uri->segment('3') != NULL){
@@ -295,7 +305,7 @@ class CashierController extends CI_Controller {
 			$this->email->message($data['notif_msg']);
 
 			if($this->email->send()){
-				$unseenNotif = getCountNotif();
+				//$unseenNotif = getCountNotif();
 				//echo $unseenNotif
 				return "Email has been sent!";
 			}
@@ -311,6 +321,7 @@ class CashierController extends CI_Controller {
 	}
 	public function getCountNotif(){
 		$id_user = $this->CashierModel->getStoreUser($this->session->userdata('id_toko'));
+		var_dump($id_user);
 		$unseenNotif = (array) $this->CashierModel->getUnseenNotif($id_user['id_user']);
 		return $unseenNotif;
 	}

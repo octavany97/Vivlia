@@ -69,10 +69,9 @@ class ManagerModel extends CI_Model {
 
 	//buat dapetin banyak baris, id nya di + 1
 	public function getFormID(){
-		$query = $this->db->query("SELECT COUNT(*) FROM form_manager")->row_array();
-		//var_dump(intval($query["COUNT(*)"]));
-		//die();
-		return intval($query["COUNT(*)"]) + 1;
+		$query = $this->db->query("SELECT MAX(id_form) AS maks FROM form_manager")->row_array();
+		
+		return intval($query["maks"]) + 1;
 	}
 
 	public function getBooks(){
