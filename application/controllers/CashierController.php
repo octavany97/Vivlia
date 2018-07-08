@@ -36,7 +36,25 @@ class CashierController extends CI_Controller {
 
 		$this->load->view('page/login', $data);
 	}
+
+	//cegah direct url
+	public function authenticationuser(){
+		$userid = $this->session->userdata('id_user');
+		$roleid = $this->session->userdata('peran');
+
+		if(empty($roleid) || empty($userid)){
+			redirect(base_url());
+		}
+		else if(!empty($userid) && $roleid != 3){
+			if($roleid == 2)
+				redirect(base_url().'mgr/dashboard');
+			else if($roleid == 1)
+				redirect(base_url().'adm/dashboard');
+		}
+	}
+
 	public function dashboard(){
+		$this->authenticationuser();
 		$id = $this->session->userdata('id_toko');
 		$dtlist['list'] = $this->CashierModel->getAllNotif($id);
 		$data = [];
@@ -52,6 +70,7 @@ class CashierController extends CI_Controller {
 	}
 
 	public function addItem(){
+		$this->authenticationuser();
 		$kode = $_POST['id'];
 		$quantity = $_POST['qty'];
 		$id_toko = $_POST['tokoid'];
@@ -72,6 +91,7 @@ class CashierController extends CI_Controller {
 
 	}
 	public function buy(){
+		$this->authenticationuser();
 		date_default_timezone_set('Asia/Jakarta');
 		$id_toko = $this->session->userdata('id_toko');
 		$date = date("Y-m-d H:i:s");
@@ -152,6 +172,7 @@ class CashierController extends CI_Controller {
 	}
 
 	public function products(){
+		$this->authenticationuser();
 		$data = [];
 		$this->load->library('grocery_CRUD');
 		$crud = new grocery_CRUD();
@@ -202,6 +223,7 @@ class CashierController extends CI_Controller {
 	}
 	
 	public function notifications(){
+		$this->authenticationuser();
 		if($this->uri->segment('3') != NULL){
 			$id_notif = $this->uri->segment('3');
 		}
@@ -232,6 +254,7 @@ class CashierController extends CI_Controller {
 	}
 
 	public function authentication(){
+		$this->authenticationuser();
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
 		$user = $this->LoginModel->getUser($username);
@@ -264,6 +287,7 @@ class CashierController extends CI_Controller {
 	}
 
 	public function sendEmail($from, $to, $username, $data){
+		$this->authenticationuser();
 		$this->load->helper('email');
 		
 		$pass = explode('@', $from);
@@ -315,6 +339,7 @@ class CashierController extends CI_Controller {
 		}
 	}
 	public function getCountNotif(){
+		$this->authenticationuser();
 		$id_user = $this->CashierModel->getStoreUser($this->session->userdata('id_toko'));
 		//var_dump($id_user);
 		$unseenNotif = $this->CashierModel->getUnseenNotif($id_user['id_user']);

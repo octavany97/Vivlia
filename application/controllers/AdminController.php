@@ -22,8 +22,26 @@ class AdminController extends CI_Controller {
 
 		$this->load->view('page/login', $data);
 	}
+
+	//cegah direct url
+	public function authentication(){
+		$userid = $this->session->userdata('id_user');
+		$roleid = $this->session->userdata('peran');
+
+		if(empty($roleid) || empty($userid)){
+			redirect(base_url());
+		}
+		else if(!empty($userid) && $roleid != 1){
+			if($roleid == 2)
+				redirect(base_url().'mgr/dashboard');
+			else if($roleid == 3)
+				redirect(base_url().'csh/dashboard');
+		}
+	}
+
 	//untuk page dashboard
 	public function dashboard(){
+		$this->authentication();
 		if(isset($_POST['idbuku'])){
 			$bookid = $_POST['idbuku'];
 		}
@@ -94,6 +112,7 @@ class AdminController extends CI_Controller {
 		$this->load->view('page/admin/home', $data);
 	}
 	public function changeBookChart(){
+		$this->authentication();
 		$data = [];
 		
 		if(isset($_POST['idbuku'])){
@@ -109,6 +128,7 @@ class AdminController extends CI_Controller {
 		$this->load->view('page/admin/bookchart', $data);
 	}
 	public function changeStoreChart(){
+		$this->authentication();
 		$data = [];
 		
 		if(isset($_POST['idtoko'])){
@@ -124,6 +144,7 @@ class AdminController extends CI_Controller {
 		$this->load->view('page/admin/storechart', $data);	
 	}
 	public function getBooksByGenre(){
+		$this->authentication();
 		if(isset($_POST['idgenre'])){
 			$genreid = $_POST['idgenre'];
 		}
@@ -135,6 +156,7 @@ class AdminController extends CI_Controller {
 	
 	//untuk page products list
 	public function products(){
+		$this->authentication();
 		$data = [];
 		$this->load->library('grocery_CRUD');
 		$crud = new grocery_CRUD();
@@ -175,6 +197,7 @@ class AdminController extends CI_Controller {
 	}
 	
 	public function notifications(){
+		$this->authentication();
 		$id = $this->session->userdata('id_user');
 		
 		if($this->uri->segment('3') != NULL){
@@ -206,6 +229,7 @@ class AdminController extends CI_Controller {
 		
 	}
 	public function changeNotifFlag(){
+		$this->authentication();
 		if(isset($_POST['id_notif'])){
 			$id_notif = $_POST['id_notif'];
 		}
@@ -261,6 +285,7 @@ class AdminController extends CI_Controller {
 		$this->load->view('page/admin/listnotification',$dtlist);
 	}
 	public function changeNotifDetail(){
+		$this->authentication();
 		$data = [];
 		
 		if(isset($_POST['id_notif'])){
@@ -275,6 +300,7 @@ class AdminController extends CI_Controller {
 	}
 	public function tes()
 	{
+		$this->authentication();
 		//$data buat kirim ke home.php
 		$data = [];
 		if(isset($_POST['idbuku'])){
@@ -303,6 +329,8 @@ class AdminController extends CI_Controller {
 	}
 	
 	public function sendEmail($from, $to, $username, $data){
+
+		$this->authentication();
 		$this->load->helper('email');
 		$this->load->library('email');
 		
@@ -353,12 +381,14 @@ class AdminController extends CI_Controller {
 	}
 	//dapat notif dari toko kalau stoknya sudah sampai batas minimum atau toko request buku
 	public function getCountNotif(){
+		$this->authentication();
 		$id_user = $this->session->userdata('id_user');
 		$unseenNotif = $this->AdminModel->getUnseenNotif($id_user);
 		echo $unseenNotif['total'];
 	}
 
 	public function editProfile(){
+		$this->authentication();
 		$id = $this->session->userdata('id_user');
 		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
 		$data = [];
@@ -373,6 +403,7 @@ class AdminController extends CI_Controller {
 	}
 
 	public function confirmProfile(){
+		$this->authentication();
 		$id = $this->session->userdata('id_user');
 		$idtoko = $this->session->userdata('id_toko');
 		$name = $this->input->post('id_form1');
@@ -389,6 +420,34 @@ class AdminController extends CI_Controller {
 		);
 		$this->AdminModel->updateProfile($values,$idtoko,$id,$toko);
 		
+		redirect(base_url().'adm/editprofile');
+	}
+
+	public function editFoto(){
+	
+
+			$oldFoto = $this->session->userdata('id_user');
+
+			$config['upload_path']          = './assets/uploads/profiles/';
+            $config['allowed_types']        = 'jpg|png|jpeg';
+            $config['max_size']             = 1024;
+            $config['max_width']            = 1200;
+            $config['max_height']           = 800;
+
+            $this->load->library('upload', $config);
+            $this->upload->do_upload('poster');
+
+            $upload_data = $this->upload->data();
+            $poster = $upload_data['file_name'];
+
+            $values = array(
+            	'foto' => $poster
+            );
+            $this->AdminModel->updateFoto($values,$oldFoto);
+            // if($poster == NULL){
+            // 	$poster = $old
+            // }  sabar gw liat dokumentasi lg
+	
 		redirect(base_url().'adm/editprofile');
 	}
 }
