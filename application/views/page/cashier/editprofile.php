@@ -14,12 +14,12 @@
 	</nav>
 	<div id="page-wrapper">
 
-		<div class="container">
-		  <img  style="width: 1200px; height: 450px; background-size: contain;  background-position: center;  position: relative;" src="<?php echo base_url(); ?>assets/uploads/profiles/<?php if($this->session->userdata('foto') != NULL){ ?>default.png<?php } else{ echo $user['foto']; } ?>" >
+	<div class="container">
+		  <img  style="width: 1200px; height: 450px; background-size: contain;  background-position: center;  position: relative; background-color: skyblue;" >
 			<div class="centered">
 				<img id="pc01" style="max-width:200px;min-width: 50px;min-height: 50px; max-height:200px;" src="<?php echo base_url(); ?>assets/uploads/profiles/<?php if($this->session->userdata('foto') != NULL){ ?>default.png<?php } else{ echo $user['foto']; } ?>">
 				<h3><?php echo $user['username'];?></h3> 
-				<h3><a onclick="showModalLogin()"  data-target="#myModal" data-toggle="modal" href="#" class="material-icons">&#xe7fa;</a></h3>
+				<h3><a onclick="showModalLogin()" data-target="#myModal" data-toggle="modal" href="#" class="material-icons">&#xe7fa;</a></h3>
 			</div>
 		</div>
 
