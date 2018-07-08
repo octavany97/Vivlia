@@ -111,6 +111,7 @@ class AdminController extends CI_Controller {
 		
 		$this->load->view('page/admin/home', $data);
 	}
+	// untuk ubah tampilan chart penjualan toko berdasarkan buku
 	public function changeBookChart(){
 		$this->authentication();
 		$data = [];
@@ -127,6 +128,7 @@ class AdminController extends CI_Controller {
 		$data['piechart'] = $this->AdminModel->salesPerStore($bookid);
 		$this->load->view('page/admin/bookchart', $data);
 	}
+	// untuk ganti tampilan penjualan buku per toko
 	public function changeStoreChart(){
 		$this->authentication();
 		$data = [];
@@ -143,6 +145,7 @@ class AdminController extends CI_Controller {
 		$data['barchart'] = $this->AdminModel->salesPerBook($storeid);
 		$this->load->view('page/admin/storechart', $data);	
 	}
+	// untuk ganti data stok buku berdasarkan genre
 	public function getBooksByGenre(){
 		$this->authentication();
 		if(isset($_POST['idgenre'])){
@@ -195,7 +198,7 @@ class AdminController extends CI_Controller {
 
 		$this->load->view('page/products', $data);
 	}
-	
+	// page notifications
 	public function notifications(){
 		$this->authentication();
 		$id = $this->session->userdata('id_user');
@@ -228,6 +231,7 @@ class AdminController extends CI_Controller {
 		}
 		
 	}
+	// ganti flag notifikasi, dapat kirim email
 	public function changeNotifFlag(){
 		$this->authentication();
 		if(isset($_POST['id_notif'])){
@@ -271,7 +275,7 @@ class AdminController extends CI_Controller {
 					'id_receiver' => $toko['id_user'],
 					'flag' => 0,
 				);
-				//$this->AdminModel->addNotif($dataNotif);
+				$this->AdminModel->addNotif($dataNotif);
 				
 				$this->sendEmail($pabrik['email'], $toko['email'], $pabrik['nama_penerbit'], $dataNotif);
 			}
@@ -279,11 +283,12 @@ class AdminController extends CI_Controller {
 		}
 		
 		$id = $this->session->userdata('id_user');
-		//$this->AdminModel->updateNotifFlag($flag, $id_notif);
+		$this->AdminModel->updateNotifFlag($flag, $id_notif);
 
 		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
 		$this->load->view('page/admin/listnotification',$dtlist);
 	}
+	// ganti tampilan notif detail saat klik salah satu yang ada di list
 	public function changeNotifDetail(){
 		$this->authentication();
 		$data = [];
@@ -298,36 +303,7 @@ class AdminController extends CI_Controller {
 		
 		$this->load->view('page/admin/detailnotif', $dtdetail);
 	}
-	public function tes()
-	{
-		$this->authentication();
-		//$data buat kirim ke home.php
-		$data = [];
-		if(isset($_POST['idbuku'])){
-			$bookid = $_POST['idbuku'];
-		}
-		else $bookid = 1;
-		$id = $this->session->userdata('id_user');
-		$dt['bookid'] = $bookid;
-		$bn = $this->AdminModel->getBookName($bookid);
-		$dt['bookname'] = $bn['nama_buku'];
-		$dt['books'] = $this->AdminModel->getBooks();
-		$dt['piechart'] = $this->AdminModel->salesPerStore($bookid);
-		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
-		//masukkin isi ke $data
-		$data['bookid'] = $bookid;
-		$data['barchart'] = $this->AdminModel->salesPerBook(1);
-		$data['stores'] = $this->AdminModel->getStores();
-		$data['css'] = $this->load->view('include/style', NULL, TRUE);
-		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
-		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
-		$data['js'] = $this->load->view('include/js', NULL, TRUE);
-		$data['bookchart'] = $this->load->view('page/admin/stockchart',$dt, TRUE);
-		
-		$this->load->view('page/tes', $data);
-	}
-	
+	// untuk kirim email ke toko
 	public function sendEmail($from, $to, $username, $data){
 
 		$this->authentication();
@@ -386,7 +362,7 @@ class AdminController extends CI_Controller {
 		$unseenNotif = $this->AdminModel->getUnseenNotif($id_user);
 		echo $unseenNotif['total'];
 	}
-
+	// page edit profile
 	public function editProfile(){
 		$this->authentication();
 		$id = $this->session->userdata('id_user');
@@ -401,7 +377,7 @@ class AdminController extends CI_Controller {
 		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
 		$this->load->view('page/admin/editprofile', $data);
 	}
-
+	// untuk update informasi profile user admin/penerbit
 	public function confirmProfile(){
 		$this->authentication();
 		$id = $this->session->userdata('id_user');
@@ -422,7 +398,7 @@ class AdminController extends CI_Controller {
 		
 		redirect(base_url().'adm/editprofile');
 	}
-
+	// untuk update foto
 	public function editFoto(){
 	
 
@@ -446,7 +422,7 @@ class AdminController extends CI_Controller {
             $this->AdminModel->updateFoto($values,$oldFoto);
             // if($poster == NULL){
             // 	$poster = $old
-            // }  sabar gw liat dokumentasi lg
+            // }  
 	
 		redirect(base_url().'adm/editprofile');
 	}

@@ -30,7 +30,7 @@
 	<p style="border-bottom: 1px solid #eee; padding-top: 100px;">
 		<?php echo $detail['notif_msg']; ?>
 		<?php 
-		if($detail['flag'] == 0){
+		if($detail['flag'] == 0 && $this->session->userdata('peran') == 2){
 			?>
 			<br><br>
 			Notes:
@@ -39,18 +39,32 @@
 			<small style="color: #d9534f;">If No, then you don't want to receive that book or you want to request by form</small>
 			<?php
 		}
+
 		?>
 	</p>
 	<br>
 	<?php
 	if($detail['flag'] == 0){
+		if($this->session->userdata('peran') == 2){
+			?>
+			<div style="text-align: center;">
+				<button class="btn btn-success" style="min-width: 100px;">Yes</button>
+				<button class="btn btn-danger" style="min-width: 100px;">No</button>
+			</div>
+			<?php
+		}
+		else if($this->session->userdata('peran') == 3){
+			?>
+			<div style="text-align: center; color:red;">
+				You don't have an access.
+			</div>
+			<?php
+		}
 		?>
-		<div style="text-align: center;">
-			<button class="btn btn-success" style="min-width: 100px;">Yes</button>
-			<button class="btn btn-danger" style="min-width: 100px;">No</button>
-		</div>
+		
 		<?php
 	}
+
 	else if($detail['flag'] == 1){
 		?>
 		<div style="text-align: center; color: #5cb85c;">

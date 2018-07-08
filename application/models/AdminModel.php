@@ -14,10 +14,6 @@ class AdminModel extends CI_Model {
 		$query = $this->db->query("SELECT dt.id_buku, bk.nama_buku, SUM(dt.quantity) AS total, t.id_toko, tk.nama_toko FROM detail_transaksi dt, transaksi t, toko tk, buku bk WHERE dt.id_transaksi = t.id_transaksi AND bk.id_buku = dt.id_buku AND tk.id_toko = t.id_toko AND t.id_toko = '$id_toko' GROUP BY bk.id_buku");
 		return $query->result_array();
 	}
-	//ambil stok buku yang ud dikirim ke toko-toko
-	public function stockDelivered(){
-
-	}
 
 	//untuk chart1 admin
 	//ambil jumlah stok buku di pabrik penerbit berdasarkan genre
@@ -59,10 +55,11 @@ class AdminModel extends CI_Model {
 	public function getStores(){
 		return $this->db->query("SELECT id_toko, nama_toko FROM toko")->result_array();	
 	}
-	//ambil atribut buku
+	//ambil atribut id_buku pada tabel buku
 	public function getBookId($nama){
 		return $this->db->query("SELECT id_buku FROM buku WHERE nama_buku = '$nama'")->result_array();
 	}
+	// ambil kolom nama buku pada tabel buku
 	public function getBookName($id){
 		return $this->db->query("SELECT nama_buku FROM buku WHERE id_buku = '$id'")->row_array();
 	}
@@ -96,7 +93,7 @@ class AdminModel extends CI_Model {
 			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u2.id_toko = p.id_penerbit AND u1.id_toko = t.id_toko AND n.id_notif = '$id_notif'");
 		return $query->row_array();
 	}
-
+	//ambil informasi barang-barang yang akan dikirimkan saat notif (memastikan kembali kpd toko)
 	public function getNotifItem($id_notif){
 		$query = $this->db->query("SELECT n.id_notif, ni.id_buku, b.nama_buku, ni.jumlah, (SELECT ((MAX(n2.notif_time)-MAX(hp.tanggal_kirim)))/(60*60*24*30*(DATE_FORMAT(NOW(), '%Y')-bk.tahun_terbit+1)) FROM histori_pengiriman hp, notif_item ni2, buku bk, notif n2 WHERE hp.id_buku = bk.id_buku AND ni2.id_buku = bk.id_buku AND hp.id_buku = ni2.id_buku AND hp.id_penerbit = (SELECT DISTINCT id_penerbit FROM penerbit p, notif, users u WHERE u.id_user = notif.id_sender AND u.id_toko = p.id_penerbit AND u.peran = 1) AND ni2.id_notif = n2.id_notif AND n2.id_notif = ni.id_notif) AS banyak
 			FROM notif n, notif_item ni, buku b
@@ -118,19 +115,22 @@ class AdminModel extends CI_Model {
 	public function getUnseenNotif($id){
 		return $this->db->query("SELECT COUNT(*) AS total FROM notif WHERE id_receiver='$id' AND flag=0")->row_array();
 	}
+	// untuk ambil informasi atau detail tentang user di toko
 	public function getStoreUser($id){
 		return $this->db->query("SELECT t.id_toko, t.nama_toko, t.no_telp, t.email, u.id_user, u.username, u.id_toko FROM toko t, users u WHERE u.id_toko = t.id_toko AND t.id_toko='$id' AND u.peran = '2'")->row_array();
 	}
+	// untuk ambil informasi atau detail tentang user di pabrik/penerbit
 	public function getPabrikUser($id){
 		return $this->db->query("SELECT p.id_penerbit, p.nama_penerbit, p.no_telp, p.email, u.id_user, u.username, u.id_toko FROM penerbit p, users u WHERE u.id_toko = p.id_penerbit AND u.id_toko='$id' AND u.peran = '1'")->row_array();
 
 	}
+	// untuk mendapatkan info user supaya dapat ditampilkan di edit profile
 	public function getinfouser($id){
 		$query = $this->db->query("SELECT u.username,p.nama_peran,t.email,t.nama_toko,u.ip_addr, u.foto FROM users u, peran p, toko t WHERE u.peran = p.id_peran AND u.id_toko = t.id_toko AND u.id_user = '$id'");
 		return $query->row_array();
 
 	}
-
+	// untuk update profile users
 	public function updateProfile($values,$id_toko,$id_user,$toko){
 		$this->db->where('id_user', $id_user);
 		$this->db->update('users', $values);
@@ -139,7 +139,7 @@ class AdminModel extends CI_Model {
 		$this->db->update('toko', $toko);
 	}
 
-
+	// untuk update foto ke database
 	public function updateFoto($values,$oldFoto){
 		$this->db->where('id_user', $oldFoto);
 		$this->db->update('users', $values);

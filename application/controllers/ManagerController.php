@@ -120,7 +120,7 @@ class ManagerController extends CI_Controller {
 		$data['piechart'] = $this->AdminModel->salesPerStore($bookid);
 		$this->load->view('page/admin/bookchart', $data);
 	}
-	//
+	//function untuk ganti chart penjualan barang
 	public function changeStoreChart(){
 		$this->authentication();
 		$data = [];
@@ -156,6 +156,7 @@ class ManagerController extends CI_Controller {
 		
 		$this->load->view('page/manager/pendapatan', $data);
 	}
+	//buat ngembaliin data berupa data2 buku berdasarkan genre, dipanggil melalui ajax pada dashboard/home manager
 	public function getBooksByGenre(){
 		$this->authentication();
 		if(isset($_POST['idgenre'])){
@@ -182,7 +183,7 @@ class ManagerController extends CI_Controller {
 		$data['title'] = $this->ManagerModel->getBooks();
 		$this->load->view('page/formRequestProduct', $data);
 	}
-
+	//untuk validasi input pada form request
 	public function validate_qty($qty){
 		$this->authentication();
 		if($qty>0){
@@ -244,6 +245,7 @@ class ManagerController extends CI_Controller {
 		//	redirect(base_url().'mgr/dashboard');
 		}
 	}
+	// function yang cek ISBN yang diinput pada form request telah benar atau belum, jika belum benar akan return false
 	public function checkISBN(){
 		if(isset($_POST['isbn'])){
 			$isbn = $_POST['isbn'];
@@ -258,6 +260,7 @@ class ManagerController extends CI_Controller {
 			echo "false";
 		}
 	}
+	// function untuk memasukkan data request ke dalam tabel form_manager, detail_form_manager, notif, dan notif_item. Serta dilakukan juga pengiriman email ke penerbit
 	public function insertRequestBook(){
 		date_default_timezone_set('Asia/Jakarta');
 		if(isset($_POST['id_form'])){
@@ -272,9 +275,10 @@ class ManagerController extends CI_Controller {
 		$id_toko = $this->session->userdata('id_toko');
 		$data = [];
 		$data2 = [];
-		//if(isset($_POST['data'])){
+		
 		$data = json_decode($_POST['data']);
 		$data2 = (array) json_decode($data);
+		
 		//masukkin data ke table form_manager
 		$date = date('Y-m-d H:i:s');
 		$dataRequest = array(
@@ -314,6 +318,7 @@ class ManagerController extends CI_Controller {
 			$msg .= "<br><br>Best Regards,<br><br><br>".$toko['nama_toko'];
 
 		}
+		// bagian ini melakukan insert data ke tabel notif
 		$dataNotif = array(
 			'notif_subject' => $subject,
 			'notif_msg' => $msg,
@@ -325,7 +330,7 @@ class ManagerController extends CI_Controller {
 		$notif = $this->ManagerModel->addNotif($dataNotif, $toko['id_user']);
 		$idnotif = $notif['id_notif'];
 
-		 
+		 // bagian ini melakukan insert data ke tabel notif_item
 		foreach ($data2 as $row) {
 			$dt = (array) $row;
 			$dataDetailNotif = array(
@@ -336,12 +341,9 @@ class ManagerController extends CI_Controller {
 		 
 			$this->ManagerModel->insertDetailNotif($dataDetailNotif);
 		}
-		// var_dump($toko['email']);
-		// var_dump($pabrik['email']);
-		// var_dump($toko['nama_toko']);
-		// var_dump($dataNotif);
 		$this->sendEmailManager($toko['email'], $pabrik['email'], $toko['nama_toko'], $dataNotif);
 	}
+	//function untuk kirim email
 	public function sendEmailManager($from, $to, $username, $data){
 		$this->load->helper('email');
 		
@@ -378,23 +380,19 @@ class ManagerController extends CI_Controller {
 			$this->email->message($data['notif_msg']);
 
 			if($this->email->send()){
-				//$unseenNotif = getCountNotif();
-				//echo $unseenNotif
 				echo "Email has been sent!";
 			}
 			else{
 				//show_error($this->email->print_debugger());
 				echo "Error! Email can not send";
 			}
-
-
 		}
 		else{
 			echo "Email doesn't valid!";
 		}
 	}
 
-	//notifikasi
+	// page notifikasi
 	public function notifications(){
 		$this->authentication();
 		if($this->uri->segment('3') != NULL){
@@ -425,6 +423,7 @@ class ManagerController extends CI_Controller {
 			$this->load->view('page/notif', $data);
 		}
 	}
+	// function yang dipanggil di ajax untuk ubah tampilan notif detail (pada sisi kanan), yg kiri itu list notif
 	public function changeNotifDetail(){
 		$this->authentication();
 		$data = [];
@@ -438,7 +437,7 @@ class ManagerController extends CI_Controller {
 		
 		$this->load->view('page/manager/detailnotif', $dtdetail);
 	}
-
+	//page product list
 	public function products(){
 		$this->authentication();
 		$data = [];

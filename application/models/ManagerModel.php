@@ -22,6 +22,7 @@ class ManagerModel extends CI_Model {
 	{
 		$this->load->view('welcome_message');
 	}
+	// ambil timeline buku yang di restock sama penerbit
 	public function getBooksTimeline($storeid){
 		$query = $this->db->query("SELECT hp.id_buku, p.nama_penerbit, b.nama_buku, b.penulis AS id_penulis, pn.nama_penulis AS penulis, b.tahun_terbit, b.keterangan, b.cover, hp.id_toko, t.nama_toko, DATE_FORMAT(hp.tanggal_kirim, '%y-%m-%d') AS tanggal, DATE_FORMAT(hp.tanggal_kirim, '%H:%i:%s') AS jam, hp.tanggal_kirim, hp.stok 
 			FROM histori_pengiriman hp, buku b, toko t, penulis pn, penerbit p
@@ -30,17 +31,8 @@ class ManagerModel extends CI_Model {
 		return $query->result_array();
 		//SELECT nama_buku, penulis, DATE_FORMAT(tanggal_terbit, "%M") AS bulan, YEAR(tanggal_terbit) AS tahun, keterangan FROM buku ORDER BY tanggal_terbit DESC
 	}
-	
+	// insert data ke tabel notif
 	public function saveNotif($data){
-		/*
-		$data = array('notif_msg' => '$msg',
-					'notif_time' => '$time',
-					'notif_date' => '$date',
-					'id_sender' => '$idsender',
-					'id_receiver' => '$idreceiver',
-					'flag' => 'false'
-		);
-		*/
 		$this->db->insert('notif', $data);
 	}
 
@@ -72,7 +64,7 @@ class ManagerModel extends CI_Model {
 		return intval($query["maks"]) + 1;
 	}
 
-
+	// dapatin semua kolom dari tabel buku
 	public function getBooks(){
 		$query = $this->db->query("SELECT * FROM buku")->result_array();
 		return $query;
@@ -116,6 +108,7 @@ class ManagerModel extends CI_Model {
 		return $this->db->query("SELECT id_notif FROM notif WHERE id_sender='$id' AND notif_time='$time'")->row_array();
 	}
 
+	// ambil pendapatan per bulan dalam 1 tahun
 	public function getPendapatan($id_toko, $tahun){
 		$query = $this->db->query("SELECT MONTH(t.tanggal) AS month, SUM(t.harga_total) - SUM(dt.harga_satuan * dt.quantity) AS pendapatan
 			FROM detail_transaksi dt, transaksi t
@@ -123,7 +116,7 @@ class ManagerModel extends CI_Model {
             GROUP BY MONTH(t.tanggal)");
 		return $query->result_array();
 	}
-
+	// ambil tahun yang tercatat dalam database (karena baru 1 tahun berarti hanya 1 tahun)
 	public function getTahun($id_toko){
 		$query = $this->db->query("SELECT YEAR(t.tanggal) AS year
 			FROM detail_transaksi dt, transaksi t
@@ -140,15 +133,19 @@ class ManagerModel extends CI_Model {
 	public function checkIsbn($isbn){
 		return $this->db->query("SELECT nama_buku, id_buku FROM buku WHERE isbn = '$isbn'")->row_array();
 	}
+	// insert detail notif ke tabel noti_item
 	public function insertDetailNotif($data){
 		$this->db->insert('notif_item',$data);
 	}
+	// insert data ke form manager (berdasarkan form_request)
 	public function insertRequestProduct($data){
 		$this->db->insert('form_manager',$data);
 	}
+	// insert data ke detail form manager (berdasarkan form_request)
 	public function insertDetailRequestProduct($data){
 		$this->db->insert('detail_form_manager',$data);
 	}
+	// untuk validasi input dari isbn yang diinput
 	public function validateProduct($isbn){
 		$query = $this->db->query("SELECT COUNT(*) as jumlah FROM buku WHERE isbn = '$isbn'")->row_array();
 		if(intval($query['jumlah']) == 0){

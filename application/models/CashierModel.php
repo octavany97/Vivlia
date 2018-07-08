@@ -8,53 +8,56 @@ class CashierModel extends CI_Model {
 		//isinya query buat insert ke tabel detail_transaksi dan transaksi
 		$this->db->insert('transaksi', $data);
 	}
+	//digunakan untuk menambah detail transaksi ke tabel detail_transaksi
 	public function addDetailTransaction($data){
 		$this->db->insert('detail_transaksi', $data);
 	}
+	// ambil semua kolom produk pada tabel relasi toko_buku
 	public function getAllProducts($id_toko){
 		return $this->db->query("SELECT * FROM toko_buku WHERE id_toko='$id_toko'")->result_array();
 	}
+	// function untuk update stok (ketika ada transaksi pada kasir)
 	public function updateStock($stok, $id_toko, $id_buku){
 		$this->db->query("UPDATE stok_toko SET stok = stok - '$stok' WHERE id_toko = '$id_toko' AND id_buku = '$id_buku'");
 	}
+	// ambil id transaksi 
 	public function getIdTransaksi($id){
 		return $this->db->query("SELECT max(id_transaksi) as id FROM transaksi WHERE id_toko = '$id'")->row_array();
 	}
+	// ambil barang yang stoknya ud dibawah nilai ambang (dilakukan ketika transaksi di confirm)
 	public function getStockThreshold($id_toko, $id_buku){
 		return $this->db->query("SELECT b.id_buku, b.nama_buku, t.id_toko, t.nama_toko, t.email 
 			FROM buku b, toko t, stok_toko st, threshold_stok ts
 			WHERE st.stok <= ts.nilai_ambang AND st.id_buku = b.id_buku AND st.id_toko = t.id_toko AND t.id_toko = '$id_toko' AND b.id_buku = '$id_buku'")->row_array();
 	}
+	// ambil detail / infromasi user pada toko tersebut
 	public function getStoreUser($id){
 		return $this->db->query("SELECT t.id_toko, t.nama_toko, t.no_telp, t.email, u.id_user, u.username, u.id_toko FROM toko t, users u WHERE u.id_toko = t.id_toko AND t.id_toko='$id' AND u.peran = '2'")->row_array();
 	}
+	// ambil detail/infromasi user pada pabrik/penerbit
 	public function getPabrikUser($id){
 		return $this->db->query("SELECT p.id_penerbit, p.nama_penerbit, p.no_telp, p.email, u.id_user, u.username, u.id_toko FROM penerbit p, users u WHERE u.id_toko = p.id_penerbit AND u.id_toko='$id' AND u.peran = '1'")->row_array();
 	}
+	// menambah informasi/data notif ke tabel notif
 	public function addNotif($data){
 		$this->db->insert('notif', $data);
 	}
+	// untuk ambil berapa banyak notif yang belum dibaca
 	public function getUnseenNotif($id){
-		
 		return $this->db->query("SELECT COUNT(*) AS total FROM notif WHERE id_receiver='$id' AND flag=0")->row_array();
 	}
-	//autocomplete buku tp ga jalan
-	public function bookAutocomplete($title){
-		$this->db->like('nama_buku',$title,'both');
-		$this->db->order_by('nama_buku', 'ASC');
-		$this->db->limit(10);
-		return $this->db->get('buku')->result_array();
-	}
+	// autocomplete
 	public function autocomplete(){
 		$query = $this->db->query("SELECT * FROM buku");
 		return $query->result_array();
 	}
 
-	//ambil detail buku
+	//ambil detail buku berdasarkan isbn yang dimasukkan
 	public function getBookDetail($id){
 		$query = $this->db->query("SELECT nama_buku, id_buku FROM buku WHERE isbn = '$id'");
 		return $query->row_array();//ambil 1 baris
 	}
+	// ambil harga jual dari stok toko
 	public function getPrice($id_buku, $id_toko){
 		$query = $this->db->query("SELECT harga_jual FROM stok_toko WHERE id_buku = '$id_buku' AND id_toko='$id_toko'");
 		return $query->row_array();//ambil 1 baris	

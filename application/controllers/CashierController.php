@@ -52,7 +52,7 @@ class CashierController extends CI_Controller {
 				redirect(base_url().'adm/dashboard');
 		}
 	}
-
+	// tampilan page dashboard kasir (berupa tabel untuk pembelian buku)
 	public function dashboard(){
 		$this->authenticationuser();
 		$id = $this->session->userdata('id_toko');
@@ -68,7 +68,7 @@ class CashierController extends CI_Controller {
 
 		$this->load->view('page/cashier/home', $data);
 	}
-
+	// ambil dan ngembaliin data dari request ajax untuk tambahin item
 	public function addItem(){
 		$this->authenticationuser();
 		$kode = $_POST['id'];
@@ -90,6 +90,7 @@ class CashierController extends CI_Controller {
 		echo json_encode($json_data);
 
 	}
+	// ketika telah setuju untuk melakukan pembayaran (button confirm), dapat melakukan penambahan di tabel transaksi, detail_transaksi, kirim email ketika stok buku telah mencapai nilai ambang
 	public function buy(){
 		$this->authenticationuser();
 		date_default_timezone_set('Asia/Jakarta');
@@ -170,7 +171,7 @@ class CashierController extends CI_Controller {
 		}
 		
 	}
-
+	// page product list
 	public function products(){
 		$this->authenticationuser();
 		$data = [];
@@ -221,7 +222,7 @@ class CashierController extends CI_Controller {
 
 		$this->load->view('page/products', $data);
 	}
-	
+	// page notifications
 	public function notifications(){
 		$this->authenticationuser();
 		if($this->uri->segment('3') != NULL){
@@ -285,7 +286,7 @@ class CashierController extends CI_Controller {
 			redirect(base_url());
 		}
 	}
-
+	// untuk kirim email ketika stok telah mencapai minimum
 	public function sendEmail($from, $to, $username, $data){
 		$this->authenticationuser();
 		$this->load->helper('email');
@@ -338,10 +339,11 @@ class CashierController extends CI_Controller {
 			return "Email doesn't valid!";
 		}
 	}
+	// ambil jumlah notif yang belum dibaca
 	public function getCountNotif(){
 		$this->authenticationuser();
 		$id_user = $this->CashierModel->getStoreUser($this->session->userdata('id_toko'));
-		//var_dump($id_user);
+		
 		$unseenNotif = $this->CashierModel->getUnseenNotif($id_user['id_user']);
 		echo $unseenNotif['total'];
 	}

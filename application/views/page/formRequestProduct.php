@@ -147,6 +147,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	var room = 1;
 	var empty_isbn = false;
 	var empty_qty = false;
+	// untuk cek apakah isbn dan quantity ada isinya atau tidak dan isbn yang diinput benar atau salah
 	function isEmpty(n){
 		var isbn = document.getElementById("product_name" + room);
 		var name = document.getElementById("productName"+room);
@@ -242,7 +243,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 	}
 
-
+	// untuk tambah field input produk
 	function product_fields() {
 		if(!isEmpty(room)){
 		    room++;
@@ -255,13 +256,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		    objTo.appendChild(divtest)
 		}
 	}
+	// edit field input isbn, dan quantity
 	function edit_product_fields(rid){
 		var isbn = document.getElementById('product_name'+rid)
 		var name = document.getElementById('productName'+rid)
 		var idbuku = document.getElementById('idbuku'+rid)
 	   	var qty = document.getElementById('qty'+rid)
 	   	var btn_edit = document.getElementById('edit_btn'+rid)
-
+	   	// jika icon nya berubpa floppy save akan melakukan penyimpanan data ke localstorage
 	   	if(btn_edit.innerHTML == '<span class="glyphicon glyphicon-floppy-save"></span>'){
 	   		btn_edit.innerHTML = '<span class="glyphicon glyphicon-edit"></span>'
 	   		var temp = []
@@ -280,12 +282,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	   		isbn.setAttribute('readonly','')
 	   		qty.setAttribute('readonly','')
 	   	}
+	   	// ketika icon nya edit maka akan menghapus atribut readonly supaya bisa diedit
 	   	else if(btn_edit.innerHTML == '<span class="glyphicon glyphicon-edit"></span>'){
 	   		btn_edit.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span>'	
 	   		isbn.removeAttribute("readonly")
 	   		qty.removeAttribute("readonly")
 	   	}	   	
 	}
+	// hapus field input isbn, nama, dan quantity
     function remove_product_fields(rid) {
 	    //$('.removeclass'+rid).remove();
 	    room--;
@@ -350,7 +354,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		})
     }
-
+    // dilakukan saat pertama kali reload page
 	function initialize(){
 		let items = localStorage.getItem("product_request");
 		localStorage.setItem('product_request',"[]")
@@ -364,7 +368,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 		document.getElementById('description').innerHTML = ''
 	}
-
+	// dipanggil saat menekan cancel button
    function showModalCancel(){
    		$('#cancelModal').modal({
 		    backdrop: 'false',
@@ -372,6 +376,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		    keyboard: true  // to prevent closing with Esc button (if you want this too)
 		});
    }
+   // dipanggil saat menekan request button 
    function showModalRequest(){
    		$('#requestModal').modal({
 		    backdrop: 'false',
