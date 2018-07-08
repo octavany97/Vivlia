@@ -4,11 +4,11 @@
             <li>
                 <div class="user-panel">
                   <div class="image">
-                    <img src="<?php if($this->session->userdata('foto') == NULL){ echo base_url(); ?>assets/uploads/profiles/default.png <?php } else{ echo base_url(); ?>assets/uploads/profiles/<?php echo $this->session->userdata('username'); } ?>" style="background-color: #e7e7e7;" class="rounded-circle" alt="User Image">
+                    <img style="border-radius:50%;max-width:100px;min-width: 100px;min-height: 100px; max-height:100px;" src="<?php echo base_url(); ?>assets/uploads/profiles/<?php if($this->session->userdata('foto') != NULL){ ?>default.png<?php } else{ echo $user['foto']; }?> ">
                   </div>
                   <div class="info">
                     <?php $iduser = $this->session->userdata('id_user'); ?>
-                    <p><?php echo $this->session->userdata('username');?></p>
+                    <p><?php echo $user['username'];?></p>
                     <p><?php if($this->session->userdata('peran') == 1){
                             echo "Admin Pabrik";
                         } else if($this->session->userdata('peran') == 2){

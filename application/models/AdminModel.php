@@ -145,5 +145,11 @@ class AdminModel extends CI_Model {
 		$this->db->update('users', $values);
 		// $this->db->insert('users', $values); tampilannya maksud gw yg di chrome
 	}
+
+	public function updateBack($values,$oldFoto){
+		$this->db->where('id_user', $oldFoto);
+		$this->db->update('users', $values);
+		// $this->db->insert('users', $values); tampilannya maksud gw yg di chrome
+	}
 }
 

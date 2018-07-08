@@ -19,17 +19,40 @@
 			<div class="centered">
 				<img id="pc01" style="max-width:200px;min-width: 50px;min-height: 50px; max-height:200px;" src="<?php echo base_url(); ?>assets/uploads/profiles/<?php if($this->session->userdata('foto') != NULL){ ?>default.png<?php } else{ echo $user['foto']; } ?>">
 				<h3><?php echo $user['username'];?></h3> 
-				<h3><a onclick="showModalLogin()" data-target="#myModal" data-toggle="modal" href="#" class="material-icons">&#xe7fa;</a></h3>
+				<h3><a onclick="showModalLogin()"  data-target="#myModal" data-toggle="modal" href="#" class="material-icons">&#xe7fa;</a></h3>
 			</div>
-			<div class="bottom-left">
-				<h3><a onclick="showModalBackground()" data-target="#myModal" data-toggle="modal" href="#" class="material-icons">&#xe7fa;</a></h3>
-			</div>
-			
 		</div>
 
-			
-			<form id="formprofile" method="post" action="<?php echo base_url();?>/AdminController/confirmProfile">
-				<div class="form-group" style="padding-bottom: 30px;padding-top: 30px;">
+			<!-- The Modal -->
+			<!-- <div id="myModal1" class="modal1">
+			  <span class="close">&times;</span>
+			  <img class="modal1-content" id="1img">
+			  <div id="caption1"></div>
+			</div>	
+			<script>
+				// Get the modal
+				var modal = document.getElementById('myModal1');
+
+				// Get the image and insert it inside the modal - use its "alt" text as a caption
+				var img = document.getElementById('pc01');
+				var modalImg = document.getElementById("1img");
+				var captionText = document.getElementById("caption1");
+				img.onclick = function(){
+				    modal.style.display = "block";
+				    modalImg.src = this.src;
+				    captionText.innerHTML = this.alt;
+				}
+
+				// Get the <span> element that closes the modal
+				var span = document.getElementsByClassName("close")[0];
+
+				// When the user clicks on <span> (x), close the modal
+				span.onclick = function() { 
+				    modal.style.display = "none";
+				}
+			</script> -->
+			<form id="formprofile" method="post" action="<?php echo base_url();?>/CashierController/confirmProfile">
+				<div class="form-group" style="padding-bottom: 30px;">
 					 <label class="col-md-3 control-label" for="name">Username</label>  
 					 <div class="col-md-9">
 				  		<input id="id_form1" name="id_form1" type="text" class="form-control input-md" value="<?php echo $user['username']?>" readonly>
@@ -77,29 +100,7 @@
     <div class="modal-dialog" >
       <div class="loginmodal-container">
           <h1>Ganti Foto</h1><br>
-          <form id="formFoto" method="post" action="<?php echo base_url();?>/AdminController/editFoto" enctype="multipart/form-data">
-          	 <div class="form-group">
-	            <div class="col-sm-2">
-	              <label class="control-label pull-right">Poster</label>
-	            </div>
-            <div class="col-sm-12">
-              <input id="poster" type="file" class="form-control" name="poster">
-              <label style="color: red;"></label>
-            </div>
-            <div class="form-group" id="btn-area" style="text-align: center; width: 100%;">		
-					<button type="submit"  name="btnApply" class="btn btn-primary" >Apply</button>	
-         	</div>
-          </form>
-      </div>
-    </div>
-  </div>
-
-
-<div class="modal fade" id="loginBackground" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; ">
-    <div class="modal-dialog" >
-      <div class="loginmodal-container">
-          <h1>Ganti Foto</h1><br>
-          <form id="formFoto" method="post" action="<?php echo base_url();?>/AdminController/editFoto" enctype="multipart/form-data">
+          <form id="formFoto" method="post" action="<?php echo base_url();?>/CashierController/editFoto" enctype="multipart/form-data">
           	 <div class="form-group">
 	            <div class="col-sm-2">
 	              <label class="control-label pull-right">Poster</label>
@@ -152,16 +153,7 @@
 		      $idx = 2;
 		    ?>
 		 }
-		 function showModalBackground(){
-			$('#loginBackground').modal({
-			    backdrop: 'false',
-			    show: true,
-			    keyboard: true  // to prevent closing with Esc button (if you want this too)
-			});
-		    <?php
-		      $idx = 2;
-		    ?>
-		 }
+
 	
   	</script>			
 

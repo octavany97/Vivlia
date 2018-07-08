@@ -38,6 +38,11 @@ class CashierModel extends CI_Model {
 	public function getPabrikUser($id){
 		return $this->db->query("SELECT p.id_penerbit, p.nama_penerbit, p.no_telp, p.email, u.id_user, u.username, u.id_toko FROM penerbit p, users u WHERE u.id_toko = p.id_penerbit AND u.id_toko='$id' AND u.peran = '1'")->row_array();
 	}
+	public function getinfouser($id){
+		$query = $this->db->query("SELECT u.username,p.nama_peran,t.email,t.nama_toko,u.ip_addr, u.foto FROM users u, peran p, toko t WHERE u.peran = p.id_peran AND u.id_toko = t.id_toko AND u.id_user = '$id'");
+		return $query->row_array();
+
+	}
 	// menambah informasi/data notif ke tabel notif
 	public function addNotif($data){
 		$this->db->insert('notif', $data);
@@ -79,4 +84,19 @@ class CashierModel extends CI_Model {
 		return $query->row_array();
 	}
 
+
+public function updateProfile($values,$id_toko,$id_user,$toko){
+		$this->db->where('id_user', $id_user);
+		$this->db->update('users', $values);
+
+		$this->db->where('id_toko',$id_toko);
+		$this->db->update('toko', $toko);
+	}
+
+
+	public function updateFoto($values,$oldFoto){
+		$this->db->where('id_user', $oldFoto);
+		$this->db->update('users', $values);
+		// $this->db->insert('users', $values); tampilannya maksud gw yg di chrome
+	}
 }
