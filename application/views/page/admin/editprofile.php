@@ -7,7 +7,7 @@
 	<?php echo $css; ?>
 	<?php echo $js; ?>
 </head>
-<body>
+<body onload="load_unseen_notification_admin()">
 	<?php echo $header; ?>
 	<?php echo $menuheader; ?>
 	<?php echo $sidebar; ?>
@@ -92,7 +92,7 @@
 
 
 		
-
+<?php echo $script;?>
 <script>
 	  function removeAlignment(){
    		 var read1 = document.getElementById("id_form1").removeAttribute("readonly",0);

@@ -393,7 +393,8 @@ class AdminController extends CI_Controller {
 		$this->authentication();
 		$id_user = $this->session->userdata('id_user');
 		$unseenNotif = $this->AdminModel->getUnseenNotif($id_user);
-		echo $unseenNotif['total'];
+		echo $unseenNotif;
+		//echo $unseenNotif['total'];
 	}
 	// page edit profile
 	public function editProfile(){
@@ -406,6 +407,7 @@ class AdminController extends CI_Controller {
 		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
 		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['script'] = $this->load->view('include/script',NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		//$data['username'] = $this->session->userdata('username');
 
