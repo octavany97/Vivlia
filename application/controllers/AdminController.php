@@ -22,8 +22,26 @@ class AdminController extends CI_Controller {
 
 		$this->load->view('page/login', $data);
 	}
+
+	//cegah direct url
+	public function authentication(){
+		$userid = $this->session->userdata('id_user');
+		$roleid = $this->session->userdata('peran');
+
+		if(empty($roleid) || empty($userid)){
+			redirect(base_url());
+		}
+		else if(!empty($userid) && $roleid != 1){
+			if($roleid == 2)
+				redirect(base_url().'mgr/dashboard');
+			else if($roleid == 3)
+				redirect(base_url().'csh/dashboard');
+		}
+	}
+
 	//untuk page dashboard
 	public function dashboard(){
+		$this->authentication();
 		if(isset($_POST['idbuku'])){
 			$bookid = $_POST['idbuku'];
 		}
@@ -95,6 +113,7 @@ class AdminController extends CI_Controller {
 		$this->load->view('page/admin/home', $data);
 	}
 	public function changeBookChart(){
+		$this->authentication();
 		$data = [];
 		
 		if(isset($_POST['idbuku'])){
@@ -110,6 +129,7 @@ class AdminController extends CI_Controller {
 		$this->load->view('page/admin/bookchart', $data);
 	}
 	public function changeStoreChart(){
+		$this->authentication();
 		$data = [];
 		
 		if(isset($_POST['idtoko'])){
@@ -125,6 +145,7 @@ class AdminController extends CI_Controller {
 		$this->load->view('page/admin/storechart', $data);	
 	}
 	public function getBooksByGenre(){
+		$this->authentication();
 		if(isset($_POST['idgenre'])){
 			$genreid = $_POST['idgenre'];
 		}
@@ -136,6 +157,7 @@ class AdminController extends CI_Controller {
 	
 	//untuk page products list
 	public function products(){
+		$this->authentication();
 		$data = [];
 		$this->load->library('grocery_CRUD');
 		$crud = new grocery_CRUD();
@@ -150,18 +172,15 @@ class AdminController extends CI_Controller {
 		     ->display_as('isbn','ISBN')
 		     ->fields('nama_buku','id_penerbit','nama','penulis','isbn','tanggal_terbit','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover')
 			 ->set_field_upload('cover','assets/uploads/buku');
-			 	// ->callback_edit_field('keterangan',array($this,'edit_description'))
-			 	// ->callback_add_field('keterangan',array($this,'add_description'));
+			
 		$crud->set_relation('id_penerbit', 'penerbit', 'nama_penerbit')
 			->set_relation('penulis','penulis','nama_penulis');
 		$crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
 		$crud->set_relation_n_n('nama', 'genre_buku', 'genre', 'id_buku','id_genre','nama');
 		$crud->required_fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover');
 		$crud->unset_columns('id_penerbit','tanggal_terbit','banyak_halaman','keterangan', 'modal','isbn','tahun_terbit');
-		// $crud->unset_delete(); //buat hilangin tombol delete di action
-		// $crud->unset_edit(); //buat hilangin tombol edit di action
+		
 		$crud->unset_clone(); //buat hilangin tombol clone di action
-		// $crud->unset_add();
 		$crud->unset_print();
 
 		$output = $crud->render();
@@ -180,6 +199,7 @@ class AdminController extends CI_Controller {
 	}
 	
 	public function notifications(){
+		$this->authentication();
 		$id = $this->session->userdata('id_user');
 		
 		if($this->uri->segment('3') != NULL){
@@ -212,6 +232,7 @@ class AdminController extends CI_Controller {
 		
 	}
 	public function changeNotifFlag(){
+		$this->authentication();
 		if(isset($_POST['id_notif'])){
 			$id_notif = $_POST['id_notif'];
 		}
@@ -222,13 +243,12 @@ class AdminController extends CI_Controller {
 		
 
 		if($flag == 2){
-			var_dump($flag);
 			date_default_timezone_set('Asia/Jakarta');
 			$id_toko = $this->session->userdata('id_toko');
 			$date = date("Y-m-d H:i:s");
-			var_dump($id_notif);
+			
 			$notif_item = (array) $this->AdminModel->getNotifItem($id_notif);
-			var_dump($notif_item);
+			
 			$dataStockNotif = [];
 			if(count($notif_item) > 0){
 				$toko = $this->AdminModel->getStoreUser($id_toko);
@@ -242,7 +262,7 @@ class AdminController extends CI_Controller {
 						if($j == count($notif_item) - 1) $msg .= " and "; 
 						else $msg .= ", ";
 					}
-					$msg .= floor($row3['banyak'])." books titled \"". $row3['nama_buku']."\"";
+					$msg .= floor($row3['banyak'])." copies titled \"". $row3['nama_buku']."\"";
 					$j++;
 				}
 				$msg .= "?<br><br><br>Best Regards,<br><br><br>".$pabrik['nama_penerbit'];
@@ -255,9 +275,7 @@ class AdminController extends CI_Controller {
 					'flag' => 0,
 				);
 				//$this->AdminModel->addNotif($dataNotif);
-				var_dump($pabrik);
-				var_dump($toko);
-				var_dump($dataNotif);
+				
 				$this->sendEmail($pabrik['email'], $toko['email'], $pabrik['nama_penerbit'], $dataNotif);
 			}
 				
@@ -270,6 +288,7 @@ class AdminController extends CI_Controller {
 		$this->load->view('page/admin/listnotification',$dtlist);
 	}
 	public function changeNotifDetail(){
+		$this->authentication();
 		$data = [];
 		
 		if(isset($_POST['id_notif'])){
@@ -284,6 +303,7 @@ class AdminController extends CI_Controller {
 	}
 	public function tes()
 	{
+		$this->authentication();
 		//$data buat kirim ke home.php
 		$data = [];
 		if(isset($_POST['idbuku'])){
@@ -313,32 +333,23 @@ class AdminController extends CI_Controller {
 	}
 	
 	public function sendEmail($from, $to, $username, $data){
+
+		$this->authentication();
 		$this->load->helper('email');
 		$this->load->library('email');
 		
 		$pass = explode('@', $from);
 		$password = $pass[0]."$123";
-		var_dump($password);
-		var_dump($from);
-		var_dump($to);
-		if(valid_email($from) && valid_email($to)){
-			//email
-			// $config = array(
-			// 	'charset' => 'utf-8',
-			// 	'wordwrap' => TRUE,
-			// 	'mailtype' => 'html'
-			// );
-			// $this->email->initialize($config);
 
+		if(valid_email($from) && valid_email($to)){
 			$config = [
 	               'useragent' => 'CodeIgniter',
 	               'protocol'  => 'smtp',
 	               'mailpath'  => '/usr/sbin/sendmail',
-	               'smtp_host' => 'ssl://smtp.gmail.com',
 	               'smtp_user' => $from,   // Ganti dengan email gmail Anda.
 	               'smtp_pass' => $password,             // Password gmail Anda.
-	               'smtp_port' => 465,
-	               'smtp_keepalive' => TRUE,
+	               'smtp_port' => 587,
+	               'smtp_keepalive' => FALSE,
 	               'smtp_crypto' => 'SSL',
 	               'wordwrap'  => TRUE,
 	               'wrapchars' => 80,
@@ -351,6 +362,7 @@ class AdminController extends CI_Controller {
 	 	
 	        // Load library email dan konfigurasinya.
 	        $this->load->library('email', $config);
+			// $this->load->library('email');
 
 			$this->email->from($from, $username);
 			$this->email->to($to);
@@ -373,12 +385,14 @@ class AdminController extends CI_Controller {
 	}
 	//dapat notif dari toko kalau stoknya sudah sampai batas minimum atau toko request buku
 	public function getCountNotif(){
+		$this->authentication();
 		$id_user = $this->session->userdata('id_user');
 		$unseenNotif = $this->AdminModel->getUnseenNotif($id_user);
 		echo $unseenNotif['total'];
 	}
 
 	public function editProfile(){
+		$this->authentication();
 		$id = $this->session->userdata('id_user');
 		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
 		$data = [];
@@ -394,6 +408,7 @@ class AdminController extends CI_Controller {
 	}
 
 	public function confirmProfile(){
+		$this->authentication();
 		$id = $this->session->userdata('id_user');
 		$idtoko = $this->session->userdata('id_toko');
 		$name = $this->input->post('id_form1');

@@ -1,5 +1,5 @@
 <div id="stockManagerChart" class="panel panel-blue">
-	<div class="panel-heading" style="height: 50px;">
+	<div class="panel-heading">
 		<span><i class="fa fa-bar-chart-o fa-fw"></i> Stock of Books at <?php echo $storename["nama_toko"]; ?></span>
 	</div>
 	<!-- /.panel-heading -->

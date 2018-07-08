@@ -6,7 +6,9 @@
         </a>
         <ul class="dropdown-menu dropdown-notif">
             <?php
+            $i = 0;
             foreach ($list as $row) {
+                if($i == 5) break;
                 ?>
             <li style="margin-bottom: 20px;">
                 <a href="<?php if($this->session->userdata('peran') == 1){ echo base_url('adm/notifications'); }
@@ -56,6 +58,7 @@
             </li>
             <li class="divider"></li>
                 <?php
+                $i++;
             }
             ?>
             
@@ -83,7 +86,7 @@
             <li><a href="<?php echo base_url().'adm/editprofile'; ?>"><i class="fa fa-user fa-fw"></i> User Profile</a>
             </li>
             <li class="divider"></li>
-            <li><a href="<?php echo base_url(); ?>"><i class="fa fa-sign-out fa-fw"></i> Sign out</a>
+            <li><a href="<?php echo base_url().'VivliaController/logout'; ?>"><i class="fa fa-sign-out fa-fw"></i> Sign out</a>
             </li>
         </ul>
         <!-- /.dropdown-user -->

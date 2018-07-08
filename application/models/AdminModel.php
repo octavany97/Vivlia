@@ -84,7 +84,8 @@ class AdminModel extends CI_Model {
 	public function getAllNotif($id){
 		$query = $this->db->query("SELECT n.id_notif, n.notif_subject, n.notif_msg, TIME(n.notif_time) AS jam, DATE_FORMAT(n.notif_time, '%Y %M %d') AS tanggal, n.notif_time,  n.id_sender, u2.username AS user2, n.id_receiver, u1.username AS user1, p.id_penerbit, p.nama_penerbit, p.email AS email2, t.id_toko, t.nama_toko, t.email AS email1, n.flag
 			FROM notif n, users u1, users u2, penerbit p, toko t
-			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u2.peran = 1 AND u2.id_toko = p.id_penerbit AND u1.id_toko = t.id_toko AND n.id_receiver='$id'");
+			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u2.peran = 1 AND u2.id_toko = p.id_penerbit AND u1.id_toko = t.id_toko AND n.id_receiver='$id'
+			ORDER BY n.notif_time DESC");
 		return $query->result_array();
 	}
 	
@@ -129,9 +130,6 @@ class AdminModel extends CI_Model {
 		return $query->row_array();
 
 	}
-	// public function save($id){
-	// 	$query = $this->db->query("UPDATE ")
-	// }
 
 	public function updateProfile($values,$id_toko,$id_user,$toko){
 		$this->db->where('id_user', $id_user);
