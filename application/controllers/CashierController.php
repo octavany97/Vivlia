@@ -343,6 +343,20 @@ class CashierController extends CI_Controller {
 			return "Email doesn't valid!";
 		}
 	}
+	//ubah detail notif
+	public function changeNotifDetail(){
+	//	$this->authentication();
+		$data = [];
+		
+		if(isset($_POST['id_notif'])){
+			$id_notif = $_POST['id_notif'];
+		}
+		else $id_notif = 0;
+		
+		$dtdetail['detail'] = $this->CashierModel->getNotifDetail($id_notif);
+		
+		$this->load->view('page/manager/detailnotif', $dtdetail);
+	}
 	// ambil jumlah notif yang belum dibaca
 	public function getCountNotif(){
 		$this->authenticationuser();
@@ -362,6 +376,7 @@ class CashierController extends CI_Controller {
 		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		//$data['username'] = $this->session->userdata('username');
 
 		$this->load->view('page/cashier/editprofile', $data);

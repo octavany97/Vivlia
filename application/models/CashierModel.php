@@ -47,6 +47,13 @@ class CashierModel extends CI_Model {
 	public function addNotif($data){
 		$this->db->insert('notif', $data);
 	}
+	//ambil deskripsi notifikasi untuk ditampilin sebagai detail
+	public function getNotifDetail($id_notif){
+		$query = $this->db->query("SELECT n.id_notif, n.notif_subject, n.notif_msg, TIME(n.notif_time) AS jam, DATE_FORMAT(n.notif_time, '%Y %M %d') AS tanggal, n.notif_time, n.id_sender, u1.username AS user1, u1.foto, n.id_receiver, u2.username AS user2, p.id_penerbit, p.nama_penerbit, p.email AS email2, t.id_toko, t.nama_toko, t.email AS email1, n.flag
+			FROM notif n, users u1, users u2, penerbit p, toko t
+			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u1.id_toko = p.id_penerbit AND u2.id_toko = t.id_toko AND n.id_notif = '$id_notif'");
+		return $query->row_array();
+	}
 	// untuk ambil berapa banyak notif yang belum dibaca
 	public function getUnseenNotif($id){
 		return $this->db->query("SELECT COUNT(*) AS total FROM notif WHERE id_receiver='$id' AND flag=0")->row_array();
@@ -76,14 +83,7 @@ class CashierModel extends CI_Model {
 			ORDER BY n.notif_time DESC");
 		return $query->result_array();
 	}
-	//ambil deskripsi notifikasi untuk ditampilin sebagai detail
-	public function getNotifDetail($id_notif){
-		$query = $this->db->query("SELECT n.id_notif, n.notif_subject, n.notif_msg, TIME(n.notif_time) AS jam, DATE_FORMAT(n.notif_time, '%Y %M %d') AS tanggal, n.notif_time,  n.id_sender, u1.username AS user1, u1.foto, n.id_receiver, u2.username AS user2, p.id_penerbit, p.nama_penerbit, p.email AS email2, t.id_toko, t.nama_toko, t.email AS email1, n.flag
-			FROM notif n, users u1, users u2, penerbit p, toko t
-			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u2.id_toko = p.id_penerbit AND u1.id_toko = t.id_toko AND n.id_notif = '$id_notif'");
-		return $query->row_array();
-	}
-
+	
 //update informasi profile
 public function updateProfile($values,$id_toko,$id_user,$toko){
 		$this->db->where('id_user', $id_user);

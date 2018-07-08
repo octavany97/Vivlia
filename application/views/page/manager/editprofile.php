@@ -7,7 +7,7 @@
 	<?php echo $css; ?>
 	<?php echo $js; ?>
 </head>
-<body>
+<body onload="load_unseen_notification_toko2()">
 	<?php echo $header; ?>
 	<?php echo $menuheader; ?>
 	<?php echo $sidebar; ?>
@@ -117,7 +117,7 @@
     </div>
   </div>
 
-		
+	<?php echo $script;?>	
 
 <script>
 	  function removeAlignment(){

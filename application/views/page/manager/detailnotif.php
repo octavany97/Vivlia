@@ -7,7 +7,7 @@
 	<h3 style="border-bottom: 1px solid #eee;"><?php echo $detail['notif_subject']; ?></h3>
 	<div class="col-md-12">
 		<div class="col-md-1">
-			<img src="<?php echo base_url(); ?>assets/uploads/profiles/<?php if($detail['foto'] != NULL){ echo $detail['user1']; } else{ echo "default.png"; } ?>" class="rounded-circle" style="background-color: #e7e7e7; width: 50px; height: auto;" >	
+			<img src="<?php echo base_url(); ?>assets/uploads/profiles/<?php if($detail['foto'] != NULL){ echo $detail['foto']; } else{ echo "default.png"; } ?>" class="rounded-circle" style="background-color: #e7e7e7; width: 50px; height: auto;" >	
 		</div>
 		<div class="col-md-8" id="info-notif" style="padding-left: 30px;">
 			<strong><?php echo $detail['user1'] . " (" . $detail['nama_penerbit'] . ")"; ?></strong><br>

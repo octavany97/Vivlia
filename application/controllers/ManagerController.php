@@ -442,6 +442,14 @@ class ManagerController extends CI_Controller {
 		
 		$this->load->view('page/manager/detailnotif', $dtdetail);
 	}
+	// banyak notif yang belum dibaca dan belum ada action
+	public function getCountNotif(){
+		//$this->authenticationuser();
+		$id_user = $this->ManagerModel->getStoreUser($this->session->userdata('id_toko'));
+		
+		$unseenNotif = $this->ManagerModel->getUnseenNotif($id_user['id_user']);
+		echo $unseenNotif['total'];
+	}
 	//page product list
 	public function products(){
 		$this->authentication();
@@ -508,6 +516,7 @@ class ManagerController extends CI_Controller {
 		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		//$data['username'] = $this->session->userdata('username');
 
 		$this->load->view('page/manager/editprofile', $data);

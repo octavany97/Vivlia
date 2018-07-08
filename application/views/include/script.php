@@ -6,6 +6,7 @@
             url:"<?php echo base_url();?>adm/getCountNotif",
             method:"POST",
             success:function(data){
+                console.log(data);
                 if(data > 0) $('.count').html(data)
             },
             error: function(xhr, status){
@@ -17,6 +18,18 @@
     function load_unseen_notification_toko(){
         $.ajax({
             url:"<?php echo base_url();?>csh/getCountNotif",
+            method:"POST",
+            success:function(data){
+                if(data > 0) $('.count').html(data)
+            },
+            error: function(xhr, status){
+                alert("Oops there is an error!")
+            }
+        })
+    }
+    function load_unseen_notification_toko2(){
+        $.ajax({
+            url:"<?php echo base_url();?>mgr/getCountNotif",
             method:"POST",
             success:function(data){
                 console.log(data)
@@ -87,6 +100,20 @@
         $.ajax({
             method: "POST",
             url: "<?php echo base_url() ?>mgr/changeNotifDetail/",
+            data: 'id_notif='+id,
+            success: function(classes){
+                $('#detailNotif').empty().html(classes)             
+            },
+            error: function(xhr, status){
+                alert("Oops there is an error!")
+            }
+        })
+    }
+    // function javascript nampilin detail notif ketika ganti dari list notif pada tipe pengguna manager/kasir
+    function showDetailManager(id){
+        $.ajax({
+            method: "POST",
+            url: "<?php echo base_url() ?>csh/changeNotifDetail/",
             data: 'id_notif='+id,
             success: function(classes){
                 $('#detailNotif').empty().html(classes)             
