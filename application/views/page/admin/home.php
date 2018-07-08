@@ -29,19 +29,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php echo $bookchart; ?>
 			</div>
 			<div class="col-lg-4">
-				<?php echo $notifpanel; ?>
+				<?php echo $booksentpanel; ?>
+            </div>
+            <div class="col-lg-4">
+				<?php echo $bestsellerbook; ?>
             </div>
 		</div>
 		<div class="row">
 			<div class="col-lg-8">
 				<?php echo $stockchart; ?>
 			</div>
-			<div class="col-lg-4">
-				<?php echo $booksentpanel; ?>
-            </div>
-            <div class="col-lg-4">
-				<?php echo $bestsellerbook; ?>
-            </div>
+			
 		</div>
 		<div class="row">
 			<div class="col-lg-8">

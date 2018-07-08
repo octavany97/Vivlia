@@ -21,9 +21,7 @@
 			<div class="col-lg-8">
 				<?php echo $timeline; ?>
 			</div>
-			<div class="col-lg-4">
-				<?php echo $notifpanel; ?>
-            </div>
+			
             <div class="col-lg-4">
             	<?php echo $bestsellerbooks; ?>
             </div>

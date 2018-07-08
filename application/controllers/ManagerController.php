@@ -451,14 +451,14 @@ class ManagerController extends CI_Controller {
 	
 		$crud->set_table('stok_toko')
 			 ->set_primary_key('id_buku')
-			 ->columns('id_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover','harga_jual')
+			 ->columns('id_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover','modal','harga_jual')
 			 ->fields('id_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','keterangan','stok','cover','harga_jual')
 			 ->display_as('isbn','ISBN')
 			 ->display_as('id_buku','Nama buku')
 			 ->display_as('id_toko','Nama toko')
 			 ->display_as('id_penerbit','Nama penerbit')
 		     ->set_field_upload('cover','assets/uploads/buku')
-			 ->unset_columns('id_toko', 'cover', 'keterangan', 'isbn','banyak_halaman','tahun_terbit')
+			 ->unset_columns('id_toko', 'cover', 'keterangan', 'isbn','banyak_halaman','tahun_terbit', 'modal', 'harga_jual')
 			 ->set_relation('id_buku','buku','nama_buku')
 			 ->set_relation('id_toko','toko','nama_toko')
 			 ->set_relation_n_n('penulis','buku','penulis','id_buku','penulis','nama_penulis')
@@ -468,6 +468,7 @@ class ManagerController extends CI_Controller {
 			 ->set_relation_n_n('id_penerbit','buku','penerbit','id_buku','id_penerbit','nama_penerbit')
 			 ->set_relation_n_n('keterangan','buku','penerbit','id_buku','id_penerbit','keterangan','tahun_terbit')
 			 ->set_relation_n_n('cover','buku','penerbit','id_buku','id_penerbit','cover','cover')
+			 ->set_relation_n_n('modal','buku','penerbit','id_buku','id_penerbit','modal','modal')
 			 ->Where('stok_toko`.`id_toko', $this->session->userdata('id_toko'));
 		//$crud->unset_columns('id_toko');
 		// $crud->unset_delete(); //buat hilangin tombol delete di action

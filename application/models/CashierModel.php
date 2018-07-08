@@ -84,7 +84,7 @@ class CashierModel extends CI_Model {
 		return $query->row_array();
 	}
 
-
+//update informasi profile
 public function updateProfile($values,$id_toko,$id_user,$toko){
 		$this->db->where('id_user', $id_user);
 		$this->db->update('users', $values);
@@ -93,7 +93,7 @@ public function updateProfile($values,$id_toko,$id_user,$toko){
 		$this->db->update('toko', $toko);
 	}
 
-
+// update foto ke database
 	public function updateFoto($values,$oldFoto){
 		$this->db->where('id_user', $oldFoto);
 		$this->db->update('users', $values);

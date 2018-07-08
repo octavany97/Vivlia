@@ -350,7 +350,7 @@ class CashierController extends CI_Controller {
 		$unseenNotif = $this->CashierModel->getUnseenNotif($id_user['id_user']);
 		echo $unseenNotif['total'];
 	}
-	
+	// untuk edit profile
 	public function editProfile(){
 		$id = $this->session->userdata('id_user');
 		$dtlist['list'] = $this->CashierModel->getAllNotif($id);
@@ -365,7 +365,7 @@ class CashierController extends CI_Controller {
 
 		$this->load->view('page/cashier/editprofile', $data);
 	}
-
+	// update profile
 	public function confirmProfile(){
 		$id = $this->session->userdata('id_user');
 		$idtoko = $this->session->userdata('id_toko');

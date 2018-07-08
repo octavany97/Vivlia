@@ -181,7 +181,7 @@ class AdminController extends CI_Controller {
 		$crud->set_relation_n_n('nama_toko', 'stok_toko', 'toko', 'id_buku','id_toko','nama_toko', 'id_toko');
 		$crud->set_relation_n_n('nama', 'genre_buku', 'genre', 'id_buku','id_genre','nama');
 		$crud->required_fields('nama_buku','id_penerbit','penulis','isbn','tahun_terbit','banyak_halaman','modal','keterangan','stok','cover');
-		$crud->unset_columns('id_penerbit','tanggal_terbit','banyak_halaman','keterangan', 'modal','isbn','tahun_terbit');
+		$crud->unset_columns('id_penerbit','tanggal_terbit','banyak_halaman','keterangan', 'modal','isbn','tahun_terbit', 'nama_toko', 'cover');
 		
 		$crud->unset_clone(); //buat hilangin tombol clone di action
 		$crud->unset_print();
