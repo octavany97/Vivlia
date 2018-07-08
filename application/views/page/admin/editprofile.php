@@ -23,6 +23,7 @@
 			</div>
 		</div>
 
+
 			<form id="formprofile" method="post" action="<?php echo base_url();?>/AdminController/confirmProfile">
 				<div class="form-group" style="padding-bottom: 30px;padding-top: 30px;">
 					 <label class="col-md-3 control-label" for="name">Username</label>  

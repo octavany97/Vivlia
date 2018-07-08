@@ -39,6 +39,7 @@ class AdminController extends CI_Controller {
 		}
 	}
 
+
 	//untuk page dashboard
 	public function dashboard(){
 		$this->authentication();
@@ -464,6 +465,7 @@ class AdminController extends CI_Controller {
 	}
 
 	public function editBg(){
+	
 	
 
 			$oldFoto1 = $this->session->userdata('id_user');

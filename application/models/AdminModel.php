@@ -47,6 +47,7 @@ class AdminModel extends CI_Model {
 		return $query->result_array();
 	}
 
+
 	//ambil semua buku
 	public function getBooks(){
 		return $this->db->query("SELECT id_buku, nama_buku, stok FROM buku")->result_array();

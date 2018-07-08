@@ -665,6 +665,7 @@ input[type=checkbox]:checked + label:before { letter-spacing: 10px; } /* allow s
   user-select: none; */
 }
 
+
 #login .checkbox .character-checkbox {
     width: 25px;
     height: 25px;
