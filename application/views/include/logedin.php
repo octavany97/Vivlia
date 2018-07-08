@@ -83,7 +83,7 @@
             <li><a href="<?php echo base_url().'adm/editprofile'; ?>"><i class="fa fa-user fa-fw"></i> User Profile</a>
             </li>
             <li class="divider"></li>
-            <li><a href="<?php echo base_url(); ?>"><i class="fa fa-sign-out fa-fw"></i> Sign out</a>
+            <li><a href="<?php echo base_url().'VivliaController/logout'; ?>"><i class="fa fa-sign-out fa-fw"></i> Sign out</a>
             </li>
         </ul>
         <!-- /.dropdown-user -->

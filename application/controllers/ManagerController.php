@@ -39,8 +39,24 @@ class ManagerController extends CI_Controller {
 		$this->load->view('page/login', $data);
 	}
 
+	//cegah direct url
+	public function authentication(){
+		$userid = $this->session->userdata('id_user');
+		$roleid = $this->session->userdata('peran');
+
+		if(empty($roleid) || empty($userid)){
+			redirect(base_url());
+		}
+		else if(!empty($userid) && $roleid != 2){
+			if($roleid == 1)
+				redirect(base_url().'adm/dashboard');
+			else if($roleid == 3)
+				redirect(base_url().'csh/dashboard');
+		}
+	}
 	//untuk page dashboard
 	public function dashboard(){
+		$this->authentication();
 		if(isset($_POST['idbuku'])){
 			$bookid = $_POST['idbuku'];
 		}
@@ -106,6 +122,7 @@ class ManagerController extends CI_Controller {
 	}
 	//
 	public function changeStoreChart(){
+		$this->authentication();
 		$data = [];
 		
 		if(isset($_POST['idtoko'])){
@@ -122,6 +139,7 @@ class ManagerController extends CI_Controller {
 	}
 	//untuk ganti grafik profit line chart
 	public function changeProfitChart(){
+		$this->authentication();
 		$data = [];
 		if(isset($_POST['tahun'])){
 			$tahun = $_POST['tahun'];
@@ -139,6 +157,7 @@ class ManagerController extends CI_Controller {
 		$this->load->view('page/manager/pendapatan', $data);
 	}
 	public function getBooksByGenre(){
+		$this->authentication();
 		if(isset($_POST['idgenre'])){
 			$genreid = $_POST['idgenre'];
 		}
@@ -150,6 +169,7 @@ class ManagerController extends CI_Controller {
 
 	//untuk form request buku
 	public function request(){
+		$this->authentication();
 		$id = $this->session->userdata('id_user');
 		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
 		$data = [];
@@ -164,6 +184,7 @@ class ManagerController extends CI_Controller {
 	}
 
 	public function validate_qty($qty){
+		$this->authentication();
 		if($qty>0){
 	     return TRUE;
 	   	}
@@ -174,6 +195,7 @@ class ManagerController extends CI_Controller {
 	}
 
 	public function validate_product($isbn){
+		$this->authentication();
 		if($this->ManagerModel->validateProduct($isbn)){
 			return TRUE;
 		}
@@ -183,6 +205,7 @@ class ManagerController extends CI_Controller {
 
 	//untuk autentikasi form request
 	public function form_request(){
+		$this->authentication();
 		$id = $this->session->userdata('id_user');
 		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
 		$data = [];
@@ -224,6 +247,7 @@ class ManagerController extends CI_Controller {
 
 	//notifikasi
 	public function notifications(){
+		$this->authentication();
 		if($this->uri->segment('3') != NULL){
 			$id_notif = $this->uri->segment('3');
 		}
@@ -253,6 +277,7 @@ class ManagerController extends CI_Controller {
 		}
 	}
 	public function changeNotifDetail(){
+		$this->authentication();
 		$data = [];
 		
 		if(isset($_POST['id_notif'])){
@@ -266,6 +291,7 @@ class ManagerController extends CI_Controller {
 	}
 
 	public function products(){
+		$this->authentication();
 		$data = [];
 		$this->load->library('grocery_CRUD');
 		$crud = new grocery_CRUD();
@@ -314,6 +340,6 @@ class ManagerController extends CI_Controller {
 	}
 
 	public function receiveNotif(){
-
+		$this->authentication();
 	}
 }
