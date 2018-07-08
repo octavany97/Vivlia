@@ -23,6 +23,7 @@
 			</div>
 		</div>
 
+
 			<!-- The Modal -->
 			<!-- <div id="myModal1" class="modal1">
 			  <span class="close">&times;</span>
