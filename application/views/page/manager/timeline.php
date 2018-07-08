@@ -9,7 +9,7 @@
             $i = 0;
             //tampilin di timeline hanya 10 buku yang dikirim terbaru
             foreach ($histori as $row) {
-                if($i == 10) break;
+                if($i == 5) break;
                 if($i%2 == 0){
                     ?>
                     <li>

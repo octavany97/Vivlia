@@ -200,13 +200,7 @@ class CashierController extends CI_Controller {
 
 		$this->load->view('page/products', $data);
 	}
-	// public function getPenerbit($data, $primary_key){
-	// 	var_dump($data);
-	// 	var_dump($primary_key);
-
-	// 	//$result = $this->CashierModel->getPenerbitName($primary_key);
-	// }
-
+	
 	public function notifications(){
 		if($this->uri->segment('3') != NULL){
 			$id_notif = $this->uri->segment('3');
@@ -285,7 +279,7 @@ class CashierController extends CI_Controller {
 	               'smtp_user' => $from,   // Ganti dengan email gmail Anda.
 	               'smtp_pass' => $password,             // Password gmail Anda.
 	               'smtp_port' => 465,
-	               'smtp_keepalive' => TRUE,
+	               'smtp_keepalive' => FALSE,
 	               'smtp_crypto' => 'SSL',
 	               'wordwrap'  => TRUE,
 	               'wrapchars' => 80,

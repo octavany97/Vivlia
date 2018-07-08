@@ -6,7 +6,9 @@
         </a>
         <ul class="dropdown-menu dropdown-notif">
             <?php
+            $i = 0;
             foreach ($list as $row) {
+                if($i == 5) break;
                 ?>
             <li style="margin-bottom: 20px;">
                 <a href="<?php if($this->session->userdata('peran') == 1){ echo base_url('adm/notifications'); }
@@ -56,6 +58,7 @@
             </li>
             <li class="divider"></li>
                 <?php
+                $i++;
             }
             ?>
             

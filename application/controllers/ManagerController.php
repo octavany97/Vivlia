@@ -7,9 +7,9 @@ class ManagerController extends CI_Controller {
 		parent::__construct();
 		$this->load->model('LoginModel');
 		$this->load->model('ManagerModel');
-		/*$this->load->model('AdminModel');
+		/*$this->load->model('AdminModel');*/
 		
-		$this->load->model('CashierModel');*/
+		$this->load->model('CashierModel');
 		$this->load->library('session');
 		$this->load->library('email');
 	}
@@ -203,7 +203,7 @@ class ManagerController extends CI_Controller {
             $this->load->library('form_validation');
 
             $this->form_validation->set_rules('product_name1', 'product_name1', 'callback_validate_product',
-            	array('validate_product' => '*Invalid product name!'));
+            	array('validate_product' => '*Invalid product ISBN!'));
 
             $this->form_validation->set_rules('qty1', 'qty1', 'max_length[3]|callback_validate_qty',
             	array('max_length' => '*Maximum number is 999!',
@@ -218,7 +218,156 @@ class ManagerController extends CI_Controller {
 
 			$id_form = $this->input->post('id_form');
 		
-			redirect(base_url().'mgr/dashboard');
+		//	redirect(base_url().'mgr/dashboard');
+		}
+	}
+	public function checkISBN(){
+		if(isset($_POST['isbn'])){
+			$isbn = $_POST['isbn'];
+		}
+		else $isbn = 0;
+
+		$result = $this->ManagerModel->checkIsbn($isbn);
+		if($result != NULL){
+			echo json_encode($result);
+		}
+		else{
+			echo "false";
+		}
+	}
+	public function insertRequestBook(){
+		date_default_timezone_set('Asia/Jakarta');
+		if(isset($_POST['id_form'])){
+			$idform = $_POST['id_form'];
+		}
+		if(isset($_POST['id_user'])){
+			$iduser = $_POST['id_user'];
+		}
+		if(isset($_POST['desc'])){
+			$desc = $_POST['desc'];
+		}
+		$id_toko = $this->session->userdata('id_toko');
+		$data = [];
+		$data2 = [];
+		//if(isset($_POST['data'])){
+		$data = json_decode($_POST['data']);
+		$data2 = (array) json_decode($data);
+		//masukkin data ke table form_manager
+		$date = date('Y-m-d H:i:s');
+		$dataRequest = array(
+			"id_form" => $idform,
+			"id_user" => $iduser,
+			"tanggal" => $date,
+			"desc" => $desc
+		);
+
+		
+		$this->ManagerModel->insertRequestProduct($dataRequest);
+
+		//generate email
+		$toko = $this->CashierModel->getStoreUser($id_toko);
+		$pabrik = $this->CashierModel->getPabrikUser(1);
+		
+		$subject = "Book Request";
+		$msg = $toko['nama_toko']." wants to request several books<br>";
+
+		//masukkin data ke table detail_form_manager
+		$dataDetailRequest = [];
+		$nrow = count($data2);
+		$ctr = 0;
+		foreach ($data2 as $row) {
+			$dt = (array) $row;
+			$dataDetailRequest = array(
+				'id_form' => $idform,
+				'id_buku' => $dt['id_buku'],
+				'qty' => $dt['quantity'],
+			);
+			
+			$this->ManagerModel->insertDetailRequestProduct($dataDetailRequest);
+			
+			//generate email			
+			$msg .= ($ctr+1).". " . $dt['nama_buku'] . " (" . $dt['quantity'] ." copies)<br>";
+
+			$msg .= "<br><br>Best Regards,<br><br><br>".$toko['nama_toko'];
+
+		}
+		$dataNotif = array(
+			'notif_subject' => $subject,
+			'notif_msg' => $msg,
+			'notif_time' => $date,
+			'id_sender' => $toko['id_user'],
+			'id_receiver' => 1,
+			'flag' => 0,
+		);
+		$notif = $this->ManagerModel->addNotif($dataNotif, $toko['id_user']);
+		$idnotif = $notif['id_notif'];
+
+		 
+		foreach ($data2 as $row) {
+			$dt = (array) $row;
+			$dataDetailNotif = array(
+				"id_notif" => $idnotif,
+				"id_buku" => $dt['id_buku'],
+				"jumlah" => $dt['quantity']
+			);
+		 
+			$this->ManagerModel->insertDetailNotif($dataDetailNotif);
+		}
+		// var_dump($toko['email']);
+		// var_dump($pabrik['email']);
+		// var_dump($toko['nama_toko']);
+		// var_dump($dataNotif);
+		$this->sendEmailManager($toko['email'], $pabrik['email'], $toko['nama_toko'], $dataNotif);
+	}
+	public function sendEmailManager($from, $to, $username, $data){
+		$this->load->helper('email');
+		
+		$pass = explode('@', $from);
+		$password = $pass[0]."$123";
+
+		if(valid_email($from) && valid_email($to)){
+			//email
+			$config = [
+	               'useragent' => 'CodeIgniter',
+	               'protocol'  => 'smtp',
+	               'mailpath'  => '/usr/sbin/sendmail',
+	               'smtp_host' => 'ssl://smtp.gmail.com',
+	               'smtp_user' => $from,   // Ganti dengan email gmail Anda.
+	               'smtp_pass' => $password,             // Password gmail Anda.
+	               'smtp_port' => 465,
+	               'smtp_keepalive' => FALSE,
+	               'smtp_crypto' => 'SSL',
+	               'wordwrap'  => TRUE,
+	               'wrapchars' => 80,
+	               'mailtype'  => 'html',
+	               'charset'   => 'utf-8',
+	               'validate'  => TRUE,
+	               'crlf'      => "\r\n",
+	               'newline'   => "\r\n",
+	           ];
+	 	
+	        // Load library email dan konfigurasinya.
+	        $this->load->library('email', $config);
+
+			$this->email->from($from, $username);
+			$this->email->to($to);
+			$this->email->subject($data['notif_subject']);
+			$this->email->message($data['notif_msg']);
+
+			if($this->email->send()){
+				//$unseenNotif = getCountNotif();
+				//echo $unseenNotif
+				echo "Email has been sent!";
+			}
+			else{
+				//show_error($this->email->print_debugger());
+				echo "Error! Email can not send";
+			}
+
+
+		}
+		else{
+			echo "Email doesn't valid!";
 		}
 	}
 
@@ -313,7 +462,4 @@ class ManagerController extends CI_Controller {
 		$this->load->view('page/products', $data);
 	}
 
-	public function receiveNotif(){
-
-	}
 }

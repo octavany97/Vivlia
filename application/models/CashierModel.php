@@ -64,7 +64,8 @@ class CashierModel extends CI_Model {
 	public function getAllNotif($id){
 		$query = $this->db->query("SELECT n.id_notif, n.notif_subject, n.notif_msg, TIME(n.notif_time) AS jam, DATE_FORMAT(n.notif_time, '%Y %M %d') AS tanggal, n.notif_time,  n.id_sender, u1.username AS user1, u1.foto, n.id_receiver, u2.username AS user2, p.id_penerbit, p.nama_penerbit, p.email AS email2, t.id_toko, t.nama_toko, t.email AS email1, n.flag
 			FROM notif n, users u1, users u2, penerbit p, toko t
-			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u1.peran = 1 AND u1.id_toko = p.id_penerbit AND u2.id_toko = t.id_toko AND n.id_receiver=(SELECT id_user FROM users u, toko tk WHERE u.id_toko = tk.id_toko AND u.peran = 2 AND u.id_toko = (SELECT id_toko FROM users uu WHERE uu.id_user = '$id'))");
+			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u1.peran = 1 AND u1.id_toko = p.id_penerbit AND u2.id_toko = t.id_toko AND n.id_receiver=(SELECT id_user FROM users u, toko tk WHERE u.id_toko = tk.id_toko AND u.peran = 2 AND u.id_toko = (SELECT id_toko FROM users uu WHERE uu.id_user = '$id'))
+			ORDER BY n.notif_time DESC");
 		return $query->result_array();
 	}
 	//ambil deskripsi notifikasi untuk ditampilin sebagai detail

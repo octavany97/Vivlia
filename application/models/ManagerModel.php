@@ -23,12 +23,9 @@ class ManagerModel extends CI_Model {
 		$this->load->view('welcome_message');
 	}
 	public function getBooksTimeline($storeid){
-		$query = $this->db->query("SELECT hp.id_buku, p.nama_penerbit, b.nama_buku, b.penulis, b.tahun_terbit, b.keterangan, b.cover, hp.id_toko, t.nama_toko, DATE_FORMAT(hp.tanggal_kirim, '%y-%m-%d') AS tanggal, DATE_FORMAT(hp.tanggal_kirim, '%H:%i:%s') AS jam, hp.tanggal_kirim, hp.stok 
-			FROM histori_pengiriman hp
-			LEFT JOIN buku b ON hp.id_buku = b.id_buku
-			LEFT JOIN toko t ON hp.id_toko = t.id_toko
-            LEFT JOIN penerbit p ON hp.id_penerbit = p.id_penerbit
-			WHERE hp.id_toko = '$storeid'
+		$query = $this->db->query("SELECT hp.id_buku, p.nama_penerbit, b.nama_buku, b.penulis AS id_penulis, pn.nama_penulis AS penulis, b.tahun_terbit, b.keterangan, b.cover, hp.id_toko, t.nama_toko, DATE_FORMAT(hp.tanggal_kirim, '%y-%m-%d') AS tanggal, DATE_FORMAT(hp.tanggal_kirim, '%H:%i:%s') AS jam, hp.tanggal_kirim, hp.stok 
+			FROM histori_pengiriman hp, buku b, toko t, penulis pn, penerbit p
+			WHERE hp.id_toko = '$storeid' AND hp.id_buku = b.id_buku AND hp.id_toko = t.id_toko AND hp.id_penerbit = p.id_penerbit AND b.penulis = pn.id_penulis
 			ORDER BY tanggal_kirim DESC");
 		return $query->result_array();
 		//SELECT nama_buku, penulis, DATE_FORMAT(tanggal_terbit, "%M") AS bulan, YEAR(tanggal_terbit) AS tahun, keterangan FROM buku ORDER BY tanggal_terbit DESC
@@ -51,7 +48,8 @@ class ManagerModel extends CI_Model {
 	public function getAllNotif($id){
 		$query = $this->db->query("SELECT n.id_notif, n.notif_subject, n.notif_msg, TIME(n.notif_time) AS jam, DATE_FORMAT(n.notif_time, '%Y %M %d') AS tanggal, n.notif_time,  n.id_sender, u1.username AS user1, u1.foto, n.id_receiver, u2.username AS user2, p.id_penerbit, p.nama_penerbit, p.email AS email2, t.id_toko, t.nama_toko, t.email AS email1, n.flag
 			FROM notif n, users u1, users u2, penerbit p, toko t
-			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u1.peran = 1 AND u1.id_toko = p.id_penerbit AND u2.id_toko = t.id_toko AND id_receiver='$id'");
+			WHERE n.id_sender = u1.id_user AND n.id_receiver = u2.id_user AND u1.peran = 1 AND u1.id_toko = p.id_penerbit AND u2.id_toko = t.id_toko AND id_receiver='$id'
+			ORDER BY n.notif_time DESC");
 		return $query->result_array();
 	}
 	//ambil deskripsi notifikasi untuk ditampilin sebagai detail
@@ -109,19 +107,14 @@ class ManagerModel extends CI_Model {
 	public function getStoreName($id){
 		return $this->db->query("SELECT nama_toko FROM toko WHERE id_toko = '$id'")->row_array();
 	}
-	/*public function getTransaksi($id_toko){
-		$query = $this->db->query("SELECT id_transaksi, harga_total
-			FROM transaksi
-			WHERE id_toko = '$id_toko'");
-		return $query->result_array();
-	}
+	//untuk masukkin notif
+	public function addNotif($data, $id){
+		$this->db->insert('notif', $data);
+		//var_dump($data);
+		$time = $data['notif_time'];
 
-	public function getDetailTransaksi($id_toko){
-		$query = $this->db->query("SELECT dt.id_buku, dt.quantity, dt.harga_satuan
-			FROM detail_transaksi dt, transaksi t
-			WHERE dt.id_transaksi = t.id_transaksi AND t.id_toko = '$id_toko'");
-		return $query->result_array();
-	}*/
+		return $this->db->query("SELECT id_notif FROM notif WHERE id_sender='$id' AND notif_time='$time'")->row_array();
+	}
 
 	public function getPendapatan($id_toko, $tahun){
 		$query = $this->db->query("SELECT MONTH(t.tanggal) AS month, SUM(t.harga_total) - SUM(dt.harga_satuan * dt.quantity) AS pendapatan
@@ -138,7 +131,24 @@ class ManagerModel extends CI_Model {
 			GROUP BY YEAR(t.tanggal)");
 		return $query->result_array();
 	}
+	/* 
+	untuk cek produknya benar2 ada atau tidak di toko tersebut.
+	dipakai di:
+	1. checkISBN controller
 
+	*/
+	public function checkIsbn($isbn){
+		return $this->db->query("SELECT nama_buku, id_buku FROM buku WHERE isbn = '$isbn'")->row_array();
+	}
+	public function insertDetailNotif($data){
+		$this->db->insert('notif_item',$data);
+	}
+	public function insertRequestProduct($data){
+		$this->db->insert('form_manager',$data);
+	}
+	public function insertDetailRequestProduct($data){
+		$this->db->insert('detail_form_manager',$data);
+	}
 	public function validateProduct($isbn){
 		$query = $this->db->query("SELECT COUNT(*) as jumlah FROM buku WHERE isbn = '$isbn'")->row_array();
 		if(intval($query['jumlah']) == 0){
@@ -147,6 +157,7 @@ class ManagerModel extends CI_Model {
 		else
 			return TRUE;
 	}
+
 
 
 }

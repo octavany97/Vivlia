@@ -21,21 +21,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
 		</div>
 		<div class="row">
-			<form id="request" name="request" autocomplete="off" class="form-horizontal" method="POST" action="<?php echo base_url();?>index.php/ManagerController/form_request" enctype="multipart/form-data">
+			<form id="request" name="request" autocomplete="off" class="form-horizontal" method="POST"  enctype="multipart/form-data">
 			<fieldset>
 			<!-- Text input-->
 				<div class="form-group">
-				  <label class="col-md-3 control-label" for="name">Form Request ID</label>  
-				  <div class="col-md-6">
+				  <label class="col-md-2 control-label" for="name">Form Request ID</label>  
+				  <div class="col-md-9">
 				  	<input id="id_form" name="id_form" type="text" class="form-control input-md" value="<?php echo $id_form;?>" disabled>
 				  </div>
 				</div>
 				<!-- Text input-->
-				<div class="form-group">
-				  <label class="col-md-3 control-label" for="product_name">Product Name</label>  
-				  <div class="col-md-3">
-					  <input id="product_name1" name="product_name1" type="text" placeholder="Product Name" class="form-control input-md" list="buku" >
+				<div class="form-group" id="columns">
+				  <label class="col-md-2 control-label" for="product_name">Product ISBN</label>  
+				  <div class="col-md-2">
+					  <input id="product_name1" name="product_name1" type="text" placeholder="Product ISBN" class="form-control input-md" list="buku" >
 					  <label style="color: red;"><?php echo form_error('product_name1');?>
+					  
 					  	<datalist id="buku">
 					  		<?php
 					  		foreach ($title as $row) {
@@ -46,13 +47,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					  		?>
 					  	</datalist>
 				  </div>
-				  <label class="col-md-1 control-label" for="qty">Quantity</label>  
-				  <div class="col-md-2">
-				  	<input id="qty1" name="qty1" type="number" placeholder="Quantity" class="form-control input-md" >
-				  	<label style="color: red;"><?php echo form_error('qty1');?></label>
+				  <label class="col-md-1 control-label" for="productName1">Product Name</label>
+				  <div class="col-md-4">
+				  	<input type="text" name="productName1" class="form-control input-md" id="productName1" readonly>
+				  	<input type="hidden" name="idbuku1" id="idbuku1">
 				  </div>
-				  <div class="input-group-btn">
-	            		<button class="btn btn-success" type="button" onclick="product_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+				  <label class="col-md-1 control-label" for="qty">Quantity</label>  
+				  <div class="col-md-1">
+				  	<input id="qty1" name="qty1" type="number" min="0" placeholder="Quantity" class="form-control input-md" >
+				  	<label style="color: red;"><?php echo form_error('qty1');?></label>
+				  	
+				  </div>
+				  <div class="input-group-btn" id="btn-action1">
+	            	<button class="btn btn-success" type="button" onclick="product_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
 	          	  </div>
 				</div>
 
@@ -60,10 +67,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div id="product_fields">
 				</div>
 
+				<div class="col-md-2"></div>
+				<div class="col-md-2">
+					<label style="color: red; padding-top:0px;" id="msg_error_isbn"></label>
+				</div>
+				<div class="col-md-1"></div>
+				<div class="col-md-4"></div>
+				<div class="col-md-2">
+					<label style="color: red; padding-left: 30px;" id="msg_error_qty"></label>
+				</div>
 				<!-- Text input-->
+				<br><br>
 				<div class="form-group">
-				  <label class="col-md-3 control-label" for="description">Description</label>  
-				  <div class="col-md-6">
+				  <label class="col-md-2 control-label" for="description">Description</label>  
+				  <div class="col-md-9">
 				  <textarea id="description" name="description" type="text" placeholder="Description" class="form-control input-md">
 				  </textarea> 
 				  </div>
@@ -104,7 +121,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			          <p>Are you sure the data entered are correct?</p>
 			        </div>
 			        <div class="modal-footer">
-			          <button type="submit" class="btn btn-primary" name="btnRequest">Yes</button>
+			          <button type="submit" class="btn btn-primary" data-dismiss="modal" name="btn_request" id="btn_request" onclick="requestBook(<?php echo $this->session->userdata('id_user');?>)">Yes</button>
 			          <button type="submit" class="btn btn-danger" data-dismiss="modal">No</button>
 			        </div>
 			      </div>
@@ -128,74 +145,215 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?php echo base_url().'assets/vendor/jquery/jquery-ui.js';?>"></script>
 <script type="text/javascript">
 	var room = 1;
-	var empty = false;
+	var empty_isbn = false;
+	var empty_qty = false;
 	function isEmpty(n){
-		for(var i = 1; i<=n; i++){
-			var product_name = document.getElementById("product_name" + i);
-			var qty = document.getElementById("qty" + i);
-			   console.log(product_name)
-			   console.log(qty)
-			   if (product_name.value == "" || qty.value == "")
-			   {
-			      if (product_name.value == "")
-			      {
-			      	 product_name.setAttribute("required","")
-			      	 product_name.setAttribute("style","border-color: red")
-			         product_name.focus();
-			         empty = true;
-			         //return true;
-			      }
-			      // else{
-			      // 	product_name.removeAttribute("style")
-			      // }
-			      if(qty.value == "")
-			      {
-			      	 qty.setAttribute("style","border-color: red")
-			      	 qty.setAttribute('required',"")
-			         qty.focus();
-			         empty = true;
-			         //return true;
-			      }
-			      // else{
-			      // 	qty.removeAttribute("style")
-			      // }
-			   }
+		var isbn = document.getElementById("product_name" + room);
+		var name = document.getElementById("productName"+room);
+		var qty = document.getElementById("qty" + room);
+		var idbuku = document.getElementById("idbuku"+room);
+		
+	      if (isbn.value == "")
+	      {
+	      	 isbn.setAttribute("required","")
+	      	 isbn.setAttribute("style","border-color: red")
+	         empty_isbn = true;
+	         document.getElementById("msg_error_isbn").innerHTML = "Please fill out this field."
+	      }
+	      else{
+
+	      	$.ajax({
+				method: "POST",
+				url: "<?php echo base_url(); ?>mgr/checkISBN/",
+				data: 'isbn='+isbn.value,
+				success: function(classes){
+					if(classes == "false"){
+						empty_isbn = true;
+						document.getElementById("msg_error_isbn").innerHTML = "Please check again."
+					}
+					else{
+						let obj = JSON.parse(classes)
+						name.value = obj.nama_buku
+						idbuku.value = obj.id_buku
+
+						if(qty.value != ""){
+							var idtoko = 1;
+							var idx = 0;
+							var temp = '{"no":'+(room-1)+',"id_buku":'+idbuku.value+',"isbn":"'+isbn.value+'","nama_buku":"'+name.value+'","quantity":'+qty.value+'}';
+							var obj2 = JSON.parse(temp)
+							var data = JSON.parse(localStorage.getItem('product_request'))
+							if(data.length > 0) idx = data.length;
+
+							var addItem = []
+							for(let i = 0;i < data.length;i++){
+								addItem.push(data[i]);
+							}
+
+							var addItem1 = obj2;
+							addItem.push(addItem1)
+							localStorage.setItem('product_request', JSON.stringify(addItem));	
+						}
+						
+						isbn.removeAttribute("style")
+						empty_isbn = false;
+						document.getElementById("msg_error_isbn").innerHTML = ""
+					}
+				},
+				error: function(xhr, status){
+					alert("Oops there is an error!")
+				}
+			})
+	      	
+	      }
+	      if(qty.value == "")
+	      {
+	      	 qty.setAttribute("style","border-color: red")
+	      	 qty.setAttribute('required',"")
+	         empty_qty = true;
+	         document.getElementById("msg_error_qty").innerHTML = "Minimum number is 1"		         
+	      }
+	      else{
+	      	empty_qty = false;
+	      	qty.removeAttribute("style")
+	      	document.getElementById("msg_error_qty").innerHTML = ""
+	      }
+		if(!empty_isbn && !empty_qty){
+			var divBtn = document.getElementById("btn-action"+room)
+			var btnEdit = document.createElement("button")
+			var span = document.createElement("span")
+			
+			btnEdit.className = "btn btn-primary"
+			btnEdit.id = "edit_btn"+room
+			btnEdit.name = "edit_btn"+room
+			btnEdit.type = "button"
+			//btnEdit.onclick = "edit_product_fields("+room+")"
+			span.className = "glyphicon glyphicon-edit"
+			btnEdit.appendChild(span)
+			divBtn.appendChild(btnEdit)
+			
+			document.getElementById('edit_btn'+room).setAttribute("onclick","edit_product_fields("+room+")")
+			isbn.setAttribute("readonly","")
+			qty.setAttribute("readonly","")
+
+			return false;
 		}
-		return empty;
+		else{
+			return true;
+		}
 	}
 
 
 	function product_fields() {
 		if(!isEmpty(room)){
 		    room++;
+		    //console.log(room)
 		    var objTo = document.getElementById('product_fields')
 		    var divtest = document.createElement("div");
 			divtest.setAttribute("class", "form-group removeclass"+room);
 			var rdiv = 'removeclass'+room;
-			divtest.innerHTML = '<label class="col-md-3 control-label" for="product_name">Product Name</label><div class="col-md-3"><input id="product_name'+room+'" list="buku" name="product_name'+room+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-2"><input id="qty'+room+'" name="qty'+room+'" type="number" placeholder="Quantity" class="form-control input-md" ></div><div class="input-group-btn"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
+			divtest.innerHTML = '<label class="col-md-2 control-label" for="product_name'+room+'">Product ISBN</label><div class="col-md-2"><input id="product_name'+room+'" list="buku" name="product_name'+room+'" type="text" placeholder="Product ISBN" class="form-control input-md" autocomplete="on"></div><label class="col-md-1 control-label" for="productName'+room+'">Product Name</label><div class="col-md-4"><input id="productName'+room+'" readonly name="productName'+room+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on"><input type="hidden" name="idbuku'+room+'" id="idbuku'+room+'"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-1"><input id="qty'+room+'" name="qty'+room+'" type="number" placeholder="Quantity" class="form-control input-md" ></div><div class="input-group-btn" id="btn-action'+room+'"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
 		    objTo.appendChild(divtest)
 		}
-
-
 	}
-   function remove_product_fields(rid) {
-	   $('.removeclass'+rid).remove();
-	   room--;
-   }
+	function edit_product_fields(rid){
+		var isbn = document.getElementById('product_name'+rid)
+		var name = document.getElementById('productName'+rid)
+		var idbuku = document.getElementById('idbuku'+rid)
+	   	var qty = document.getElementById('qty'+rid)
+	   	var btn_edit = document.getElementById('edit_btn'+rid)
 
-   function renderAllItems(items){
-		item = JSON.parse(JSON.stringify(items));
-		
-		for (var i = 1; i <= items.length - 1; i++) {
-			var objTo = document.getElementById('product_fields')
-			var divtest = document.createElement("div")
-			divtest.setAttribute("class", "form-group removeclass"+i);
-			var rdiv = 'removeclass'+i;
-			divtest.innerHTML = '<label class="col-md-3 control-label" for="product_name">Product Name</label><div class="col-md-3"><input id="product_name'+i+'" list="buku" name="product_name'+i+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-2"><input id="qty'+i+'" name="qty'+i+'" type="number" placeholder="Quantity" class="form-control input-md" ></div><div class="input-group-btn"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ i +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
-		}
+	   	if(btn_edit.innerHTML == '<span class="glyphicon glyphicon-floppy-save"></span>'){
+	   		btn_edit.innerHTML = '<span class="glyphicon glyphicon-edit"></span>'
+	   		var temp = []
+	   		var data = JSON.parse(localStorage.getItem('product_request'))
+	   		for(let i = 0;i < data.length;i++){
+	   			if((i+1) == rid){
+	   				var temp2 = '{"no":'+rid+',"id_buku":'+idbuku.value+',"isbn":"'+isbn.value+'","nama_buku":"'+name.value+'","quantity":'+qty.value+'}';
+					temp.push(JSON.parse(temp2))
+	   			}
+	   			else{
+	   				temp.push(data[i]);
+	   			}
+	   		}
+	   		localStorage.setItem('product_request',"[]")
+	   		localStorage.setItem('product_request',JSON.stringify(temp))
+	   		isbn.setAttribute('readonly','')
+	   		qty.setAttribute('readonly','')
+	   	}
+	   	else if(btn_edit.innerHTML == '<span class="glyphicon glyphicon-edit"></span>'){
+	   		btn_edit.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span>'	
+	   		isbn.removeAttribute("readonly")
+	   		qty.removeAttribute("readonly")
+	   	}	   	
 	}
+    function remove_product_fields(rid) {
+	    //$('.removeclass'+rid).remove();
+	    room--;
+	   	// var parent = document.getElementById('btn-action'+room)
+	   	// var child = document.getElementById('edit_btn'+room)
+	   	// parent.removeChild(child)
+	   	var isbn = document.getElementById('product_name'+room)
+	   	var qty = document.getElementById('qty'+room)
+	   	var fields = document.getElementById('product_fields')
+	   	fields.innerHTML = ''
+
+	   	var temp = []
+   		var data = JSON.parse(localStorage.getItem('product_request'))
+   		let ctr = 1
+
+   		for(let i = 0;i < data.length;i++){
+   			if((i+1) == rid){
+   				
+   			}
+   			else{
+   				//masukkin lagi ke array temp
+   				temp.push(data[i]);
+
+ 				//buat ulang 
+ 				if(i > 0 && i < data.length - 1){
+ 					var divtest = document.createElement("div");
+					divtest.setAttribute("class", "form-group removeclass"+ctr);
+					var rdiv = 'removeclass'+ctr;
+					divtest.innerHTML = '<label class="col-md-2 control-label" for="product_name'+ctr+'">Product ISBN</label><div class="col-md-2"><input id="product_name'+ctr+'" list="buku" name="product_name'+ctr+'" type="text" placeholder="Product ISBN" class="form-control input-md" autocomplete="on" value="'+data[i].isbn+'" readonly></div><label class="col-md-1 control-label" for="productName'+ctr+'">Product Name</label><div class="col-md-4"><input id="productName'+ctr+'" readonly name="productName'+ctr+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on" value="'+data[i].nama_buku+'" readonly><input type="hidden" name="idbuku'+ctr+'" id="idbuku'+ctr+'" value="'+data[i].id_buku+'"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-1"><input id="qty'+ctr+'" name="qty'+ctr+'" type="number" placeholder="Quantity" class="form-control input-md" value="'+data[i].quantity+'" readonly></div><div class="input-group-btn" id="btn-action'+ctr+'"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ ctr +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button><button class="btn btn-primary" type="button" onclick="edit_product_fields('+ ctr +');"> <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </button></div>';
+				    fields.appendChild(divtest)	
+ 				}
+			    else if(i == data.length-1){
+			    	var divtest = document.createElement("div");
+					divtest.setAttribute("class", "form-group removeclass"+ctr);
+					var rdiv = 'removeclass'+ctr;
+					divtest.innerHTML = '<label class="col-md-2 control-label" for="product_name'+ctr+'">Product ISBN</label><div class="col-md-2"><input id="product_name'+ctr+'" list="buku" name="product_name'+ctr+'" type="text" placeholder="Product ISBN" class="form-control input-md" autocomplete="on" value="'+data[i].isbn+'"></div><label class="col-md-1 control-label" for="productName'+ctr+'">Product Name</label><div class="col-md-4"><input id="productName'+ctr+'" name="productName'+ctr+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on" value="'+data[i].nama_buku+'" readonly><input type="hidden" name="idbuku'+ctr+'" id="idbuku'+ctr+'" value="'+data[i].id_buku+'"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-1"><input id="qty'+ctr+'" name="qty'+ctr+'" type="number" placeholder="Quantity" class="form-control input-md" value="'+data[i].quantity+'"></div><div class="input-group-btn" id="btn-action'+ctr+'"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ ctr +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
+				    fields.appendChild(divtest)		
+			    }
+   				ctr++;
+
+   			}
+   			room = ctr-1;
+   		}
+   		localStorage.setItem('product_request',"[]")
+   		localStorage.setItem('product_request',JSON.stringify(temp))   	
+    }
+    // dijalankan ketika btn_request di modal request diklik
+    function requestBook(id_user) {
+    	var id_form = $('#id_form').val()
+    	var desc = $('#description').val()
+    	var data = JSON.stringify(localStorage.getItem('product_request'))
+    	console.log(data)
+    	$.ajax({
+			method: "POST",
+			url: "<?php echo base_url(); ?>mgr/insertRequestBook/",
+			data: 'id_form='+id_form+'&id_user='+id_user+'&desc='+desc+'&data='+data,
+			success: function(classes){
+				console.log(classes)
+			},
+			error: function(xhr, status){
+				alert("Oops there is an error!")
+			}
+		})
+    }
+
 	function initialize(){
 		let items = localStorage.getItem("product_request");
+		localStorage.setItem('product_request',"[]")
 		if(items == null){
 			var data = {}
 			localStorage.setItem("product_request", JSON.stringify(data))
@@ -203,8 +361,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			items = localStorage.getItem("product_request")
 		}
 		items = JSON.parse(items)
-
-		renderAllItems(items)
+	
 		document.getElementById('description').innerHTML = ''
 	}
 
@@ -223,109 +380,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
    }
 </script>
-<!-- <script type="text/javascript">
-	function autocomplete(inp, arr) {
-  /*the autocomplete function takes two arguments,
-  the text field element and an array of possible autocompleted values:*/
-  var currentFocus;
-  /*execute a function when someone writes in the text field:*/
-  inp.addEventListener("input", function(e) {
-      var a, b, i, val = this.value;
-      /*close any already open lists of autocompleted values*/
-      closeAllLists();
-      if (!val) { return false;}
-      currentFocus = -1;
-      /*create a DIV element that will contain the items (values):*/
-      a = document.createElement("DIV");
-      a.setAttribute("id", this.id + "autocomplete-list");
-      a.setAttribute("class", "autocomplete-items");
-      /*append the DIV element as a child of the autocomplete container:*/
-      this.parentNode.appendChild(a);
-      /*for each item in the array...*/
-      for (i = 0; i < arr.length; i++) {
-        /*check if the item starts with the same letters as the text field value:*/
-        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-          /*create a DIV element for each matching element:*/
-          b = document.createElement("DIV");
-          /*make the matching letters bold:*/
-          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(val.length);
-          /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          /*execute a function when someone clicks on the item value (DIV element):*/
-              b.addEventListener("click", function(e) {
-              /*insert the value for the autocomplete text field:*/
-              inp.value = this.getElementsByTagName("input")[0].value;
-              /*close the list of autocompleted values,
-              (or any other open lists of autocompleted values:*/
-              closeAllLists();
-          });
-          a.appendChild(b);
-        }
-      }
-  });
-  /*execute a function presses a key on the keyboard:*/
-  inp.addEventListener("keydown", function(e) {
-      var x = document.getElementById(this.id + "autocomplete-list");
-      if (x) x = x.getElementsByTagName("div");
-      if (e.keyCode == 40) {
-        /*If the arrow DOWN key is pressed,
-        increase the currentFocus variable:*/
-        currentFocus++;
-        /*and and make the current item more visible:*/
-        addActive(x);
-      } else if (e.keyCode == 38) { //up
-        /*If the arrow UP key is pressed,
-        decrease the currentFocus variable:*/
-        currentFocus--;
-        /*and and make the current item more visible:*/
-        addActive(x);
-      } else if (e.keyCode == 13) {
-        /*If the ENTER key is pressed, prevent the form from being submitted,*/
-        e.preventDefault();
-        if (currentFocus > -1) {
-          /*and simulate a click on the "active" item:*/
-          if (x) x[currentFocus].click();
-        }
-      }
-  });
-  function addActive(x) {
-    /*a function to classify an item as "active":*/
-    if (!x) return false;
-    /*start by removing the "active" class on all items:*/
-    removeActive(x);
-    if (currentFocus >= x.length) currentFocus = 0;
-    if (currentFocus < 0) currentFocus = (x.length - 1);
-    /*add class "autocomplete-active":*/
-    x[currentFocus].classList.add("autocomplete-active");
-  }
-  function removeActive(x) {
-    /*a function to remove the "active" class from all autocomplete items:*/
-    for (var i = 0; i < x.length; i++) {
-      x[i].classList.remove("autocomplete-active");
-    }
-  }
-  function closeAllLists(elmnt) {
-    /*close all autocomplete lists in the document,
-    except the one passed as an argument:*/
-    var x = document.getElementsByClassName("autocomplete-items");
-    for (var i = 0; i < x.length; i++) {
-      if (elmnt != x[i] && elmnt != inp) {
-      x[i].parentNode.removeChild(x[i]);
-    }
-  }
-}
-/*execute a function when someone clicks in the document:*/
-document.addEventListener("click", function (e) {
-    closeAllLists(e.target);
-});
-} 
-
-</script>
- <script>
- autocomplete(document.getElementById("product_name1"), array);
- function addAutocomplete(id){
- 	autocomplete(document.getElementById("product_name"+id), array)
- }
-</script>  -->
 </html>
