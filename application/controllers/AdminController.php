@@ -407,5 +407,33 @@ class AdminController extends CI_Controller {
 		
 		redirect(base_url().'adm/editprofile');
 	}
+
+	public function editFoto(){
+	
+
+			$oldFoto = $this->session->userdata('id_user');
+
+			$config['upload_path']          = './assets/uploads/profiles/';
+            $config['allowed_types']        = 'jpg|png|jpeg';
+            $config['max_size']             = 1024;
+            $config['max_width']            = 1200;
+            $config['max_height']           = 800;
+
+            $this->load->library('upload', $config);
+            $this->upload->do_upload('poster');
+
+            $upload_data = $this->upload->data();
+            $poster = $upload_data['file_name'];
+
+            $values = array(
+            	'foto' => $poster
+            );
+            $this->AdminModel->updateFoto($values,$oldFoto);
+            // if($poster == NULL){
+            // 	$poster = $old
+            // }  sabar gw liat dokumentasi lg
+	
+		redirect(base_url().'adm/editprofile');
+	}
 }
 

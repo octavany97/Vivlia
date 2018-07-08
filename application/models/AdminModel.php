@@ -125,7 +125,7 @@ class AdminModel extends CI_Model {
 
 	}
 	public function getinfouser($id){
-		$query = $this->db->query("SELECT u.username,p.nama_peran,t.email,t.nama_toko,u.ip_addr FROM users u, peran p, toko t WHERE u.peran = p.id_peran AND u.id_toko = t.id_toko AND u.id_user = '$id'");
+		$query = $this->db->query("SELECT u.username,p.nama_peran,t.email,t.nama_toko,u.ip_addr, u.foto FROM users u, peran p, toko t WHERE u.peran = p.id_peran AND u.id_toko = t.id_toko AND u.id_user = '$id'");
 		return $query->row_array();
 
 	}
@@ -139,6 +139,13 @@ class AdminModel extends CI_Model {
 
 		$this->db->where('id_toko',$id_toko);
 		$this->db->update('toko', $toko);
+	}
+
+
+	public function updateFoto($values,$oldFoto){
+		$this->db->where('id_user', $oldFoto);
+		$this->db->update('users', $values);
+		// $this->db->insert('users', $values); tampilannya maksud gw yg di chrome
 	}
 }
 

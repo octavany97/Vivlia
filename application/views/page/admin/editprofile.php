@@ -17,12 +17,12 @@
 		<div class="jumbotron text-center" style="min-height: 350px; background-color: lightblue;"  >
 		  
 			
-			<img id="pc01" alt="<?php echo $this->session->userdata('username')?>" style="width:10%;" src="<?php echo base_url(); ?>assets/uploads/profiles/default.png">
+			<img id="pc01"  style="width:10%;" src="<?php echo base_url(); ?>assets/uploads/profiles/<?php if($this->session->userdata('foto') != NULL){ ?>default.png<?php } else{ echo $user['foto']; } ?>">
 			<h3><?php echo $this->session->userdata('username')?></h3> 
 		 	<h3><a href="#" style="position: absolute;padding-top: 1%; right: 100px; " class="fa fa-facebook"></a></h3>
 			<h3><a href="#" style="position: absolute;padding-top: 1%; right: 150px; " class="fa fa-twitter"></a></h3>
 			<h3><a href="#" style="position: absolute;padding-top: 1%; right: 200px; " class="fa fa-instagram"></a></h3>
-			<i onclick="ubahFoto()" class="material-icons">&#xe7fa;</i>
+			<h3><a onclick="showModalLogin()" data-target="#myModal" data-toggle="modal" href="#" class="material-icons">&#xe7fa;</a></h3>
 		</div>
 
 			<!-- The Modal -->
@@ -95,8 +95,30 @@
 					</div>
 			</form>
 	
-		</div>
+	</div>
 			
+	<!-- Modal -->
+	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; ">
+    <div class="modal-dialog" >
+      <div class="loginmodal-container">
+          <h1>Ganti Foto</h1><br>
+          <form id="formFoto" method="post" action="<?php echo base_url();?>/AdminController/editFoto" enctype="multipart/form-data">
+          	 <div class="form-group">
+	            <div class="col-sm-2">
+	              <label class="control-label pull-right">Poster</label>
+	            </div>
+            <div class="col-sm-12">
+              <input id="poster" type="file" class="form-control" name="poster">
+              <label style="color: red;"></label>
+            </div>
+            <div class="form-group" id="btn-area" style="text-align: center; width: 100%;">		
+					<button type="submit"  name="btnApply" class="btn btn-primary" >Apply</button>	
+         	</div>
+          </form>
+      </div>
+    </div>
+  </div>
+
 		
 
 <script>
@@ -107,7 +129,7 @@
    		 // var read4 = document.getElementById("id_form4").removeAttribute("readonly",0);
   		 var read5 = document.getElementById("id_form5").removeAttribute("readonly",0);
   		 document.getElementById('btn-area').innerHTML = '';
-  		 document.getElementById('btn-area').innerHTML = '<button type="submit"  id="btnsave" class="btn btn-primary" name="btnsave">Apply</button><button type="button" onclick="cancel()"  class="btn btn-danger" name="btnCancel">Cancel</button></div>';
+  		 document.getElementById('btn-area').innerHTML = '<button type="submit"  id="btnsave" class="btn btn-primary" name="btnsave">Apply</button> <button type="button" onclick="cancel()"  class="btn btn-danger" name="btnCancel">Cancel</button></div>';
   		 console.log("btn edit")
   	  }
   	  function cancel(){
@@ -123,9 +145,18 @@
   	  // function apply(){
   	  // 	var read`
   	  // }
-  	  function ubahFoto(){
+  	  	function showModalLogin(){
+			$('#loginModal').modal({
+			    backdrop: 'false',
+			    show: true,
+			    keyboard: true  // to prevent closing with Esc button (if you want this too)
+			});
+		    <?php
+		      $idx = 2;
+		    ?>
+		 }
 
-  	  }
+	
   	</script>			
 
 </body>

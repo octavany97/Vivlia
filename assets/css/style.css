@@ -625,6 +625,10 @@ input[type=checkbox] + label:before { letter-spacing: 10px; } /* space between c
 input[type=checkbox]:checked + label:before { content: "\f046"; } /* checked icon */
 input[type=checkbox]:checked + label:before { letter-spacing: 10px; } /* allow space for check mark */
 
+
+
+
+
 .loginmodal {
   text-align: center;
   font-size: 14px;
@@ -731,3 +735,4 @@ input[type=checkbox]:checked + label:before { letter-spacing: 10px; } /* allow s
   background: #55ACEE;
   color: white;
 }
+
