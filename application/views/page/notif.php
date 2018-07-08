@@ -6,7 +6,8 @@
 	<?php echo $js; ?>
 </head>
 <body onload="<?php if($this->session->userdata('peran') == 1) { ?>load_unseen_notification_admin()<?php }
-	else{?> load_unseen_notification_toko()<?php }?>">
+	else if($this->session->userdata('peran') == 2){?> load_unseen_notification_toko2()<?php }
+		else if($this->session->userdata('peran') == 3){?> load_unseen_notification_toko()<?php } ?>">
 	<?php echo $header; ?>
 	<?php echo $menuheader; ?>
 	<?php echo $sidebar; ?>

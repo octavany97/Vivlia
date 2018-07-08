@@ -5,7 +5,7 @@
 	<?php echo $css; ?>
 	<?php echo $js; ?>
 </head>
-<body onload="load_unseen_notification_toko()">
+<body onload="load_unseen_notification_toko2()">
 	<?php echo $header; ?>
 	<?php echo $menuheader; ?>
 	<?php echo $sidebar; ?>

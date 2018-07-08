@@ -394,8 +394,7 @@ class AdminController extends CI_Controller {
 		$this->authentication();
 		$id_user = $this->session->userdata('id_user');
 		$unseenNotif = $this->AdminModel->getUnseenNotif($id_user);
-		echo $unseenNotif;
-		//echo $unseenNotif['total'];
+		echo $unseenNotif['total'];
 	}
 	// page edit profile
 	public function editProfile(){

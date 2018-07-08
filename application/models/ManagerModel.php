@@ -99,6 +99,14 @@ class ManagerModel extends CI_Model {
 	public function getStoreName($id){
 		return $this->db->query("SELECT nama_toko FROM toko WHERE id_toko = '$id'")->row_array();
 	}
+	// ambil detail / infromasi user pada toko tersebut
+	public function getStoreUser($id){
+		return $this->db->query("SELECT t.id_toko, t.nama_toko, t.no_telp, t.email, u.id_user, u.username, u.id_toko FROM toko t, users u WHERE u.id_toko = t.id_toko AND t.id_toko='$id' AND u.peran = '2'")->row_array();
+	}
+	// ambil detail/infromasi user pada pabrik/penerbit
+	public function getPabrikUser($id){
+		return $this->db->query("SELECT p.id_penerbit, p.nama_penerbit, p.no_telp, p.email, u.id_user, u.username, u.id_toko FROM penerbit p, users u WHERE u.id_toko = p.id_penerbit AND u.id_toko='$id' AND u.peran = '1'")->row_array();
+	}
 	//untuk masukkin notif
 	public function addNotif($data, $id){
 		$this->db->insert('notif', $data);
@@ -123,6 +131,10 @@ class ManagerModel extends CI_Model {
 			WHERE t.id_transaksi = dt.id_transaksi AND t.id_toko ='$id_toko'
 			GROUP BY YEAR(t.tanggal)");
 		return $query->result_array();
+	}
+	// untuk ambil berapa banyak notif yang belum dibaca
+	public function getUnseenNotif($id){
+		return $this->db->query("SELECT COUNT(*) AS total FROM notif WHERE id_receiver='$id' AND flag=0")->row_array();
 	}
 	/* 
 	untuk cek produknya benar2 ada atau tidak di toko tersebut.
