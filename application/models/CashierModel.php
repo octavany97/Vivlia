@@ -55,6 +55,7 @@ class CashierModel extends CI_Model {
 		return $query->result_array();
 	}
 
+
 	//ambil detail buku
 	public function getBookDetail($id){
 		$query = $this->db->query("SELECT nama_buku, id_buku FROM buku WHERE isbn = '$id'");

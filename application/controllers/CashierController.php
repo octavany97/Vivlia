@@ -37,6 +37,7 @@ class CashierController extends CI_Controller {
 		$this->load->view('page/login', $data);
 	}
 
+
 	//cegah direct url
 	public function authenticationuser(){
 		$userid = $this->session->userdata('id_user');

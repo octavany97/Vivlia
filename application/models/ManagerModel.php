@@ -31,6 +31,7 @@ class ManagerModel extends CI_Model {
 		//SELECT nama_buku, penulis, DATE_FORMAT(tanggal_terbit, "%M") AS bulan, YEAR(tanggal_terbit) AS tahun, keterangan FROM buku ORDER BY tanggal_terbit DESC
 	}
 	
+	
 	public function saveNotif($data){
 		/*
 		$data = array('notif_msg' => '$msg',

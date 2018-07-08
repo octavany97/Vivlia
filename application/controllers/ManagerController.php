@@ -38,6 +38,7 @@ class ManagerController extends CI_Controller {
 
 		$this->load->view('page/login', $data);
 	}
+	
 
 	//cegah direct url
 	public function authentication(){
