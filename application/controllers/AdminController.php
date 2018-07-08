@@ -7,8 +7,8 @@ class AdminController extends CI_Controller {
 		parent::__construct();
 		/*$this->load->model('LoginModel');*/
 		$this->load->model('AdminModel');
-		/*$this->load->model('ManagerModel');
-		$this->load->model('CashierModel');*/
+		/*$this->load->model('ManagerModel');*/
+		$this->load->model('CashierModel');
 		$this->load->library('session');
 		$this->load->library('email');
 	}
@@ -242,7 +242,7 @@ class AdminController extends CI_Controller {
 					$msg .= floor($row3['banyak'])." books titled \"". $row3['nama_buku']."\"";
 					$j++;
 				}
-				$msg .= "?\\n\\n\\nBest Regards,\\n\\n\\n".$pabrik['nama_penerbit'];
+				$msg .= "?<br><br><br>Best Regards,<br><br><br>".$pabrik['nama_penerbit'];
 				$dataNotif = array(
 					'notif_subject' => $subject,
 					'notif_msg' => $msg,

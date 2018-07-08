@@ -123,15 +123,20 @@ class ManagerModel extends CI_Model {
 		return $query->result_array();
 	}*/
 
-	public function getPendapatan($id_toko, $month){
-		$query = $this->db->query("SELECT SUM(t.harga_total) - SUM(dt.harga_satuan * dt.quantity) AS pendapatan
+	public function getPendapatan($id_toko, $tahun){
+		$query = $this->db->query("SELECT MONTH(t.tanggal) AS month, SUM(t.harga_total) - SUM(dt.harga_satuan * dt.quantity) AS pendapatan
 			FROM detail_transaksi dt, transaksi t
-			WHERE t.id_transaksi = dt.id_transaksi AND t.id_toko = '$id_toko' 
-			AND MONTH(t.tanggal) = '$month'")->row_array();
-		if($query['pendapatan'] == null)
-		return 0;
-		return intval($query['pendapatan']);
-		
+			WHERE t.id_transaksi = dt.id_transaksi AND t.id_toko = '$id_toko' AND YEAR(t.tanggal) = '$tahun'
+            GROUP BY MONTH(t.tanggal)");
+		return $query->result_array();
+	}
+
+	public function getTahun($id_toko){
+		$query = $this->db->query("SELECT YEAR(t.tanggal) AS year
+			FROM detail_transaksi dt, transaksi t
+			WHERE t.id_transaksi = dt.id_transaksi AND t.id_toko ='$id_toko'
+			GROUP BY YEAR(t.tanggal)");
+		return $query->result_array();
 	}
 
 	public function validateProduct($isbn){

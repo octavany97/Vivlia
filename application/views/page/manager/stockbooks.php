@@ -1,4 +1,4 @@
-<div id="chart2" class="panel panel-blue">
+<div id="stockManagerChart" class="panel panel-blue">
 	<div class="panel-heading" style="height: 50px;">
 		<span><i class="fa fa-bar-chart-o fa-fw"></i> Stock of Books at <?php echo $storename["nama_toko"]; ?></span>
 	</div>
@@ -10,7 +10,7 @@
 <!-- piechart script -->
 <script type="text/javascript">
 $(function(){
-	$('#stockchart').highcharts({
+	$('#stackchart').highcharts({
 		chart: {
 	        type: 'column'
 	    },
@@ -21,7 +21,7 @@ $(function(){
 	        text: 'by Genre'
 	    },
 	    xAxis: {
-	        type: 'Genre'
+	        type: 'category'
 	    },
 	    yAxis: {
 	        title: {
@@ -44,7 +44,7 @@ $(function(){
 
 	    tooltip: {
 	        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-	        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> of total<br/>'
+	        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> remaining<br/>'
 	    },
 
 	    "series": [
@@ -95,42 +95,4 @@ $(function(){
 	})
 })
 
-// $(function(){
-// 	$('#stackchart').highcharts ({
-// 	    chart: {
-// 	        type: 'column'
-// 	    },
-// 	    title: {
-// 	        text: 'Stacked column chart'
-// 	    },
-// 	    xAxis: {
-// 	        categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
-// 	    },
-// 	    yAxis: {
-// 	        min: 0,
-// 	        title: {
-// 	            text: 'Total fruit consumption'
-// 	        }
-// 	    },
-// 	    tooltip: {
-// 	        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
-// 	        shared: true
-// 	    },
-// 	    plotOptions: {
-// 	        column: {
-// 	            stacking: 'percent'
-// 	        }
-// 	    },
-// 	    series: [{
-// 	        name: 'John',
-// 	        data: [5, 3, 4, 7, 2]
-// 	    }, {
-// 	        name: 'Jane',
-// 	        data: [2, 2, 3, 2, 1]
-// 	    }, {
-// 	        name: 'Joe',
-// 	        data: [3, 4, 4, 2, 5]
-// 	    }]
-// 	})
-// })
 </script>

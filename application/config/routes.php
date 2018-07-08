@@ -92,3 +92,4 @@ $route['mgr/notifications'] = 'ManagerController/notifications';
 $route['mgr/notifications/(:any)'] = 'ManagerController/notifications';
 $route['mgr/changeNotifDetail'] = 'ManagerController/changeNotifDetail';
 $route['mgr/changeNotifFlag'] = 'ManagerController/changeNotifFlag';
+$route['mgr/changeProfitChart'] = 'ManagerController/changeProfitChart';

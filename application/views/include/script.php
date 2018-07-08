@@ -18,7 +18,6 @@
             method:"POST",
             success:function(data){
                 if(data > 0) $('.count').html(data)
-                console.log(data)
             },
             error: function(xhr, status){
                 alert("Oops there is an error!")

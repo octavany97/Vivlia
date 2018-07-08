@@ -36,7 +36,7 @@ class CashierModel extends CI_Model {
 	}
 	public function getUnseenNotif($id){
 		
-		return $this->db->query("SELECT COUNT(*) FROM notif WHERE id_receiver='$id' AND flag=0")->result_array();
+		return $this->db->query("SELECT COUNT(*) AS total FROM notif WHERE id_receiver='$id' AND flag=0")->row_array();
 	}
 	//autocomplete buku tp ga jalan
 	public function bookAutocomplete($title){

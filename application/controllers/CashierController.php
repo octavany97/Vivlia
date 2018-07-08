@@ -136,7 +136,7 @@ class CashierController extends CI_Controller {
 				$msg .= "\"". $row3['nama_buku']."\"";
 				$j++;
 			}
-			$msg .= " at the \"". $toko['nama_toko']. "\" store reached the threshold\\n\\n\\nBest Regards,\n\n\n".$toko['nama_toko'];
+			$msg .= " at the \"". $toko['nama_toko']. "\" store reached the threshold<br><br><br>Best Regards,<br><br><br>".$toko['nama_toko'];
 			$dataNotif = array(
 				'notif_subject' => $subject,
 				'notif_msg' => $msg,
@@ -310,6 +310,7 @@ class CashierController extends CI_Controller {
 				return "Email has been sent!";
 			}
 			else{
+				show_error($this->email->print_debugger());
 				return "Error! Email can not send";
 			}
 
@@ -321,9 +322,9 @@ class CashierController extends CI_Controller {
 	}
 	public function getCountNotif(){
 		$id_user = $this->CashierModel->getStoreUser($this->session->userdata('id_toko'));
-		var_dump($id_user);
-		$unseenNotif = (array) $this->CashierModel->getUnseenNotif($id_user['id_user']);
-		return $unseenNotif;
+		//var_dump($id_user);
+		$unseenNotif = $this->CashierModel->getUnseenNotif($id_user['id_user']);
+		echo $unseenNotif['total'];
 	}
 	
 }

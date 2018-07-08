@@ -128,27 +128,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?php echo base_url().'assets/vendor/jquery/jquery-ui.js';?>"></script>
 <script type="text/javascript">
 	var room = 1;
+	var empty = false;
 	function isEmpty(n){
 		for(var i = 1; i<=n; i++){
 			var product_name = document.getElementById("product_name" + i);
 			var qty = document.getElementById("qty" + i);
-			   
+			   console.log(product_name)
+			   console.log(qty)
 			   if (product_name.value == "" || qty.value == "")
 			   {
 			      if (product_name.value == "")
 			      {
+			      	 product_name.setAttribute("required","")
+			      	 product_name.setAttribute("style","border-color: red")
 			         product_name.focus();
-			         return true;
+			         empty = true;
+			         //return true;
 			      }
-			      else
+			      // else{
+			      // 	product_name.removeAttribute("style")
+			      // }
+			      if(qty.value == "")
 			      {
+			      	 qty.setAttribute("style","border-color: red")
+			      	 qty.setAttribute('required',"")
 			         qty.focus();
-			         return true;
+			         empty = true;
+			         //return true;
 			      }
+			      // else{
+			      // 	qty.removeAttribute("style")
+			      // }
 			   }
 		}
-		return false;
+		return empty;
 	}
+
 
 	function product_fields() {
 		if(!isEmpty(room)){
@@ -174,9 +189,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		for (var i = 1; i <= items.length - 1; i++) {
 			var objTo = document.getElementById('product_fields')
 			var divtest = document.createElement("div")
-			divtest.setAttribute("class", "form-group removeclass"+room);
-			var rdiv = 'removeclass'+room;
-			divtest.innerHTML = '<label class="col-md-3 control-label" for="product_name">Product Name</label><div class="col-md-3"><input id="product_name'+room+'" list="buku" name="product_name'+room+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-2"><input id="qty'+room+'" name="qty'+room+'" type="number" placeholder="Quantity" class="form-control input-md" ></div><div class="input-group-btn"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
+			divtest.setAttribute("class", "form-group removeclass"+i);
+			var rdiv = 'removeclass'+i;
+			divtest.innerHTML = '<label class="col-md-3 control-label" for="product_name">Product Name</label><div class="col-md-3"><input id="product_name'+i+'" list="buku" name="product_name'+i+'" type="text" placeholder="Product Name" class="form-control input-md" autocomplete="on"></div><label class="col-md-1 control-label" for="qty">Quantity</label><div class="col-md-2"><input id="qty'+i+'" name="qty'+i+'" type="number" placeholder="Quantity" class="form-control input-md" ></div><div class="input-group-btn"> <button class="btn btn-danger" type="button" onclick="remove_product_fields('+ i +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div>';
 		}
 	}
 	function initialize(){

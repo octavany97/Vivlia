@@ -7,7 +7,6 @@
 				
 				foreach ($books as $book) {
 					if($book['id_buku'] == $bookid){
-						echo $bookid . " ". $book['id_buku'];		
 						?>
 						<option value="<?php echo $book['id_buku']; ?>" selected><?php echo $bookname; ?></option>
 						<?php

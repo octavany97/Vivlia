@@ -56,34 +56,7 @@ class ManagerController extends CI_Controller {
 		$userid = $this->session->userdata('id_user');
 		$storeid = $this->session->userdata('id_toko');
 
-		//$dtbook utk dikirim ke view $data['bookchart'] atau page/bookchart
-		// $dtbook['bookid'] = $bookid;
-		// $bn = $this->AdminModel->getBookName($bookid);
-		// $dtbook['bookname'] = $bn['nama_buku'];
-		// $dtbook['books'] = $this->AdminModel->getBooks();
-		// $dtbook['piechart'] = $this->AdminModel->salesPerStore($bookid);
 		
-		//$dtstore utk dikirim ke view $data['bookchart'] atau page/storechart
-		// $dtstore['storeid'] = $storeid;
-		// $sn = $this->AdminModel->getStoreName($storeid);
-		// $dtstore['storename'] = $sn['nama_toko'];
-		// $dtstore['stores'] = $this->AdminModel->getStores();
-		// $dtstore['barchart'] = $this->AdminModel->salesPerBook($storeid);
-		
-		//$dtstock untuk dikirim ke view $data['stockchart'] atau page/stockchart
-		//storeid disini artinya id penerbitnya.. karena cuma ada satu penerbit jadi untuk sementara pasti selalu 1.
-		// $dtstock['storeid'] = $storeid;
-		// $dtstock['roleid'] = $roleid;
-		// $dtstock['books'] = $this->AdminModel->getBookGenreStock();
-		// $pn = $this->AdminModel->getPenerbitName($storeid);
-		// $dtstock['penerbitname'] = $pn['nama_penerbit'];
-		// $dtstock['stackchart'] = $this->AdminModel->getBookGenreStock();
-		// $dtstock['stocks'] = $this->AdminModel->getBookStock();	
-
-		//masukkin isi ke $data utk dikirim ke page/home
-		// $data['bookid'] = $bookid;
-		// $data['barchart'] = $this->AdminModel->salesPerBook(1);
-		// $data['stores'] = $this->AdminModel->getStores();
 		$id = $this->session->userdata('id_user');
 		$dtlist['list'] = $this->ManagerModel->getAllNotif($id);
 		$dttimeline['histori'] = $this->ManagerModel->getBooksTimeline($storeid);
@@ -100,12 +73,10 @@ class ManagerController extends CI_Controller {
 		$data['bestsellerbooks'] = $this->load->view('page/manager/bestsellerbooks', $dtbs, TRUE);
 
 		//buat pendapatan
-		$month = date('m')-0;
-		$dtpendapatan['month'] = $month;
-		for($i = 1; $i < $month; $i++){
+		$dtpendapatan['yearnow'] = date('Y');
+		$dtpendapatan['bulan'] = $this->ManagerModel->getPendapatan($storeid, $dtpendapatan['yearnow']);
+		$dtpendapatan['thn'] = $this->ManagerModel->getTahun($storeid);	
 
-			$dtpendapatan['bulan'][$i] = $this->ManagerModel->getPendapatan($storeid, $i);
-		}
 		$data['pendapatan'] = $this->load->view('page/manager/pendapatan', $dtpendapatan, TRUE);
 
 		//buat stock
@@ -113,21 +84,6 @@ class ManagerController extends CI_Controller {
 		$dtstock['genres'] = $this->ManagerModel->getBookGenreStock($storeid);
 		$dtstock['books'] = $this->ManagerModel->getBookStock($storeid);
 		$data['stockbooks'] = $this->load->view('page/manager/stockbooks', $dtstock, TRUE);
-
-		/*$dtstock['storeid'] = $storeid;
-		$dtstock['roleid'] = $roleid;
-		if($roleid == 1){
-			$pn = $this->AdminModel->getPenerbitName($storeid);
-			$dtstock['penerbitname'] = $pn['nama_penerbit'];
-			$dtstock['stackchart'] = $this->AdminModel->getBookGenreStock();
-			$dtstock['stocks'] = $this->AdminModel->getBookStock();
-		} */
-
-		// $data['bookchart'] = $this->load->view('page/admin/bookchart',$dtbook, TRUE);
-
-		// $data['storechart'] = $this->load->view('page/admin/storechart', $dtstore, TRUE);
-
-		//$data['stockchart'] = $this->load->view('page/admin/stockchart', $dtstock, TRUE);
 
 		$data['notifpanel'] = $this->load->view('page/notifpanel', NULL, TRUE);
 		
@@ -148,6 +104,7 @@ class ManagerController extends CI_Controller {
 		$data['piechart'] = $this->AdminModel->salesPerStore($bookid);
 		$this->load->view('page/admin/bookchart', $data);
 	}
+	//
 	public function changeStoreChart(){
 		$data = [];
 		
@@ -162,6 +119,24 @@ class ManagerController extends CI_Controller {
 		$data['stores'] = $this->AdminModel->getStores();
 		$data['barchart'] = $this->AdminModel->salesPerBook($storeid);
 		$this->load->view('page/admin/storechart', $data);	
+	}
+	//untuk ganti grafik profit line chart
+	public function changeProfitChart(){
+		$data = [];
+		if(isset($_POST['tahun'])){
+			$tahun = $_POST['tahun'];
+		}
+		else{
+			$tahun = 2018;
+		}
+
+		$storeid = $this->session->userdata('id_toko');
+		$data['yearnow'] = $tahun;
+		
+		$data['bulan'] = $this->ManagerModel->getPendapatan($storeid, $tahun);
+		$data['thn'] = $this->ManagerModel->getTahun($storeid);
+		
+		$this->load->view('page/manager/pendapatan', $data);
 	}
 	public function getBooksByGenre(){
 		if(isset($_POST['idgenre'])){
@@ -242,9 +217,7 @@ class ManagerController extends CI_Controller {
             }
 
 			$id_form = $this->input->post('id_form');
-			
-
-
+		
 			redirect(base_url().'mgr/dashboard');
 		}
 	}
