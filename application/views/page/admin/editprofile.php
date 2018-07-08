@@ -22,39 +22,12 @@
 				<h3><a onclick="showModalLogin()" data-target="#myModal" data-toggle="modal" href="#" class="material-icons">&#xe7fa;</a></h3>
 			</div>
 			<div class="bottom-left">
-				<h3><a onclick="showModalLogin()" data-target="#myModal" data-toggle="modal" href="#" class="material-icons">&#xe7fa;</a></h3>
+				<h3><a onclick="showModalBackground()" data-target="#myModal" data-toggle="modal" href="#" class="material-icons">&#xe7fa;</a></h3>
 			</div>
 			
 		</div>
 
-			<!-- The Modal -->
-			<!-- <div id="myModal1" class="modal1">
-			  <span class="close">&times;</span>
-			  <img class="modal1-content" id="1img">
-			  <div id="caption1"></div>
-			</div>	
-			<script>
-				// Get the modal
-				var modal = document.getElementById('myModal1');
-
-				// Get the image and insert it inside the modal - use its "alt" text as a caption
-				var img = document.getElementById('pc01');
-				var modalImg = document.getElementById("1img");
-				var captionText = document.getElementById("caption1");
-				img.onclick = function(){
-				    modal.style.display = "block";
-				    modalImg.src = this.src;
-				    captionText.innerHTML = this.alt;
-				}
-
-				// Get the <span> element that closes the modal
-				var span = document.getElementsByClassName("close")[0];
-
-				// When the user clicks on <span> (x), close the modal
-				span.onclick = function() { 
-				    modal.style.display = "none";
-				}
-			</script> -->
+			
 			<form id="formprofile" method="post" action="<?php echo base_url();?>/AdminController/confirmProfile">
 				<div class="form-group" style="padding-bottom: 30px;padding-top: 30px;">
 					 <label class="col-md-3 control-label" for="name">Username</label>  
@@ -122,7 +95,7 @@
   </div>
 
 
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; ">
+<div class="modal fade" id="loginBackground" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; ">
     <div class="modal-dialog" >
       <div class="loginmodal-container">
           <h1>Ganti Foto</h1><br>
@@ -179,8 +152,8 @@
 		      $idx = 2;
 		    ?>
 		 }
-		 function showModalLogin(){
-			$('#loginModal').modal({
+		 function showModalBackground(){
+			$('#loginBackground').modal({
 			    backdrop: 'false',
 			    show: true,
 			    keyboard: true  // to prevent closing with Esc button (if you want this too)

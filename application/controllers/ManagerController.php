@@ -247,6 +247,7 @@ class ManagerController extends CI_Controller {
 		//	redirect(base_url().'mgr/dashboard');
 		}
 	}
+
 	public function checkISBN(){
 		if(isset($_POST['isbn'])){
 			$isbn = $_POST['isbn'];
@@ -270,7 +271,7 @@ class ManagerController extends CI_Controller {
 			$iduser = $_POST['id_user'];
 		}
 		if(isset($_POST['desc'])){
-			$desc = $_POST['desc'];
+			$desc = htmlspecialchars($_POST['desc']);
 		}
 		$id_toko = $this->session->userdata('id_toko');
 		$data = [];
@@ -305,8 +306,8 @@ class ManagerController extends CI_Controller {
 			$dt = (array) $row;
 			$dataDetailRequest = array(
 				'id_form' => $idform,
-				'id_buku' => $dt['id_buku'],
-				'qty' => $dt['quantity'],
+				'id_buku' => htmlspecialchars($dt['id_buku']),
+				'qty' => htmlspecialchars($dt['quantity']),
 			);
 			
 			$this->ManagerModel->insertDetailRequestProduct($dataDetailRequest);
@@ -333,8 +334,8 @@ class ManagerController extends CI_Controller {
 			$dt = (array) $row;
 			$dataDetailNotif = array(
 				"id_notif" => $idnotif,
-				"id_buku" => $dt['id_buku'],
-				"jumlah" => $dt['quantity']
+				"id_buku" => htmlspecialchars($dt['id_buku']),
+				"jumlah" => htmlspecialchars($dt['quantity'])
 			);
 		 
 			$this->ManagerModel->insertDetailNotif($dataDetailNotif);

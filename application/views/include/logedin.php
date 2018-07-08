@@ -83,7 +83,10 @@
             <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-            <li><a href="<?php echo base_url().'adm/editprofile'; ?>"><i class="fa fa-user fa-fw"></i> User Profile</a>
+            <li><a href="<?php if($this->session->userdata('peran') == 1) echo base_url().'adm/editprofile';
+                            else if($this->session->userdata('peran') == 2) echo base_url().'mgr/editprofile';
+                            else if($this->session->userdata('peran') == 3) echo base_url().'csh/editprofile';
+             ?>"><i class="fa fa-user fa-fw"></i> User Profile</a>
             </li>
             <li class="divider"></li>
             <li><a href="<?php echo base_url().'VivliaController/logout'; ?>"><i class="fa fa-sign-out fa-fw"></i> Sign out</a>
