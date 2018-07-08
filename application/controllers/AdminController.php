@@ -75,7 +75,8 @@ class AdminController extends CI_Controller {
 		$data['stores'] = $this->AdminModel->getStores();
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
+		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
@@ -90,7 +91,7 @@ class AdminController extends CI_Controller {
 		$data['bestsellerbook'] = $this->load->view('page/admin/bestseller', $dtbs, TRUE);
 
 		$data['notifpanel'] = $this->load->view('page/notifpanel', NULL, TRUE);
-		
+	
 		$this->load->view('page/admin/home', $data);
 	}
 	public function changeBookChart(){
@@ -168,12 +169,13 @@ class AdminController extends CI_Controller {
 		$id = $this->session->userdata('id_user');
 		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
+		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/script', NULL, TRUE);
 		$data['style'] = $this->load->view('include/style', $data, TRUE);
 		$data['script'] = $this->load->view('include/js', $data, TRUE);
-
+	
 		$this->load->view('page/products', $data);
 	}
 	
@@ -192,13 +194,14 @@ class AdminController extends CI_Controller {
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
+		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		
 		$data['listnotif'] = $this->load->view('page/admin/listnotification', $dtlist, TRUE);
-
+		
 		$data['notifdetail'] = $this->load->view('page/admin/detailnotif', $dtdetail, TRUE);
 		if($this->uri->segment('3') == NULL){
 			$this->load->view('page/notification', $data);
@@ -300,11 +303,12 @@ class AdminController extends CI_Controller {
 		$data['stores'] = $this->AdminModel->getStores();
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
+		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		$data['bookchart'] = $this->load->view('page/admin/stockchart',$dt, TRUE);
-		
+
 		$this->load->view('page/tes', $data);
 	}
 	
@@ -380,11 +384,12 @@ class AdminController extends CI_Controller {
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
+		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		//$data['username'] = $this->session->userdata('username');
-		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
+
 		$this->load->view('page/admin/editprofile', $data);
 	}
 
@@ -429,6 +434,34 @@ class AdminController extends CI_Controller {
             	'foto' => $poster
             );
             $this->AdminModel->updateFoto($values,$oldFoto);
+            // if($poster == NULL){
+            // 	$poster = $old
+            // }  sabar gw liat dokumentasi lg
+	
+		redirect(base_url().'adm/editprofile');
+	}
+
+	public function editBg(){
+	
+
+			$oldFoto1 = $this->session->userdata('id_user');
+
+			$config['upload_path']          = './assets/uploads/profiles/';
+            $config['allowed_types']        = 'jpg|png|jpeg';
+            $config['max_size']             = 1024;
+            $config['max_width']            = 1200;
+            $config['max_height']           = 800;
+
+            $this->load->library('upload', $config);
+            $this->upload->do_upload('poster');
+
+            $upload_data = $this->upload->data();
+            $poster = $upload_data['file_name'];
+
+            $values = array(
+            	'foto' => $poster
+            );
+            $this->AdminModel->updateBack($values,$oldFoto);
             // if($poster == NULL){
             // 	$poster = $old
             // }  sabar gw liat dokumentasi lg

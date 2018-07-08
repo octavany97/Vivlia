@@ -42,7 +42,8 @@ class CashierController extends CI_Controller {
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['user']= $this->CashierModel->getinfouser($this->session->userdata('id_user'));
+		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
@@ -192,7 +193,8 @@ class CashierController extends CI_Controller {
 		$data['crud'] = get_object_vars($output);
 
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['user']= $this->CashierModel->getinfouser($this->session->userdata('id_user'));
+		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['js'] = $this->load->view('include/script', NULL, TRUE);
 		$data['style'] = $this->load->view('include/style', $data, TRUE);
@@ -218,7 +220,8 @@ class CashierController extends CI_Controller {
 		$data = [];
 		$data['css'] = $this->load->view('include/style', NULL, TRUE);
 		$data['header'] = $this->load->view('include/header', NULL, TRUE);
-		$data['sidebar'] = $this->load->view('include/sidebar', NULL, TRUE);
+		$data['user']= $this->CashierModel->getinfouser($this->session->userdata('id_user'));
+		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
 		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
 		$data['script'] = $this->load->view('include/script', NULL, TRUE);
 		$data['js'] = $this->load->view('include/js', NULL, TRUE);
@@ -327,4 +330,66 @@ class CashierController extends CI_Controller {
 		echo $unseenNotif['total'];
 	}
 	
+	public function editProfile(){
+		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->CashierModel->getAllNotif($id);
+		$data = [];
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['user']= $this->CashierModel->getinfouser($this->session->userdata('id_user'));
+		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
+		//$data['username'] = $this->session->userdata('username');
+
+		$this->load->view('page/cashier/editprofile', $data);
+	}
+
+	public function confirmProfile(){
+		$id = $this->session->userdata('id_user');
+		$idtoko = $this->session->userdata('id_toko');
+		$name = $this->input->post('id_form1');
+		$email = $this->input->post('id_form3');
+		$ipaddress = $this->input->post('id_form5');
+		
+		$values = array(
+			'username' => $name,
+			'ip_addr' => $ipaddress
+			
+		);
+		$toko = array(
+			'email' => $email
+		);
+		$this->CashierModel->updateProfile($values,$idtoko,$id,$toko);
+		
+		redirect(base_url().'csh/editprofile');
+	}
+
+	public function editFoto(){
+	
+
+			$oldFoto = $this->session->userdata('id_user');
+
+			$config['upload_path']          = './assets/uploads/profiles/';
+            $config['allowed_types']        = 'jpg|png|jpeg';
+            $config['max_size']             = 1024;
+            $config['max_width']            = 1200;
+            $config['max_height']           = 800;
+
+            $this->load->library('upload', $config);
+            $this->upload->do_upload('poster');
+
+            $upload_data = $this->upload->data();
+            $poster = $upload_data['file_name'];
+
+            $values = array(
+            	'foto' => $poster
+            );
+            $this->CashierModel->updateFoto($values,$oldFoto);
+            // if($poster == NULL){
+            // 	$poster = $old
+            // }  sabar gw liat dokumentasi lg
+	
+		redirect(base_url().'csh/editprofile');
+	}
 }

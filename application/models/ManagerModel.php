@@ -148,5 +148,24 @@ class ManagerModel extends CI_Model {
 			return TRUE;
 	}
 
+	public function getinfouser($id){
+		$query = $this->db->query("SELECT u.username,p.nama_peran,t.email,t.nama_toko,u.ip_addr, u.foto FROM users u, peran p, toko t WHERE u.peran = p.id_peran AND u.id_toko = t.id_toko AND u.id_user = '$id'");
+		return $query->row_array();
 
+	}
+
+	public function updateProfile($values,$id_toko,$id_user,$toko){
+		$this->db->where('id_user', $id_user);
+		$this->db->update('users', $values);
+
+		$this->db->where('id_toko',$id_toko);
+		$this->db->update('toko', $toko);
+	}
+
+
+	public function updateFoto($values,$oldFoto){
+		$this->db->where('id_user', $oldFoto);
+		$this->db->update('users', $values);
+		// $this->db->insert('users', $values); tampilannya maksud gw yg di chrome
+	}
 }

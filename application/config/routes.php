@@ -81,6 +81,7 @@ $route['csh/products/(:any)'] = 'CashierController/products';
 $route['csh/products/(:any)/(:any)'] = 'CashierController/products';
 $route['csh/notifications'] = 'CashierController/notifications';
 $route['csh/notifications/(:any)'] = 'CashierController/notifications';
+$route['csh/editprofile'] = 'CashierController/editProfile';
 //route manager
 $route['mgr/home'] = 'ManagerController/home';
 $route['mgr/dashboard'] = 'ManagerController/dashboard';
@@ -93,3 +94,4 @@ $route['mgr/notifications/(:any)'] = 'ManagerController/notifications';
 $route['mgr/changeNotifDetail'] = 'ManagerController/changeNotifDetail';
 $route['mgr/changeNotifFlag'] = 'ManagerController/changeNotifFlag';
 $route['mgr/changeProfitChart'] = 'ManagerController/changeProfitChart';
+$route['mgr/editprofile'] = 'ManagerController/editProfile';
