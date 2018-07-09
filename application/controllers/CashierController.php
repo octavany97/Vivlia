@@ -365,8 +365,17 @@ class CashierController extends CI_Controller {
 		$unseenNotif = $this->CashierModel->getUnseenNotif($id_user['id_user']);
 		echo $unseenNotif['total'];
 	}
+
+	public function validate_pass(){
+		$oldpass = $this->input->post('oldpass');
+		$user = $this->CashierModel->getinfouser($this->session->userdata('id_user'));
+		$pass = $oldpass . $user['salt'];
+		return(password_verify($pass, $user['password']));
+	}
+
 	// untuk edit profile
 	public function editProfile(){
+		$this->authenticationuser();
 		$id = $this->session->userdata('id_user');
 		$dtlist['list'] = $this->CashierModel->getAllNotif($id);
 		$data = [];
@@ -383,6 +392,57 @@ class CashierController extends CI_Controller {
 	}
 	// update profile
 	public function confirmProfile(){
+		$this->authenticationuser();
+		if(isset($_POST['btnpass'])){
+			$oldpass = $this->input->post('oldpass');
+			$newpass = $this->input->post('newpass');
+			$confirmpass = $this->input->post('confirmpass');
+
+			$user = $this->CashierModel->getinfouser($this->session->userdata('id_user'));
+			$pass = $oldpass . $user['salt'];
+			if(password_verify($pass, $user['password'])){
+				if($newpass == $confirmpass){
+					$password = password_hash($newpass . $user['salt'], PASSWORD_DEFAULT);
+					$values = array(
+            			'password' => $password
+            			);
+					$this->CashierModel->updatePass($values, $this->session->userdata('id_user'));
+					redirect(base_url().'csh/editprofile');
+				}
+				else{
+					$this->load->helper(array('url', 'form'));
+		            $this->load->library('form_validation');
+
+		            $this->form_validation->set_rules('confirmpass', 'confirmpass', 'callback_validate_pass',
+		            	array('validate_pass' => '*Invalid password! Change password failed'));
+				
+		            if ($this->form_validation->run() == FALSE)
+		            {
+		            	
+		            	$this->load->view('page/csh/editProfile', $data);
+		            	return;
+		            }
+				}
+				return;
+			}
+			else{
+				$this->load->helper(array('url', 'form'));
+	            $this->load->library('form_validation');
+
+	            $this->form_validation->set_rules('confirmpass', 'confirmpass', 'callback_validate_pass',
+	            	array('validate_pass' => '*Invalid password! Change password failed' ));
+				
+				if ($this->form_validation->run() == FALSE)
+	            {
+	            	$this->editProfile();
+	            	//$this->load->view('page/mgr/editProfile', $data);
+	            	return;
+	            }
+	        }
+			
+		}
+
+
 		$id = $this->session->userdata('id_user');
 		$idtoko = $this->session->userdata('id_toko');
 		$name = $this->input->post('id_form1');

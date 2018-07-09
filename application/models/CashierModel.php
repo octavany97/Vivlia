@@ -39,7 +39,7 @@ class CashierModel extends CI_Model {
 		return $this->db->query("SELECT p.id_penerbit, p.nama_penerbit, p.no_telp, p.email, u.id_user, u.username, u.id_toko FROM penerbit p, users u WHERE u.id_toko = p.id_penerbit AND u.id_toko='$id' AND u.peran = '1'")->row_array();
 	}
 	public function getinfouser($id){
-		$query = $this->db->query("SELECT u.username,p.nama_peran,t.email,t.nama_toko,u.ip_addr, u.foto FROM users u, peran p, toko t WHERE u.peran = p.id_peran AND u.id_toko = t.id_toko AND u.id_user = '$id'");
+		$query = $this->db->query("SELECT u.username,p.nama_peran,t.email,t.nama_toko,u.ip_addr, u.foto, u.password, u.salt FROM users u, peran p, toko t WHERE u.peran = p.id_peran AND u.id_toko = t.id_toko AND u.id_user = '$id'");
 		return $query->row_array();
 
 	}

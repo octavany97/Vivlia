@@ -416,9 +416,27 @@ class AdminController extends CI_Controller {
 
 		$this->load->view('page/admin/editprofile', $data);
 	}
+
+	public function validate_pass(){
+		$oldpass = $this->input->post('oldpass');
+		$user = $this->AdminModel->getinfouser($this->session->userdata('id_user'));
+		$pass = $oldpass . $user['salt'];
+		return(password_verify($pass, $user['password']));
+	}
+
 	// untuk update informasi profile user admin/penerbit
 	public function confirmProfile(){
 		$this->authentication();
+		$id = $this->session->userdata('id_user');
+		$dtlist['list'] = $this->AdminModel->getAllNotif($id);
+		$data = [];
+		$data['css'] = $this->load->view('include/style', NULL, TRUE);
+		$data['header'] = $this->load->view('include/header', NULL, TRUE);
+		$data['user']= $this->AdminModel->getinfouser($this->session->userdata('id_user'));
+		$data['sidebar'] = $this->load->view('include/sidebar', $data, TRUE);
+		$data['menuheader'] = $this->load->view('include/logedin', $dtlist, TRUE);
+		$data['script'] = $this->load->view('include/script',NULL, TRUE);
+		$data['js'] = $this->load->view('include/js', NULL, TRUE);
 		if(isset($_POST['btnpass'])){
 			$oldpass = $this->input->post('oldpass');
 			$newpass = $this->input->post('newpass');
@@ -428,17 +446,42 @@ class AdminController extends CI_Controller {
 			$pass = $oldpass . $user['salt'];
 			if(password_verify($pass, $user['password'])){
 				if($newpass == $confirmpass){
-					$password = password_hash($newpass . $user['salt']);
+					$password = password_hash($newpass . $user['salt'], PASSWORD_DEFAULT);
 					$values = array(
             			'password' => $password
             			);
 					$this->AdminModel->updatePass($values, $this->session->userdata('id_user'));
 					redirect(base_url().'adm/editprofile');
 				}
+				else{
+					$this->load->helper(array('url', 'form'));
+		            $this->load->library('form_validation');
+
+		            $this->form_validation->set_rules('confirmpass', 'confirmpass', 'callback_validate_pass',
+		            	array('validate_pass' => '*Invalid password! Change password failed'));
+				
+		            if ($this->form_validation->run() == FALSE)
+		            {
+		            	
+		            	$this->load->view('page/adm/editProfile', $data);
+		            	return;
+		            }
+				}
+				return;
 			}
 			else{
+				$this->load->helper(array('url', 'form'));
+	            $this->load->library('form_validation');
 
-			}
+	            $this->form_validation->set_rules('confirmpass', 'confirmpass', 'callback_validate_pass',
+	            	array('validate_pass' => '*Invalid password! Change password failed' ));
+				
+				if ($this->form_validation->run() == FALSE)
+	            {
+	            	$this->load->view('page/admin/editProfile', $data);
+	            	return;
+	            }
+	        }
 			
 		}
 		$id = $this->session->userdata('id_user');

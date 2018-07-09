@@ -168,7 +168,7 @@ class ManagerModel extends CI_Model {
 	}
 
 	public function getinfouser($id){
-		$query = $this->db->query("SELECT u.username,p.nama_peran,t.email,t.nama_toko,u.ip_addr, u.foto FROM users u, peran p, toko t WHERE u.peran = p.id_peran AND u.id_toko = t.id_toko AND u.id_user = '$id'");
+		$query = $this->db->query("SELECT u.username,p.nama_peran,t.email,t.nama_toko,u.ip_addr, u.foto, u.password,u.salt FROM users u, peran p, toko t WHERE u.peran = p.id_peran AND u.id_toko = t.id_toko AND u.id_user = '$id'");
 		return $query->row_array();
 
 	}
