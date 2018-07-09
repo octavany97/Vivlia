@@ -274,7 +274,10 @@ class ManagerController extends CI_Controller {
 			$iduser = $_POST['id_user'];
 		}
 		if(isset($_POST['desc'])){
-			$desc = htmlspecialchars($_POST['desc']);
+
+			$desc = $_POST['desc'];
+			$desc = $this->security->xss_clean($desc);
+			$desc = strip_tags($desc);
 		}
 		$id_toko = $this->session->userdata('id_toko');
 		$data = [];
@@ -310,8 +313,8 @@ class ManagerController extends CI_Controller {
 			$dt = (array) $row;
 			$dataDetailRequest = array(
 				'id_form' => $idform,
-				'id_buku' => htmlspecialchars($dt['id_buku']),
-				'qty' => htmlspecialchars($dt['quantity']),
+				'id_buku' => $dt['id_buku'],
+				'qty' => $dt['quantity'],
 			);
 			
 			$this->ManagerModel->insertDetailRequestProduct($dataDetailRequest);
@@ -339,8 +342,8 @@ class ManagerController extends CI_Controller {
 			$dt = (array) $row;
 			$dataDetailNotif = array(
 				"id_notif" => $idnotif,
-				"id_buku" => htmlspecialchars($dt['id_buku']),
-				"jumlah" => htmlspecialchars($dt['quantity'])
+				"id_buku" => $dt['id_buku'],
+				"jumlah" => $dt['quantity']
 			);
 		 
 			$this->ManagerModel->insertDetailNotif($dataDetailNotif);
@@ -479,6 +482,8 @@ class ManagerController extends CI_Controller {
 			 ->set_relation_n_n('cover','buku','penerbit','id_buku','id_penerbit','cover','cover')
 			 ->set_relation_n_n('modal','buku','penerbit','id_buku','id_penerbit','modal','modal')
 			 ->Where('stok_toko`.`id_toko', $this->session->userdata('id_toko'));
+
+		
 		//$crud->unset_columns('id_toko');
 		// $crud->unset_delete(); //buat hilangin tombol delete di action
 		$crud->unset_edit(); //buat hilangin tombol edit di action

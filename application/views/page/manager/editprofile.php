@@ -87,8 +87,30 @@
 				  	 </div>
 				</div>
 
+				<div class="form-group" style="padding-bottom: 30px;">
+					 <label class="col-md-3 control-label" for="name">Old password</label>  
+					 <div class="col-md-9">
+				  		<input id="oldpass" name="oldpass" type="password" class="form-control input-md">
+				  	 </div>
+				</div>
+
+				<div class="form-group" style="padding-bottom: 30px;">
+					 <label class="col-md-3 control-label" for="name">New password</label>  
+					 <div class="col-md-9">
+				  		<input id="newpass" name="newpass" type="password" class="form-control input-md">
+				  	 </div>
+				</div>
+
+				<div class="form-group" style="padding-bottom: 30px;">
+					 <label class="col-md-3 control-label" for="name">Confirm new password</label>  
+					 <div class="col-md-9">
+				  		<input id="confirmpass" name="confirmpass" type="password" class="form-control input-md">
+				  	 </div>
+				</div>
+
 				<div class="form-group" id="btn-area">		
 					<button type="button" onclick="removeAlignment()" id="btnedit" class="btn btn-primary" name="btnedit">Edit</button>
+					<button type="button" onclick="removeAlignment()" id="btnpass" class="btn btn-primary" name="btnpass">Change Password</button>
 		<!-- 				<button type="button"  class="btn btn-warning" name="btnCancel">Cancel</button> -->
 					</div>
 			</form>

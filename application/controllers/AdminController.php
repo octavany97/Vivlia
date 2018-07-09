@@ -187,6 +187,9 @@ class AdminController extends CI_Controller {
 		$crud->unset_clone(); //buat hilangin tombol clone di action
 		$crud->unset_print();
 
+		$crud->callback_before_update(array($this,'xss_clean'));
+		$crud->callback_before_insert(array($this,'xss_clean'));
+
 		$output = $crud->render();
 		$data['crud'] = get_object_vars($output);
 		$id = $this->session->userdata('id_user');
@@ -416,6 +419,28 @@ class AdminController extends CI_Controller {
 	// untuk update informasi profile user admin/penerbit
 	public function confirmProfile(){
 		$this->authentication();
+		if(isset($_POST['btnpass'])){
+			$oldpass = $this->input->post('oldpass');
+			$newpass = $this->input->post('newpass');
+			$confirmpass = $this->input->post('confirmpass');
+
+			$user = $this->AdminModel->getinfouser($this->session->userdata('id_user'));
+			$pass = $oldpass . $user['salt'];
+			if(password_verify($pass, $user['password'])){
+				if($newpass == $confirmpass){
+					$password = password_hash($newpass . $user['salt']);
+					$values = array(
+            			'password' => $password
+            			);
+					$this->AdminModel->updatePass($values, $this->session->userdata('id_user'));
+					redirect(base_url().'adm/editprofile');
+				}
+			}
+			else{
+
+			}
+			
+		}
 		$id = $this->session->userdata('id_user');
 		$idtoko = $this->session->userdata('id_toko');
 		$name = $this->input->post('id_form1');
